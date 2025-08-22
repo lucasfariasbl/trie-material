@@ -1,6 +1,3 @@
----
-number headings: auto, first-level 1, max 6, 1.1
----
 # 1 Motivação
 # 2 Introdução
 # 3 Implementação
