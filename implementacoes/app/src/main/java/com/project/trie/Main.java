@@ -10,31 +10,33 @@ public class Main {
 
     while (true) {
 
-      System.out.println("A: Adicione uma palavra\nB: Remova uma palavra\nC: Pesquise por um prefixo\nZ: Sair\n");
+      System.out.println("\nA: Adicione uma palavra\nB: Remova uma palavra\nC: Pesquise por um prefixo\nZ: Sair\n");
       
       System.out.print("Digite sua escolha: ");
       
       String input = sc.nextLine().toUpperCase();
 
-      if (input.equals("Z")) break;
+      if (input.equals("Z")) { 
+        System.out.println("");
+        break;
+      }
 
       switch (input) {
         case "A":
-          System.out.print("Digite a palavra a ser adicionada: ");
+          System.out.print("\nDigite a palavra a ser adicionada: ");
           trie.add(sc.nextLine());
-          System.out.println("");
           break;
 
         case "B":
-          System.out.print("Digite a palavra a ser removida: ");
+          System.out.print("\nDigite a palavra a ser removida: ");
           trie.remove(sc.nextLine());
-          System.out.println("");
           break;
       
         case "C":
-          System.out.print("Digite o prefixo: ");
-          System.out.println(trie.findWordWithPrefix(sc.nextLine()));
+          System.out.print("\nDigite o prefixo: ");
+          String prefix = sc.nextLine();
           System.out.println("");
+          System.out.println(trie.findWordWithPrefix(prefix));
           break;
       }
     }
