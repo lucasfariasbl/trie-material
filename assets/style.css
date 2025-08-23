@@ -28,3 +28,40 @@ a {
   flex: 33.3%;
   padding: 5px;
 }
+
+/* Added styles */
+body {
+  background-color: #f0f0f0;
+}
+
+.remark-slide-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+p, li {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.remark-code, .remark-inline-code {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 5px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+}
