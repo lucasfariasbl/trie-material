@@ -1,6 +1,7 @@
 # 1 Motivação
 # 2 Introdução
 # 3 Implementação
+
 # 4 Comparações
 # 5 Variações e otimizações
 # 6 Aplicações no mundo real
