@@ -5,6 +5,7 @@
 # 4 Comparações
 # 5 Variações e otimizações
 # 6 Aplicações no mundo real
+## 6.1 Redes
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
 ### 7.1.1 Quando usar uma Trie?
