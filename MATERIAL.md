@@ -1,7 +1,35 @@
 # 1 Motivação
 # 2 Introdução
 # 3 Implementação
+## 3.1 Estruturas fundamentais
+### 3.1.1 Node
+Os nós na implementação de uma Trie, assim como em Linked Lists ou outra estrutura que os utilize, são as peças do quebra-cabeça. Sem eles, não existe implementação.
+#### 3.1.1.1 Atributos
+A primeira vista pode ser estranho e incomum, mas o nó não armazena o valor que representa dentro da estrutura da Trie, pois aqui, não temos um nó que se linka com outro através de apontadores como "left" ou "right", os nós armazenam algo mais interessante...
 
+**HashMap:** 
+
+Isso mesmo, aqui, cada nó armazena um HashMap. Para fins didáticos, nossa implementação aborda a manipulação de palavras na Trie. Caso você pare um pouco para pensar, verá que de acordo com nossa abordagem, o HashMap guardará no máximo 26 pares de <Chave, Valor>, onde a chave é cada letra do alfabeto, e seu valor é o nó que o representa. Desta forma, podemos pesquisar por várias palavras que contenham o mesmo prefixo com a mesma eficiência.
+
+**Indicador de fim de palavra:**
+
+Este atributo é extremamente importante para o funcionamento da Trie por definir se uma palavra está presente na  estrutura ou não. Ele é um atributo booleano que define se certa letra representa o fim de uma palavra dentro da Trie. 
+
+> **Exemplo:**
+> Digamos que adicionamos a palavra "Carrossel". 
+
+> Nossa estrutura ficaria assim: C -> A -> R -> R -> O -> S -> S -> E -> L
+
+> Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "isEndOfWord", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
+
+### 3.1.2 Trie
+## 3.2 Operações
+### 3.2.1 Inserção
+### 3.2.2 Pesquisa
+### 3.2.3 Prefixos
+## 3.3 Análise de complexidade de tempo e memória
+## 3.4 Remoção 
+## 3.5 Listagem de palavras por prefixos
 # 4 Comparações
 # 5 Variações e otimizações
 # 6 Aplicações no mundo real
