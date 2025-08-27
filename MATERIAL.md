@@ -5,6 +5,7 @@
 # 4 Comparações
 # 5 Variações e otimizações
 # 6 Aplicações no mundo real
+<img src="assets/trie_redes.gif" height="800">
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
 ### 7.1.1 Quando usar uma Trie?
@@ -31,7 +32,44 @@ Qual o problema da Trie? Memória!
 Para cada nó, pode ter ponteiros para cada elemento no alfabeto, desse modo, se o alfabeto é muito grande, se torna inviavel para implementação de Trie padrão. Então é preciso se perguntar:
 **<p style="text-align:center"> "O afalbeto é pequeno ou é muito grande?"</p>**
 Bom, e no caso de ser inviável? Considere variações de Trie com otmizações de memória, como uma *TST*, ou algumas otimizações como guardar um mapa de hash em cada nó invés de uma array fixo, economiza mais memória em troca de um pouco de velocidade.
+https://vjudge.net/contest/698873#problem/A
+### 6.1.1 Problemas
+#### 6.1.1.1 Ana, a Joaninha
+Ana, a Joaninha, tem muitas coisas para fazer e quase nenhum tempo. Ela quer economizar tempo enquanto procura por algo, então ela decidiu criar um mecanismo de busca. Ela tem muitas palavras em sua lista de AFAZERES (TODO). Custa a ela um tempo precioso descobrir se uma palavra está na lista, então ela procura sua ajuda. Você receberá uma lista e algumas consultas. Será solicitado a você que encontre quantas palavras na lista de AFAZERES têm uma determinada palavra como prefixo.
 
+**Entrada**
+A primeira linha contém N, Q: o número de palavras na lista de AFAZERES e o número de consultas.
+
+Seguem-se N linhas, com palavras (da lista de AFAZERES) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que 106.
+
+Seguem-se Q linhas, com palavras (consultas) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que 106.
+
+**Saída**
+Para cada consulta, imprima o número de palavras na lista de AFAZERES que têm a palavra atual como prefixo.
+
+**Exemplo**
+
+#### 6.1.1.2 Problema do maior XOR
+Lucas e Yan, figuras conhecidas nos corredores da UFCG, são o exemplo perfeito de uma dupla dinâmica na Ciência da Computação. Além de enfrentarem juntos os desafios de Cálculo 2, eles compartilham uma tradição sagrada: comer pastel no Hélio's. Dizem as lendas que a quantidade de ketchup que Lucas coloca no pastel é diretamente proporcional à complexidade do último problema que resolveram.
+
+Uma coisa que sempre intrigou seus colegas é como eles consistentemente tiram notas muito parecidas em todas as disciplinas. O segredo, segundo eles, está em sua "sintonia computacional". Para provar isso, eles criaram um desafio.
+
+Dada uma lista de números inteiros, representando as notas que tiraram em várias avaliações, eles querem encontrar o "potencial máximo de colaboração". Esse potencial é definido como o resultado máximo da operação OU-EXCLUSIVO (XOR) entre as notas de duas avaliações distintas. Será que você consegue calcular esse valor e desvendar o segredo da dupla?
+
+**Entrada**
+A primeira linha é um inteiro `n`, a quantidade de notas.
+A segunda linha é uma lista com todas as notas.
+
+**Saída**
+Um único inteiro, com a mairo soma da operação XOR entre as notas de duas avaliações distintas.
+
+**Exemplo**
+
+
+https://vjudge.net/problem/SPOJ-QN01
+
+
+https://vjudge.net/contest/698873#problem/D
 
 
 
