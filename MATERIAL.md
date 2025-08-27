@@ -1,7 +1,35 @@
 # 1 Motivação
 # 2 Introdução
 # 3 Implementação
+## 3.1 Estruturas fundamentais
+### 3.1.1 Node
+Os nós na implementação de uma Trie, assim como em Linked Lists ou outra estrutura que os utilize, são as peças do quebra-cabeça. Sem eles, não existe implementação.
+#### 3.1.1.1 Atributos
+A primeira vista pode ser estranho e incomum, mas o nó não armazena o valor que representa dentro da estrutura da Trie, pois aqui, não temos um nó que se linka com outro através de apontadores como "left" ou "right", os nós armazenam algo mais interessante...
 
+**HashMap:** 
+
+Isso mesmo, aqui, cada nó armazena um HashMap. Para fins didáticos, nossa implementação aborda a manipulação de palavras na Trie. Caso você pare um pouco para pensar, verá que de acordo com nossa abordagem, o HashMap guardará no máximo 26 pares de <Chave, Valor>, onde a chave é cada letra do alfabeto, e seu valor é o nó que o representa. Desta forma, podemos pesquisar por várias palavras que contenham o mesmo prefixo com a mesma eficiência.
+
+**Indicador de fim de palavra:**
+
+Este atributo é extremamente importante para o funcionamento da Trie por definir se uma palavra está presente na  estrutura ou não. Ele é um atributo booleano que define se certa letra representa o fim de uma palavra dentro da Trie. 
+
+- **Exemplo:**
+> Digamos que adicionamos a palavra "Carrossel".
+> 
+> Nossa estrutura ficaria assim: C -> A -> R -> R -> O -> S -> S -> E -> L
+
+> Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "isEndOfWord", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
+
+### 3.1.2 Trie
+## 3.2 Operações
+### 3.2.1 Inserção
+### 3.2.2 Pesquisa
+### 3.2.3 Prefixos
+## 3.3 Análise de complexidade de tempo e memória
+## 3.4 Remoção 
+## 3.5 Listagem de palavras por prefixos
 # 4 Comparações
 # 5 Variações e otimizações
 # 6 Aplicações no mundo real
@@ -9,19 +37,21 @@
 ### 6.1.1 Roteamento de Pacotes IP
 Em redes,cada pacote IP precisa ser roteado para seu destino correto,e isso é feito com base no seu Endereço IP de destino.Para isso,os roteadores mantém uma tabela de rotas onde cada uma das entradas vai indicar qual vai ser o próximo salto para um determinado prefixo. ou seja,quando o roteador receber um determinado pacote,ele vai precisar decidir para onde enviar esse pacote na Rede para que esse pacote chegue ao seu destino correto.cada uma das entradas da tabela possui duas coisas importantes, um prefixo e um próximo salto.
 
-### Prefixo
+**Prefixo:**
 É a parte inicial de um endereço IP que vai representar um grupo de endereços.vamos supor que temos um prefixo de um endereço ip com 113.237.00/16, o prefixo 113.237. vai cobrir todos os Endereços que começam com 113.237., ou seja de 113.237.0.0  até 113.237.255.255
 
-### Próximo salto	
+**Próximo salto:**	
 É a porta ou o caminho para onde deve ser enviado o pacote para que chegue ao seu destino correto. Geralmente é uma interface física, como uma conexão Ethernet, ou o endereço IP do próximo roteador na rota.
 
-### Resolvendo Problemas
+**Resolvendo Problemas:**
 Agora que sabemos como funciona o Roteamento de pacotes IP vamos supor o determinado problema.Dado um endereço IP 985.623.1.88,encontre a entrada de rota mais específica possível.
 
-Rotas:
-Rota 1: 985.643.2.88.
-Rota 2: 885.623.1.88.
-Rota 3. 985.623.00/16.
+- Rotas:
+> Rota 1: 985.643.2.88.
+>
+> Rota 2: 885.623.1.88.
+>
+> Rota 3. 985.623.00/16.
 
 quando o pacote com o destino 985.623.1.88 chegar, o roteador vai converter esse IP em binário e vai percorrer a trie bit a bit.durante essa busca,ele vai verificar se há alguma entrada de rota correspondente no caminho,sempre que ele encontra uma entrada válida ele armazena essa entrada como a “melhor rota até o momento”.ele faz isso até que não seja mais possível descer na árvore pela falta de nós filhos ou porque o endereço chegou ao fim. no final a entrada armazenada vai ser a entrada que tem o prefixo mais longo,ou seja a melhor rota para aquele destino.
 
@@ -58,7 +88,6 @@ A Trie que será construída terá ramos em comum para os ramos que tem prefixos
 essas sequências genéticas podem ser muito mais longas e repetitivas que essas que utilizamos,é nesse momento que o uso da Trie se torna muito mais eficiente,pois ao ultilizar a Trie para armazenar essas sequências,o uso do Armazenamento vai ser otimizado, já que quando várias sequências de DNA compartilham os mesmos prefixos, a Trie armazena esse prefixo uma única vez.
 
 Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
-
 
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
