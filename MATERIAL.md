@@ -62,7 +62,49 @@ public class Trie {
 ```
 
 ## 3.2 Operações
+
+A maioria dos métodos que veremos são bem intuitivos e nada complexos de serem compreendidos, vamos à leitura.
+
 ### 3.2.1 Inserção
+
+A inserção de uma palavra na Trie, ocorre caractere por caractere. onde no fim, o nó que representa a última letra da palavra terá seu atributo "endWord" setado como true.
+
+**Vamos exemplificar com a adição da palavra "Material":**
+
+A ideia é iterar sobre a palavra de tal forma que adicionemos letra por letra.
+
+Primeiro, criamos um nó auxiliar partindo do nó root (Node nodeAux). Como sabemos, cada nó tem um HashMap com as letras que partem dele. Dado isso, verificamos se no HashMap de nodeAux, com sua chave sendo a primeira letra da palavra, (m), o valor resultante é um nó ou não. Caso o valor retornado seja null, isso significa que, já que estamos partindo do root, não há nenhuma palavra que inicie com a letra m na estrutura, pois não há um nó no valor afiliado à ela. Sendo assim, temos que criar um novo nó e associá-lo. Desta forma, agora temos um nó representando aquele caractere no root.
+
+Para exemplificar melhor, vamos à um universo paralelo onde a palavra "Marca" já foi adicionada e queremos adicionar "Material". Ao iniciar do root, veremos que em seu HashMap, a chave "m" resulta em um nó, que por sua vez, em seu HashMap, a chave "a" retorna um nó, mas que agora, por sua vez, a chave "t" retorna um valor null, diferente se se verificarmos a chave "r" da palavra "Marca". Portanto, seria necessário instanciar um novo nó e adicioná-lo ao valor da chave "t".
+
+Voltando ao nosso universo canônico, temos a atualização de nodeAux. Como verificamos se a primeira letra "existia" na estrutura, e caso ainda não existisse, adicionamos-a, nodeAux agora será o nó que representa a primeira letra, e agora vamos verificar a existência de um nó que represente a segunda, (a). Veja que é como se tivéssemos dado 1 passo de nó para nó. Estávamos em root, e agora pulamos para o nó da primeira letra. A partir de agora, o processo se repete, verificando se a próxima letra como chave tem algum nó filho instanciado no HashMap do nó atual, se sim, apenas é dado um nodeAux = son, caso contrário, como visto antes, o nó é criado e associado à letra.
+
+Nossa última etapa ocorre após a verificação e adição da última letra, pois estando com ela nas mãos, temos que setar como true o atributo de seu nó que indica que ela é o fim de uma palavra. Após isso, a adição foi concluída com sucesso. 
+
+ - Para maior compreensão, segue a implementação do método:
+
+```java
+ public void add(String word) {
+    word = word.toLowerCase();
+
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < word.length(); i++) {
+      Node son = nodeAux.getSons().get(word.charAt(i));
+
+      if (son != null) {
+        nodeAux = son;
+
+      } else {
+        Node newNode = new Node();
+        nodeAux.getSons().put(word.charAt(i), newNode);
+        nodeAux = newNode;
+      }
+    }
+
+    nodeAux.setEndOfWord();
+  }
+```
 
 ### 3.2.2 Pesquisa
 ### 3.2.3 Prefixos
