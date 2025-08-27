@@ -121,7 +121,6 @@ Isso reduz:
 ### 5.1.3 Operações
 
 ### 5.1.3.1 Inserção
-
 - Começa da raiz;
 - A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
 - Existem 3 casos de inserção:
@@ -311,44 +310,119 @@ Qual o problema da Trie? Memória!
 Para cada nó, pode ter ponteiros para cada elemento no alfabeto, desse modo, se o alfabeto é muito grande, se torna inviavel para implementação de Trie padrão. Então é preciso se perguntar:
 **<p style="text-align:center"> "O afalbeto é pequeno ou é muito grande?"</p>**
 Bom, e no caso de ser inviável? Considere variações de Trie com otmizações de memória, como uma *TST*, ou algumas otimizações como guardar um mapa de hash em cada nó invés de uma array fixo, economiza mais memória em troca de um pouco de velocidade.
-https://vjudge.net/contest/698873#problem/A
-### 6.1.1 Problemas
-#### 6.1.1.1 Ana, a Joaninha
-Ana, a Joaninha, tem muitas coisas para fazer e quase nenhum tempo. Ela quer economizar tempo enquanto procura por algo, então ela decidiu criar um mecanismo de busca. Ela tem muitas palavras em sua lista de AFAZERES (TODO). Custa a ela um tempo precioso descobrir se uma palavra está na lista, então ela procura sua ajuda. Você receberá uma lista e algumas consultas. Será solicitado a você que encontre quantas palavras na lista de AFAZERES têm uma determinada palavra como prefixo.
+### 7.1.2 Problemas
+#### 7.1.2.1 [Monitoria de LP2](https://www.spoj.com/problems/ADAINDEX/en/)
+Ana, para otimizar seu tempo ao corrigir os inúmeros projetos da disciplina de Laboratório de Programação 2, está desenvolvendo um script de análise de código.
+
+O primeiro passo de seu script é extrair todos os identificadores (nomes de variáveis, funções, classes, etc.) dos códigos dos alunos e compilá-los em uma grande lista. Agora, para analisar rapidamente os padrões de nomenclatura e a aderência dos alunos às boas práticas, ela precisa de uma forma eficiente de fazer consultas nessa lista.
+
+O desafio é o seguinte: você receberá a lista completa de identificadores e algumas consultas em forma de prefixos. Para cada prefixo, sua tarefa é ajudar Ana a descobrir quantos identificadores na lista começam com ele.
 
 **Entrada**
-A primeira linha contém N, Q: o número de palavras na lista de AFAZERES e o número de consultas.
+A primeira linha contém N, Q: o número de palavras na lista e o número de consultas.
 
-Seguem-se N linhas, com palavras (da lista de AFAZERES) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que 106.
+Seguem-se N linhas, com palavras consistindo de letras minúsculas. A soma de seus comprimentos não será maior que $10^6$.
 
-Seguem-se Q linhas, com palavras (consultas) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que 106.
+Seguem-se Q linhas, com palavras (consultas) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que $10^6$.
 
 **Saída**
-Para cada consulta, imprima o número de palavras na lista de AFAZERES que têm a palavra atual como prefixo.
+Para cada consulta, imprima o número de palavras na lista que começam com a palavra atual.
 
 **Exemplo**
+```
+12 6
+calculartotalpedido
+calcularimposto
+cliente
+clientedadospessoais
+clienteservice
+listadeclientes
+getusuarioporid
+usuariorepositorio
+usuario
+x
+a
+temp
+cliente
+calcular
+usuario
+get
+lista
+z
+```
 
-#### 6.1.1.2 Problema do maior XOR
-Lucas e Yan, figuras conhecidas nos corredores da UFCG, são o exemplo perfeito de uma dupla dinâmica na Ciência da Computação. Além de enfrentarem juntos os desafios de Cálculo 2, eles compartilham uma tradição sagrada: comer pastel no Hélio's. Dizem as lendas que a quantidade de ketchup que Lucas coloca no pastel é diretamente proporcional à complexidade do último problema que resolveram.
+```
+3
+2
+2
+1
+1
+0
+```
+#### 7.1.2.2 [Nicks semelhantes](https://codeforces.com/problemset/problem/514/C)
+Gabriel, um ávido jogador de Valorant, está desenvolvendo uma ferramenta para analisar nicks de jogadores. A ideia é encontrar jogadores com nicks parecidos, que possam ser amigos ou contas alternativas (*smurfs*).
+
+Inicialmente, a memória de sua ferramenta é preenchida com uma lista de **n** nicks. Em seguida, a ferramenta deve ser capaz de processar consultas do seguinte tipo: "Dado um nick **s**, determine se a memória contém um nick **t** que tenha o mesmo número de caracteres que **s** e que difira de **s** em exatamente uma posição".
+
+Gabriel já montou a estrutura da ferramenta, só falta escrever o programa para ela e testá-lo com os dados, que consistem em **n** nicks iniciais e **m** consultas. Ele decidiu confiar este trabalho a você.
+
+**Entrada**
+A primeira linha contém dois números não negativos **n** e **m** ($0 \le n \le 3 \cdot 10^5, 0 \le m \le 3 \cdot 10^5$) — o número de nicks iniciais e o número de consultas, respectivamente.
+
+A seguir, vêm **n** strings não vazias que são carregadas na memória da ferramenta.
+
+A seguir, vêm **m** strings não vazias que são as consultas para a ferramenta.
+
+O comprimento total das linhas na entrada não excede $6 \cdot 10^5$. Cada linha consiste apenas das letras 'a', 'b', 'c'.
+
+**Saída**
+Para cada consulta, imprima em uma única linha "**YES**" (sem as aspas), se a memória contiver o nick procurado, caso contrário, imprima "**NO**" (sem as aspas).
+
+**Exemplo**
+```
+5 6
+limaz
+bielzzr
+yanlira
+maddy
+addsound
+limax
+maddy
+bielzzy
+yanlaro
+addsound
+limas
+```
+
+```
+YES
+NO
+YES
+NO
+NO
+YES
+```
+#### 7.1.2.3 [Sintonia computacional](https://www.spoj.com/problems/QN01/en/)
+Lucas e Yan, figuras conhecidas nos corredores da UFCG, compartilham uma tradição sagrada: comer pastel em seu Hélio. Dizem as lendas que a quantidade de ketchup que Lucas coloca no pastel é diretamente proporcional à complexidade do último problema que resolveram.
 
 Uma coisa que sempre intrigou seus colegas é como eles consistentemente tiram notas muito parecidas em todas as disciplinas. O segredo, segundo eles, está em sua "sintonia computacional". Para provar isso, eles criaram um desafio.
 
-Dada uma lista de números inteiros, representando as notas que tiraram em várias avaliações, eles querem encontrar o "potencial máximo de colaboração". Esse potencial é definido como o resultado máximo da operação OU-EXCLUSIVO (XOR) entre as notas de duas avaliações distintas. Será que você consegue calcular esse valor e desvendar o segredo da dupla?
+Dada uma lista de números inteiros, representando as notas que tiraram em várias avaliações, eles querem encontrar o "potencial máximo de colaboração". Esse potencial é definido como o resultado máximo da operação OU-EXCLUSIVO (XOR) entre as notas de duas avaliações(não necessarimanete distinta)s. Será que você consegue calcular esse valor e desvendar o segredo da dupla?
 
 **Entrada**
 A primeira linha é um inteiro `n`, a quantidade de notas.
 A segunda linha é uma lista com todas as notas.
 
 **Saída**
-Um único inteiro, com a mairo soma da operação XOR entre as notas de duas avaliações distintas.
+Na primeira linha, um único inteiro, com a mairo soma da operação XOR entre as notas de duas avaliações distintas. Na segunda linha a posição *i* e *j* das notas utilizacas.
 
 **Exemplo**
+```
+3
+1 2 3
+```
 
-
-https://vjudge.net/problem/SPOJ-QN01
-
-
-https://vjudge.net/contest/698873#problem/D
-
-
-
+```
+3
+1 2
+```
