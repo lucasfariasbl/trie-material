@@ -122,9 +122,7 @@ Daí pode-se pensar que é basicamente isso, dado que caso todas as letras estej
 
 **Supomos que adicionamos a palavra "Carrossel" e pesquisamos a existência de "Carro":**
 
-<div align="center">
 ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> <b>L</b>
-</div>
 
 > Podemos visualizar através da explicação do material, que a partir do nó root, será validada a existência da letra "c", logo após, em seu nó, a existência da letra "a", e assim em diante até chegarmos na verificação da existência da letra "o". Acabou, né? Confirmamos que a palavra "Carro" está presente e podemos retornar **true**...
 
