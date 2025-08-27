@@ -34,13 +34,13 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 # 5 Variações e otimizações
 ## 5.1 RADIX TREE
 
-### DEFINIÇÃO:
+### 5.1.1 DEFINIÇÃO:
  
   Uma Radix Tree (também chamada de Compact Trie ou Patricia Tree) é uma estrutura de dados, baseada em nós, que armazena, geralmente, strings ou números de forma eficiente, especialmente quando apresentam prefixos em comum.
 
   A Radix Tree e trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
 
-### MOTIVAÇÃO:
+### 5.1.2 MOTIVAÇÃO:
   
   A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muito grandes, principalmente quando existem palavras que utilizam prefixos semelhantes, fazendo com que a memória não seja utilizada de forma eficiente.
 
@@ -72,9 +72,9 @@ Isso reduz:
 - A profundidade da árvore;
 - O número de comparações feitas durante busca e inserção.
 
-### OPERAÇÕES:
+### 5.1.3 OPERAÇÕES:
 
-### Inserção:
+### 5.1.4 Inserção:
 
 - Começa da raiz;
 - A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
@@ -94,7 +94,7 @@ Isso reduz:
 
 ---
 
-### Busca:
+### 5.1.5 Busca:
 
 - Começa da raiz;
 - Busca um filho com prefixo equivalente;
@@ -108,7 +108,7 @@ Isso reduz:
 
 ---
 
-### Remoção:
+### 5.1.6 Remoção:
 
 - Busca a palavra;
 - Se encontrar, desmarca ele como o fim de uma palavra;
@@ -116,13 +116,13 @@ Isso reduz:
   - Se o nó **não tem filhos** e **não é o fim de outra palavra**, pode ser **removido**;
   - Se o nó **tem um filho** e **não é o fim de uma palavra**, pode ser **unido (concatenado)**.
 
-### COMPLEXIDADE: 
+### 5.1.7 COMPLEXIDADE: 
 
 A Radix Tree possui complexidade O(k), de modo que k significa o tamanho da palavra, para inserção, remoção e busca. É mais eficiente que a Trie por reduzir o número de nós.
 
 ## 5.2 SACCICINCT TRIE
 
-### DEFINIÇÃO:
+### 5.2.1 DEFINIÇÃO:
 
   Uma Succinct Trie é uma estrutura de dados que representa uma Trie tradicional de maneira compacta, buscando ocupar o menor espaço possível de memória, mantendo também a capacidade de realizar as demais operações, busca e navegação com eficiência. Assim, essa estrutura é ideal para armazenar grandes volumes de dados imutáveis com prefixos equivalentes, já que a inserção e remoção é custosa, como em dicionários, sistemas embarcados e etc.
   
@@ -134,7 +134,7 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 - **Label array** é um vetor paralelo que armazena os caracteres associados a cada, respectivo nó, mantendo a ordem BFS dos nós;
 - **Terminal bitmaps** são vetores que indicam se os nós de um determinado nível são fins de palavra ou não, também representados em bits (`1` para fim e `0` caso não seja fim).
 
-### MOTIVAÇÃO:
+### 5.2.2 MOTIVAÇÃO:
 
   Como já foi discutido, as Tries tradicionais utilizam a memória de maneira ineficiente quando a comparamos com suas otimizações. Quando vamos utilizar uma trie para armazenar um grande número de dados, em que a memória é crítica e os dados são majoritariamente utilizados para leitura, podemos encontrar um problema em relação ao espaço de memória que está sendo utilizado, por isso, nesse cenário, as Succinct Tries utilizam a memória de maneira mais eficiente, pois consegue armazenar elementos (prefixos) utilizando a estratégia de bit-levels compactadas, preservando e otimizando a capacidade de busca e navegação, reduzindo drasticamente o uso de memória. 
 - Vejamos um exemplo:
@@ -154,7 +154,7 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 
   Assim, vemos que a Succinct Trie representa dados de maneira mais eficiente, de modo que todos os nós, seguindo a BFS são armazenados em um vetor (labels), bem como o bit_vector armazena a quantidade de filhos de cada “nó”, em formato de bits e is_terminal representa quais “nós” são finais ou não de palavras.
 
-### COMPLEXIDADE DAS OPERAÇÕES:
+### 5.2.3 COMPLEXIDADE DAS OPERAÇÕES:
 
 | Tipo      | Custo                          |
 |-----------|--------------------------------|
@@ -261,44 +261,119 @@ Qual o problema da Trie? Memória!
 Para cada nó, pode ter ponteiros para cada elemento no alfabeto, desse modo, se o alfabeto é muito grande, se torna inviavel para implementação de Trie padrão. Então é preciso se perguntar:
 **<p style="text-align:center"> "O afalbeto é pequeno ou é muito grande?"</p>**
 Bom, e no caso de ser inviável? Considere variações de Trie com otmizações de memória, como uma *TST*, ou algumas otimizações como guardar um mapa de hash em cada nó invés de uma array fixo, economiza mais memória em troca de um pouco de velocidade.
-https://vjudge.net/contest/698873#problem/A
-### 6.1.1 Problemas
-#### 6.1.1.1 Ana, a Joaninha
-Ana, a Joaninha, tem muitas coisas para fazer e quase nenhum tempo. Ela quer economizar tempo enquanto procura por algo, então ela decidiu criar um mecanismo de busca. Ela tem muitas palavras em sua lista de AFAZERES (TODO). Custa a ela um tempo precioso descobrir se uma palavra está na lista, então ela procura sua ajuda. Você receberá uma lista e algumas consultas. Será solicitado a você que encontre quantas palavras na lista de AFAZERES têm uma determinada palavra como prefixo.
+### 7.1.2 Problemas
+#### 7.1.2.1 [Monitoria de LP2](https://www.spoj.com/problems/ADAINDEX/en/)
+Ana, para otimizar seu tempo ao corrigir os inúmeros projetos da disciplina de Laboratório de Programação 2, está desenvolvendo um script de análise de código.
+
+O primeiro passo de seu script é extrair todos os identificadores (nomes de variáveis, funções, classes, etc.) dos códigos dos alunos e compilá-los em uma grande lista. Agora, para analisar rapidamente os padrões de nomenclatura e a aderência dos alunos às boas práticas, ela precisa de uma forma eficiente de fazer consultas nessa lista.
+
+O desafio é o seguinte: você receberá a lista completa de identificadores e algumas consultas em forma de prefixos. Para cada prefixo, sua tarefa é ajudar Ana a descobrir quantos identificadores na lista começam com ele.
 
 **Entrada**
-A primeira linha contém N, Q: o número de palavras na lista de AFAZERES e o número de consultas.
+A primeira linha contém N, Q: o número de palavras na lista e o número de consultas.
 
-Seguem-se N linhas, com palavras (da lista de AFAZERES) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que 106.
+Seguem-se N linhas, com palavras consistindo de letras minúsculas. A soma de seus comprimentos não será maior que $10^6$.
 
-Seguem-se Q linhas, com palavras (consultas) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que 106.
+Seguem-se Q linhas, com palavras (consultas) consistindo de letras minúsculas. A soma de seus comprimentos não será maior que $10^6$.
 
 **Saída**
-Para cada consulta, imprima o número de palavras na lista de AFAZERES que têm a palavra atual como prefixo.
+Para cada consulta, imprima o número de palavras na lista que começam com a palavra atual.
 
 **Exemplo**
+```
+12 6
+calculartotalpedido
+calcularimposto
+cliente
+clientedadospessoais
+clienteservice
+listadeclientes
+getusuarioporid
+usuariorepositorio
+usuario
+x
+a
+temp
+cliente
+calcular
+usuario
+get
+lista
+z
+```
 
-#### 6.1.1.2 Problema do maior XOR
-Lucas e Yan, figuras conhecidas nos corredores da UFCG, são o exemplo perfeito de uma dupla dinâmica na Ciência da Computação. Além de enfrentarem juntos os desafios de Cálculo 2, eles compartilham uma tradição sagrada: comer pastel no Hélio's. Dizem as lendas que a quantidade de ketchup que Lucas coloca no pastel é diretamente proporcional à complexidade do último problema que resolveram.
+```
+3
+2
+2
+1
+1
+0
+```
+#### 7.1.2.2 [Nicks semelhantes](https://codeforces.com/problemset/problem/514/C)
+Gabriel, um ávido jogador de Valorant, está desenvolvendo uma ferramenta para analisar nicks de jogadores. A ideia é encontrar jogadores com nicks parecidos, que possam ser amigos ou contas alternativas (*smurfs*).
+
+Inicialmente, a memória de sua ferramenta é preenchida com uma lista de **n** nicks. Em seguida, a ferramenta deve ser capaz de processar consultas do seguinte tipo: "Dado um nick **s**, determine se a memória contém um nick **t** que tenha o mesmo número de caracteres que **s** e que difira de **s** em exatamente uma posição".
+
+Gabriel já montou a estrutura da ferramenta, só falta escrever o programa para ela e testá-lo com os dados, que consistem em **n** nicks iniciais e **m** consultas. Ele decidiu confiar este trabalho a você.
+
+**Entrada**
+A primeira linha contém dois números não negativos **n** e **m** ($0 \le n \le 3 \cdot 10^5, 0 \le m \le 3 \cdot 10^5$) — o número de nicks iniciais e o número de consultas, respectivamente.
+
+A seguir, vêm **n** strings não vazias que são carregadas na memória da ferramenta.
+
+A seguir, vêm **m** strings não vazias que são as consultas para a ferramenta.
+
+O comprimento total das linhas na entrada não excede $6 \cdot 10^5$. Cada linha consiste apenas das letras 'a', 'b', 'c'.
+
+**Saída**
+Para cada consulta, imprima em uma única linha "**YES**" (sem as aspas), se a memória contiver o nick procurado, caso contrário, imprima "**NO**" (sem as aspas).
+
+**Exemplo**
+```
+5 6
+limaz
+bielzzr
+yanlira
+maddy
+addsound
+limax
+maddy
+bielzzy
+yanlaro
+addsound
+limas
+```
+
+```
+YES
+NO
+YES
+NO
+NO
+YES
+```
+#### 7.1.2.3 [Sintonia computacional](https://www.spoj.com/problems/QN01/en/)
+Lucas e Yan, figuras conhecidas nos corredores da UFCG, compartilham uma tradição sagrada: comer pastel em seu Hélio. Dizem as lendas que a quantidade de ketchup que Lucas coloca no pastel é diretamente proporcional à complexidade do último problema que resolveram.
 
 Uma coisa que sempre intrigou seus colegas é como eles consistentemente tiram notas muito parecidas em todas as disciplinas. O segredo, segundo eles, está em sua "sintonia computacional". Para provar isso, eles criaram um desafio.
 
-Dada uma lista de números inteiros, representando as notas que tiraram em várias avaliações, eles querem encontrar o "potencial máximo de colaboração". Esse potencial é definido como o resultado máximo da operação OU-EXCLUSIVO (XOR) entre as notas de duas avaliações distintas. Será que você consegue calcular esse valor e desvendar o segredo da dupla?
+Dada uma lista de números inteiros, representando as notas que tiraram em várias avaliações, eles querem encontrar o "potencial máximo de colaboração". Esse potencial é definido como o resultado máximo da operação OU-EXCLUSIVO (XOR) entre as notas de duas avaliações(não necessarimanete distinta)s. Será que você consegue calcular esse valor e desvendar o segredo da dupla?
 
 **Entrada**
 A primeira linha é um inteiro `n`, a quantidade de notas.
 A segunda linha é uma lista com todas as notas.
 
 **Saída**
-Um único inteiro, com a mairo soma da operação XOR entre as notas de duas avaliações distintas.
+Na primeira linha, um único inteiro, com a mairo soma da operação XOR entre as notas de duas avaliações distintas. Na segunda linha a posição *i* e *j* das notas utilizacas.
 
 **Exemplo**
+```
+3
+1 2 3
+```
 
-
-https://vjudge.net/problem/SPOJ-QN01
-
-
-https://vjudge.net/contest/698873#problem/D
-
-
-
+```
+3
+1 2
+```
