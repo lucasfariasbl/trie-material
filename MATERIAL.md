@@ -53,7 +53,41 @@ Agora que sabemos como funciona o Roteamento de pacotes IP vamos supor o determi
 >
 > Rota 3. 985.623.00/16.
 
-Quando o pacote com o destino 985.623.1.88 chegar, o roteador vai converter esse IP em binário e vai percorrer a trie bit a bit.durante essa busca,ele vai verificar se há alguma entrada de rota correspondente no caminho,sempre que ele encontra uma entrada válida ele armazena essa entrada como a “melhor rota até o momento”.ele faz isso até que não seja mais possível descer na árvore pela falta de nós filhos ou porque o endereço chegou ao fim. no final a entrada armazenada vai ser a entrada que tem o prefixo mais longo,ou seja a melhor rota para aquele destino..
+quando o pacote com o destino 985.623.1.88 chegar, o roteador vai converter esse IP em binário e vai percorrer a trie bit a bit.durante essa busca,ele vai verificar se há alguma entrada de rota correspondente no caminho,sempre que ele encontra uma entrada válida ele armazena essa entrada como a “melhor rota até o momento”.ele faz isso até que não seja mais possível descer na árvore pela falta de nós filhos ou porque o endereço chegou ao fim. no final a entrada armazenada vai ser a entrada que tem o prefixo mais longo,ou seja a melhor rota para aquele destino.
+
+## 6.2 Análise de Sequências de DNA
+### 6.2.1 Armazenamento e Busca em Grandes Volumes de Dados Genéticos
+Na bioinformática, pesquisadores lidam diariamente sequências de DNA, essas sequências são compostas por quatro letras (A, C, G, T), que representam os nucleotídeos.
+
+Essas sequências são frequentemente armazenadas, comparadas e analisadas para:
+
+- Identificar padrões genéticos
+- Encontrar regiões comuns entre espécies
+- Detectar mutações
+- Realizar buscas rápidas por subsequências
+  
+### Agora vamos pensar
+Como podemos usar a Trie para resolver problemas que envolvem sequências de DNA?
+
+Pense comigo,Dada um grande conjunto de sequência de DNA,como podemos armazená-las de forma eficiente? como podemos Buscar rapidamente se uma determinada sequência está nesse conjunto, ou até mesmo encontrar todas as ocorrências de uma subsequência?
+
+Bom,como já vimos anteriormente, a Trie é ideal para representar grandes conjuntos de strings com prefixos comuns, como acontece nas sequências de DNA, onde muitas compartilham trechos semelhantes.Cada nó da Trie representa um nucleotídeo (A, C, G ou T).Cada caminho da raiz até um nó terminal representa uma sequência ou subsequência de DNA.
+
+Exemplo:
+ 	suponha que queremos armazenar as seguintes sequências na nossa Trie.
+
+ATCGCCGT
+ATCAGT
+ATTGCG
+GCTACA
+GCTATT
+A Trie que será construída terá ramos em comum para os ramos que tem prefixos repetidos, como podemos observar na imagem.
+
+
+
+essas sequências genéticas podem ser muito mais longas e repetitivas que essas que utilizamos,é nesse momento que o uso da Trie se torna muito mais eficiente,pois ao ultilizar a Trie para armazenar essas sequências,o uso do Armazenamento vai ser otimizado, já que quando várias sequências de DNA compartilham os mesmos prefixos, a Trie armazena esse prefixo uma única vez.
+
+Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
 
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
