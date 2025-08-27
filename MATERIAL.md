@@ -17,8 +17,10 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 
 - **Exemplo:**
 > Digamos que adicionamos a palavra "Carrossel".
-> 
-> Nossa estrutura ficaria assim: C -> A -> R -> R -> O -> S -> S -> E -> L
+
+<div align="center">
+	Nossa estrutura ficaria assim: ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> <b>L</b>
+</div>
 
 > Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "wordEnd", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
 
@@ -123,7 +125,7 @@ Daí pode-se pensar que é basicamente isso, dado que caso todas as letras estej
 **Supomos que adicionamos a palavra "Carrossel" e pesquisamos a existência de "Carro":**
 
 <div align="center">
-ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> L
+ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> <b>L</b>
 </div>
 
 > Podemos visualizar através da explicação do material, que a partir do nó root, será validada a existência da letra "c", logo após, em seu nó, a existência da letra "a", e assim em diante até chegarmos na verificação da existência da letra "o". Acabou, né? Confirmamos que a palavra "Carro" está presente e podemos retornar **true**...
@@ -152,9 +154,37 @@ public boolean search(String word) {
 ```
 
 ### 3.2.3 Prefixos
+
+A jornada que o método que pesquisa por um prefixo percorre é idêntica ao search que vimos anteriormente, alterando apenas 1 detalhe que simplifica o código. Ou seja, se você sabe implementar o search(), sabe implementar o startsWith(). 
+
+O método recebe como parâmetro um prefixo e retornará um valor booleano referente à existência de qualquer palavra que contenha aquele prefixo.
+
+Assim como no search(), o startsWith() percorrerá letra por letra da palavra verificando se ela existe no mapa de seu nó parent, caso a letra não tenha valor referente, o retorno é **false**, caso contrário chegamos no ponto que o diferencia do search().
+
+Ao chegar na última letra, como estamos tratando de prefixos e não de palavras completas, é irrelevante a verificação isEndOfWord() do nó, portanto, se ao longo do loop o caminho não quebrar e chegar ao fim, apenas retornamos **true**.
+
+- Segue a implementação
+
+```java
+public boolean startsWith(String prefix) {
+    prefix = prefix.toLowerCase();
+
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < prefix.length(); i++) {
+      Node son = nodeAux.getSons().get(prefix.charAt(i));
+
+      if (son == null) return false;
+
+      nodeAux = son;
+    }
+
+    return true;
+  }
+```
+## 3.2.4 Remoção 
+## 3.2.5 Listagem de palavras por prefixos
 ## 3.3 Análise de complexidade de tempo e memória
-## 3.4 Remoção 
-## 3.5 Listagem de palavras por prefixos
 # 4 Comparações
 # 5 Variações e otimizações
 ## 5.1 Radix Tree
