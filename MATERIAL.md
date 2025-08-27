@@ -66,26 +66,31 @@ Essas sequências são frequentemente armazenadas, comparadas e analisadas para:
 - Detectar mutações
 - Realizar buscas rápidas por subsequências
   
-### Agora vamos pensar
+**Agora vamos pensar:**
+
 Como podemos usar a Trie para resolver problemas que envolvem sequências de DNA?
 
-Pense comigo,Dada um grande conjunto de sequência de DNA,como podemos armazená-las de forma eficiente? como podemos Buscar rapidamente se uma determinada sequência está nesse conjunto, ou até mesmo encontrar todas as ocorrências de uma subsequência?
+Pense comigo, dada um grande conjunto de sequência de DNA, como podemos armazená-las de forma eficiente? Como podemos buscar rapidamente se uma determinada sequência está nesse conjunto, ou até mesmo encontrar todas as ocorrências de uma subsequência?
 
-Bom,como já vimos anteriormente, a Trie é ideal para representar grandes conjuntos de strings com prefixos comuns, como acontece nas sequências de DNA, onde muitas compartilham trechos semelhantes.Cada nó da Trie representa um nucleotídeo (A, C, G ou T).Cada caminho da raiz até um nó terminal representa uma sequência ou subsequência de DNA.
+Bom, como já vimos anteriormente, a Trie é ideal para representar grandes conjuntos de strings com prefixos comuns, como acontece nas sequências de DNA, onde muitas compartilham trechos semelhantes. Cada nó da Trie representa um nucleotídeo, (A, C, G ou T). Cada caminho da raiz até um nó terminal representa uma sequência ou subsequência de DNA.
 
-Exemplo:
- 	suponha que queremos armazenar as seguintes sequências na nossa Trie.
+- Exemplo:
+ 
+Suponha que queremos armazenar as seguintes sequências na nossa Trie.
 
-ATCGCCGT
-ATCAGT
-ATTGCG
-GCTACA
-GCTATT
+> ATCGCCGT
+> 
+> ATCAGT
+> 
+> ATTGCG
+> 
+> GCTACA
+> 
+> GCTATT
+
 A Trie que será construída terá ramos em comum para os ramos que tem prefixos repetidos, como podemos observar na imagem.
 
-
-
-essas sequências genéticas podem ser muito mais longas e repetitivas que essas que utilizamos,é nesse momento que o uso da Trie se torna muito mais eficiente,pois ao ultilizar a Trie para armazenar essas sequências,o uso do Armazenamento vai ser otimizado, já que quando várias sequências de DNA compartilham os mesmos prefixos, a Trie armazena esse prefixo uma única vez.
+Essas sequências genéticas podem ser muito mais longas e repetitivas que essas que utilizamos,é nesse momento que o uso da Trie se torna muito mais eficiente,pois ao ultilizar a Trie para armazenar essas sequências,o uso do Armazenamento vai ser otimizado, já que quando várias sequências de DNA compartilham os mesmos prefixos, a Trie armazena esse prefixo uma única vez.
 
 Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
 
