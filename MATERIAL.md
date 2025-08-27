@@ -32,6 +32,22 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 ## 3.5 Listagem de palavras por prefixos
 # 4 Comparações
 # 5 Variações e otimizações
+## 5.1 RADIX TREE
+### DEFINIÇÃO:
+  Uma Radix Tree (também chamada de Compact Trie ou Patricia Tree) é uma estrutura de dados, baseada em nós, que armazena, geralmente, strings ou números de forma eficiente, especialmente quando apresentam prefixos em comum.
+
+  A Radix Tree e trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
+
+### MOTIVAÇÃO:
+  A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muito grandes, principalmente quando existem palavras que utilizam prefixos semelhantes, fazendo com que a memória não seja utilizada de forma eficiente.
+
+Vejamos alguns exemplos:
+
+Armazenar carro e carroça em uma Trie : 
+<img src="assets/exemplo-trie.png" height="800">
+
+
+
 # 6 Aplicações no mundo real
 ## 6.1 Rede de Computadores
 ### 6.1.1 Roteamento de Pacotes IP
