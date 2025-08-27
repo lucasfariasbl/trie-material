@@ -9,7 +9,7 @@ A primeira vista pode ser estranho e incomum, mas o nó não armazena o valor qu
 
 **HashMap:** 
 
-Isso mesmo, aqui, cada nó armazena um HashMap. Para fins didáticos, nossa implementação aborda a manipulação de palavras na Trie. Caso você pare um pouco para pensar, verá que de acordo com nossa abordagem, o HashMap guardará no máximo 26 pares de <Chave, Valor>, onde a chave é cada letra do alfabeto, e seu valor é o nó que o representa. Desta forma, podemos pesquisar por várias palavras que contenham o mesmo prefixo com a mesma eficiência.
+Para fins didáticos, nossa implementação aborda a manipulação de palavras na Trie e as armazena em um HashMap. Caso você pare um pouco para pensar, verá que de acordo com nossa abordagem, o HashMap guardará no máximo 26 pares de <Chave, Valor>, onde a chave é cada letra do alfabeto, e seu valor é o nó que o representa. Desta forma, podemos pesquisar por várias palavras que contenham o mesmo prefixo com a mesma eficiência.
 
 **Indicador de fim de palavra:**
 
@@ -20,11 +20,50 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 > 
 > Nossa estrutura ficaria assim: C -> A -> R -> R -> O -> S -> S -> E -> L
 
-> Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "isEndOfWord", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
+> Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "wordEnd", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
+
+- Veja a implementação da classe Node (Atributos e construtor):
+
+```java
+ public class Node {
+
+    boolean wordEnd;
+    HashMap<Character, Node> sons;
+
+    public Node() {
+      this.wordEnd = false;
+      this.sons = new HashMap<>();
+    }
+}
+```
+Para a realização das operações, ela conta com os seguintes métodos:
+
+- getSons(): Retorna o mapa de filhos do nó.
+- isEndOfWord(): Retorna o valor do atributo wordEnd.
+- setEndOfWord(): Torna true o valor do atributo wordEnd.
+- turnOffEndOfWord(): Torna false o valor do atributo wordEnd.
 
 ### 3.1.2 Trie
+A classe Trie é o maestro da orquestra, ela coordena e controla todos os métodos para formar a estrutura, se formos encaixar na metafora do quebra-cabeça, a Trie é quem o monta. Ela conta apenas com um único atributo estático nomeado "root", que não corresponde à caractere algum. 
+
+Todos os nós partem do root.
+
+- Veja abaixo a parte inicial do código da classe Trie:
+
+```java
+public class Trie {
+
+  private final Node root;
+
+  public Trie() {
+    this.root = new Node();
+  }
+}
+```
+
 ## 3.2 Operações
 ### 3.2.1 Inserção
+
 ### 3.2.2 Pesquisa
 ### 3.2.3 Prefixos
 ## 3.3 Análise de complexidade de tempo e memória
