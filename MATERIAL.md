@@ -177,6 +177,78 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 
   Dessa forma, a utilização das Succinct Tries se torna bem mais eficiente para armazenar muitos dados em que são imutáveis, sendo utilizados para buscas ou navegação, ex: dicionários.
 
+## 5.3 Concurrent Tries
+### 5.3.1 Definição
+
+  Concurrent Tries é uma estrutura de dados que, como as outras, também é baseada em árvores e tende a ser uma versão otimizada de uma trie convencional, por utilizar técnicas de lock, além de utilizarem hash’s como estrutura auxiliar. No entanto, ela suporta acesso simultâneo seguro por múltiplas threads sem corromper a estrutura e sem retornar resultados inconsistentes, ou seja, permitem leitura e escrita concorrente, bem como evitam locks globais e minimizam contenção entre threads.
+
+Uma Ctrie é estruturada como uma árvore de prefixos, de modo que: 
+- Cada nó representa um **prefixo**  
+- Cada nível da árvore corresponde a uma **parte do prefixo (caractere)**  
+- Os nós podem conter:
+  - um **mapa de filhos**, que associa cada prefixo aos próximos nós  
+  - e um **valor** (caso represente uma chave completa)  
+- Permite **snapshotting eficiente**, ou seja, tirar uma cópia consistente do trie **sem travar a estrutura**
+
+### 5.3.2 Motivação
+
+  As Ctries possuem grande usabilidade na computação, principalmente em áreas de roteamento de IP, interpretação de linguagens, caches em tempo real, Servidores HTTP ou REST com alta concorrência e etc. Isso acontece, pois nas Ctries vários usuários podem fazer a mesma operação ao mesmo tempo que não vai haver a perca ou sobrescreção de dados, isso ocorre pois essa estrutura utiliza de técnicas avançadas para inserção, remoção e busca, vejamos:
+### 🔒 Lock-Based Tries
+- Usa **locks finos** em cada nó para permitir múltiplas operações paralelas, ou seja, em vez de travar a estrutura toda para fazer uma operação, você trava apenas a menor parte necessária  
+- Conforme aumenta o número de threads, melhor a estrutura funciona  
+- Reduz a chance de threads ficarem esperando  
+
+---
+
+### ⚙️ Lock-Free Tries
+- Usa **instruções atômicas**, como o **CAS**, pois evita deadlock, contenção e se torna mais seguro por ser feito em hardware  
+- Evita completamente locks, mas é mais difícil de implementar  
+- Melhor performance sob alta concorrência  
+
+---
+
+### 🧊 Immutable Tries
+- Cada modificação cria uma **nova versão** da estrutura  
+- Threads podem acessar **versões antigas com segurança**, pois os nós são imutáveis  
+- Não destroem o estado anterior de um nó  
+
+### 5.3.3 Operações 
+
+### 🟢 Inserção
+- Percorre os nós até onde a chave diverge ou termina  
+- Cria novos nós se necessário  
+- Em Ctries (hash tries), percorre a árvore inspecionando blocos de bits do hash  
+
+---
+
+### 🔍 Busca
+- Caminha até o final da chave  
+- Se a estrutura for bem balanceada e não houver colisões (no hash), a profundidade é limitada  
+
+---
+
+### ❌ Remoção
+- Encontra o nó da chave  
+- Marca como removido  
+
+---
+
+### 📸 Snapshot
+- Apenas aponta para o nó raiz atual  
+- Como os nós são imutáveis, não há risco de inconsistência  
+- Leitores podem continuar acessando a versão antiga mesmo após novas inserções  
+
+### 5.3.4 Complexidade
+
+| Operação     | Complexidade Média   | Pior caso | Observações                                           |
+| ------------ | -------------------- | --------- | ----------------------------------------------------- |
+| **Inserção** | `O(k)` ou `O(log n)` | `O(k)`    | Um nó por caractere/nível; pode haver colisões        |
+| **Busca**    | `O(k)` ou `O(log n)` | `O(k)`    | Caminha até a folha correspondente                    |
+| **Remoção**  | `O(k)`               | `O(k)`    | Pode envolver limpeza de nós intermediários |
+| **Snapshot** | `O(1)`               | `O(1)`    | Apenas copia a referência do nó raiz (imutável)      |
+
+
+
 # 6 Aplicações no mundo real
 ## 6.1 Rede de Computadores
 ### 6.1.1 Roteamento de Pacotes IP
