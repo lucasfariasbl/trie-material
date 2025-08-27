@@ -36,6 +36,7 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
     }
 }
 ```
+
 Para a realização das operações, ela conta com os seguintes métodos:
 
 - getSons(): Retorna o mapa de filhos do nó.
@@ -64,7 +65,6 @@ public class Trie {
 ## 3.2 Operações
 
 A maioria dos métodos que veremos são bem intuitivos e nada complexos de serem compreendidos, vamos à leitura.
-
 ### 3.2.1 Inserção
 
 A inserção de uma palavra na Trie, ocorre caractere por caractere. onde no fim, o nó que representa a última letra da palavra terá seu atributo "endWord" setado como true.
@@ -81,7 +81,7 @@ Voltando ao nosso universo canônico, temos a atualização de nodeAux. Como ver
 
 Nossa última etapa ocorre após a verificação e adição da última letra, pois estando com ela nas mãos, temos que setar como true o atributo de seu nó que indica que ela é o fim de uma palavra. Após isso, a adição foi concluída com sucesso. 
 
- - Para maior compreensão, segue a implementação do método:
+ - Para melhor compreensão, segue a implementação do método:
 
 ```java
  public void add(String word) {
@@ -107,6 +107,50 @@ Nossa última etapa ocorre após a verificação e adição da última letra, po
 ```
 
 ### 3.2.2 Pesquisa
+
+O método de pesquisa tem como parâmetro a palavra a ser pesquisada na árvore e retorna um valor booleano baseado na pergunta "A palavra está na árvore?"
+
+Assim como em todos os métodos, partimos do nó root, só que diferente da adição, nossas ações baseadas nas verificações são mais simples.
+
+Da mesma forma que o método da inserção de palavras, temos que analisar se no HashMap do nó atual, temos uma referência associada à chave da próxima letra, um nó, ou se temos o valor null. 
+
+Caso o retorno da chave seja null, isto indica que não temos um nó referenciando a letra que estamos verificando na vez, portanto, ela nunca foi adicionada. Neste momento, podemos e devemos retornar o valor **false** para o método, indicando que a palavra não está na estrutura.
+
+Caso contrário, ou seja, o valor de retorno seja um nó, passamos a verificar seu HashMap à procura da próxima letra, e assim em diante.
+
+Daí pode-se pensar que é basicamente isso, dado que caso todas as letras estejam presentes na estrutura obviamente a palavra inteira está presente. Porém, vamos a um exemplo prático:
+
+**Supomos que adicionamos a palavra "Carrossel" e pesquisamos a existência de "Carro":**
+
+<div align="center">
+ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> L
+</div>
+
+> Podemos visualizar através da explicação do material, que a partir do nó root, será validada a existência da letra "c", logo após, em seu nó, a existência da letra "a", e assim em diante até chegarmos na verificação da existência da letra "o". Acabou, né? Confirmamos que a palavra "Carro" está presente e podemos retornar **true**...
+
+> É isso que a estrutura apresentada indica, mas nós nunca digitamos o comando add("Carro"), correto? Para isso, utilizamos o atributo que já foi mencionado no material anteriormente, que indica se certa letra representa o fim de uma palavra.
+> Isso seria, obviamente, testado na última letra da palavra pesquisada, no nosso caso, o "o", retornando o valor booleano **false**.
+
+- Para melhor compreensão, segue a implementação do método:
+
+```java
+public boolean search(String word) {
+    word = word.toLowerCase();
+
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < word.length(); i++) {
+      Node son = nodeAux.getSons().get(word.charAt(i));
+
+      if (son == null) return false;
+
+      nodeAux = son;
+    }
+
+    return nodeAux.isEndOfWord();
+  }
+```
+
 ### 3.2.3 Prefixos
 ## 3.3 Análise de complexidade de tempo e memória
 ## 3.4 Remoção 
