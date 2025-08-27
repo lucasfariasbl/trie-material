@@ -9,7 +9,7 @@ A primeira vista pode ser estranho e incomum, mas o nó não armazena o valor qu
 
 **HashMap:** 
 
-Isso mesmo, aqui, cada nó armazena um HashMap. Para fins didáticos, nossa implementação aborda a manipulação de palavras na Trie. Caso você pare um pouco para pensar, verá que de acordo com nossa abordagem, o HashMap guardará no máximo 26 pares de <Chave, Valor>, onde a chave é cada letra do alfabeto, e seu valor é o nó que o representa. Desta forma, podemos pesquisar por várias palavras que contenham o mesmo prefixo com a mesma eficiência.
+Para fins didáticos, nossa implementação aborda a manipulação de palavras na Trie e as armazena em um HashMap. Caso você pare um pouco para pensar, verá que de acordo com nossa abordagem, o HashMap guardará no máximo 26 pares de <Chave, Valor>, onde a chave é cada letra do alfabeto, e seu valor é o nó que o representa. Desta forma, podemos pesquisar por várias palavras que contenham o mesmo prefixo com a mesma eficiência.
 
 **Indicador de fim de palavra:**
 
@@ -20,11 +20,50 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 > 
 > Nossa estrutura ficaria assim: C -> A -> R -> R -> O -> S -> S -> E -> L
 
-> Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "isEndOfWord", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
+> Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "wordEnd", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
+
+- Veja a implementação da classe Node (Atributos e construtor):
+
+```java
+ public class Node {
+
+    boolean wordEnd;
+    HashMap<Character, Node> sons;
+
+    public Node() {
+      this.wordEnd = false;
+      this.sons = new HashMap<>();
+    }
+}
+```
+Para a realização das operações, ela conta com os seguintes métodos:
+
+- getSons(): Retorna o mapa de filhos do nó.
+- isEndOfWord(): Retorna o valor do atributo wordEnd.
+- setEndOfWord(): Torna true o valor do atributo wordEnd.
+- turnOffEndOfWord(): Torna false o valor do atributo wordEnd.
 
 ### 3.1.2 Trie
+A classe Trie é o maestro da orquestra, ela coordena e controla todos os métodos para formar a estrutura, se formos encaixar na metafora do quebra-cabeça, a Trie é quem o monta. Ela conta apenas com um único atributo estático nomeado "root", que não corresponde à caractere algum. 
+
+Todos os nós partem do root.
+
+- Veja abaixo a parte inicial do código da classe Trie:
+
+```java
+public class Trie {
+
+  private final Node root;
+
+  public Trie() {
+    this.root = new Node();
+  }
+}
+```
+
 ## 3.2 Operações
 ### 3.2.1 Inserção
+
 ### 3.2.2 Pesquisa
 ### 3.2.3 Prefixos
 ## 3.3 Análise de complexidade de tempo e memória
@@ -32,31 +71,38 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 ## 3.5 Listagem de palavras por prefixos
 # 4 Comparações
 # 5 Variações e otimizações
-## 5.1 RADIX TREE
-
-### 5.1.1 DEFINIÇÃO:
+## 5.1 Radix Tree
+### 5.1.1 Definição
  
   Uma Radix Tree (também chamada de Compact Trie ou Patricia Tree) é uma estrutura de dados, baseada em nós, que armazena, geralmente, strings ou números de forma eficiente, especialmente quando apresentam prefixos em comum.
 
-  A Radix Tree e trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
+  A Radix Tree se trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
 
-### 5.1.2 MOTIVAÇÃO:
+### 5.1.2 Motivação
   
   A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muito grandes, principalmente quando existem palavras que utilizam prefixos semelhantes, fazendo com que a memória não seja utilizada de forma eficiente.
 
 Vejamos alguns exemplos:
 
-Armazenar carro e carroça em uma Trie : 
+Armazenar carro e carroça em uma Trie: 
 
-
-<img src="assets/exemplo-trie.png" height="500">
-
+<br>
+<br>
+<div align="center">
+ <img src="assets/exemplo-trie.png" height="500">
+</div>
+<br>
+<br>
 
 Vejamos que, na trie cada letra é armazenada em apenas um nó e que foram utilizados diversos nós para armazenar palavras com um prefixo equivalente (carro), no entanto, nesse cenário a Trie utiliza a memória para guardar dados de maneira ineficiente, quando comparamos a uma Radix Tree, vejamos agora a inserção em uma Radix Tree:
 
-
-<img src="assets/exemplo-radix.png" height="500">
-
+<br>
+<br>
+<div align="center">
+ <img src="assets/exemplo-radix.png" height="500">
+</div>
+<br>
+<br>
 
 Em vez de criar um nó para armazenar cada caractere, a estrutura armazena blocos de caracteres (prefixos) em nós: carro > ça.
 
@@ -72,10 +118,9 @@ Isso reduz:
 - A profundidade da árvore;
 - O número de comparações feitas durante busca e inserção.
 
-### 5.1.3 OPERAÇÕES:
+### 5.1.3 Operações
 
-### 5.1.4 Inserção:
-
+### 5.1.3.1 Inserção
 - Começa da raiz;
 - A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
 - Existem 3 casos de inserção:
@@ -94,7 +139,7 @@ Isso reduz:
 
 ---
 
-### 5.1.5 Busca:
+### 5.1.3.2 Busca
 
 - Começa da raiz;
 - Busca um filho com prefixo equivalente;
@@ -108,7 +153,7 @@ Isso reduz:
 
 ---
 
-### 5.1.6 Remoção:
+### 5.1.3.3 Remoção
 
 - Busca a palavra;
 - Se encontrar, desmarca ele como o fim de uma palavra;
@@ -116,13 +161,13 @@ Isso reduz:
   - Se o nó **não tem filhos** e **não é o fim de outra palavra**, pode ser **removido**;
   - Se o nó **tem um filho** e **não é o fim de uma palavra**, pode ser **unido (concatenado)**.
 
-### 5.1.7 COMPLEXIDADE: 
+### 5.1.4 Complexidade 
 
 A Radix Tree possui complexidade O(k), de modo que k significa o tamanho da palavra, para inserção, remoção e busca. É mais eficiente que a Trie por reduzir o número de nós.
 
-## 5.2 SACCICINCT TRIE
+## 5.2 Saccicinct Trie
 
-### 5.2.1 DEFINIÇÃO:
+### 5.2.1 Definição
 
   Uma Succinct Trie é uma estrutura de dados que representa uma Trie tradicional de maneira compacta, buscando ocupar o menor espaço possível de memória, mantendo também a capacidade de realizar as demais operações, busca e navegação com eficiência. Assim, essa estrutura é ideal para armazenar grandes volumes de dados imutáveis com prefixos equivalentes, já que a inserção e remoção é custosa, como em dicionários, sistemas embarcados e etc.
   
@@ -134,15 +179,19 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 - **Label array** é um vetor paralelo que armazena os caracteres associados a cada, respectivo nó, mantendo a ordem BFS dos nós;
 - **Terminal bitmaps** são vetores que indicam se os nós de um determinado nível são fins de palavra ou não, também representados em bits (`1` para fim e `0` caso não seja fim).
 
-### 5.2.2 MOTIVAÇÃO:
+### 5.2.2 Motivação
 
   Como já foi discutido, as Tries tradicionais utilizam a memória de maneira ineficiente quando a comparamos com suas otimizações. Quando vamos utilizar uma trie para armazenar um grande número de dados, em que a memória é crítica e os dados são majoritariamente utilizados para leitura, podemos encontrar um problema em relação ao espaço de memória que está sendo utilizado, por isso, nesse cenário, as Succinct Tries utilizam a memória de maneira mais eficiente, pois consegue armazenar elementos (prefixos) utilizando a estratégia de bit-levels compactadas, preservando e otimizando a capacidade de busca e navegação, reduzindo drasticamente o uso de memória. 
 - Vejamos um exemplo:
   Armazenar as palavras “carro” e “carroça” em uma Trie tradicional:
 
-
-<img src="assets/exemplo-trie.png" height="500">
-
+<br>
+<br>
+<div align="center">
+ <img src="assets/exemplo-trie.png" height="500">
+</div>
+<br>
+<br>
 
   Vejamos que, a trie tradicional armazena cada letra em apenas um nó fazendo com que sejam utilizados vários nós para representar a palavra “carro” e “carroça”, vejamos agora a representação dessas mesmas palavra em uma Succinct Trie:
 
@@ -154,7 +203,7 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 
   Assim, vemos que a Succinct Trie representa dados de maneira mais eficiente, de modo que todos os nós, seguindo a BFS são armazenados em um vetor (labels), bem como o bit_vector armazena a quantidade de filhos de cada “nó”, em formato de bits e is_terminal representa quais “nós” são finais ou não de palavras.
 
-### 5.2.3 COMPLEXIDADE DAS OPERAÇÕES:
+### 5.2.3 Complexidade
 
 | Tipo      | Custo                          |
 |-----------|--------------------------------|
