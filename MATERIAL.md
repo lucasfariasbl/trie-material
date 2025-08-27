@@ -32,31 +32,38 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 ## 3.5 Listagem de palavras por prefixos
 # 4 Comparações
 # 5 Variações e otimizações
-## 5.1 RADIX TREE
-
-### DEFINIÇÃO:
+## 5.1 Radix Tree
+### 5.1.1 Definição
  
   Uma Radix Tree (também chamada de Compact Trie ou Patricia Tree) é uma estrutura de dados, baseada em nós, que armazena, geralmente, strings ou números de forma eficiente, especialmente quando apresentam prefixos em comum.
 
-  A Radix Tree e trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
+  A Radix Tree se trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
 
-### MOTIVAÇÃO:
+### 5.1.2 Motivação
   
   A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muito grandes, principalmente quando existem palavras que utilizam prefixos semelhantes, fazendo com que a memória não seja utilizada de forma eficiente.
 
 Vejamos alguns exemplos:
 
-Armazenar carro e carroça em uma Trie : 
+Armazenar carro e carroça em uma Trie: 
 
-
-<img src="assets/exemplo-trie.png" height="500">
-
+<br>
+<br>
+<div align="center">
+ <img src="assets/exemplo-trie.png" height="500">
+</div>
+<br>
+<br>
 
 Vejamos que, na trie cada letra é armazenada em apenas um nó e que foram utilizados diversos nós para armazenar palavras com um prefixo equivalente (carro), no entanto, nesse cenário a Trie utiliza a memória para guardar dados de maneira ineficiente, quando comparamos a uma Radix Tree, vejamos agora a inserção em uma Radix Tree:
 
-
-<img src="assets/exemplo-radix.png" height="500">
-
+<br>
+<br>
+<div align="center">
+ <img src="assets/exemplo-radix.png" height="500">
+</div>
+<br>
+<br>
 
 Em vez de criar um nó para armazenar cada caractere, a estrutura armazena blocos de caracteres (prefixos) em nós: carro > ça.
 
@@ -72,9 +79,9 @@ Isso reduz:
 - A profundidade da árvore;
 - O número de comparações feitas durante busca e inserção.
 
-### OPERAÇÕES:
+### 5.1.3 Operações
 
-### Inserção:
+### 5.1.3.1 Inserção
 
 - Começa da raiz;
 - A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
@@ -94,7 +101,7 @@ Isso reduz:
 
 ---
 
-### Busca:
+### 5.1.3.2 Busca
 
 - Começa da raiz;
 - Busca um filho com prefixo equivalente;
@@ -108,7 +115,7 @@ Isso reduz:
 
 ---
 
-### Remoção:
+### 5.1.3.3 Remoção
 
 - Busca a palavra;
 - Se encontrar, desmarca ele como o fim de uma palavra;
@@ -116,13 +123,13 @@ Isso reduz:
   - Se o nó **não tem filhos** e **não é o fim de outra palavra**, pode ser **removido**;
   - Se o nó **tem um filho** e **não é o fim de uma palavra**, pode ser **unido (concatenado)**.
 
-### COMPLEXIDADE: 
+### 5.1.4 Complexidade 
 
 A Radix Tree possui complexidade O(k), de modo que k significa o tamanho da palavra, para inserção, remoção e busca. É mais eficiente que a Trie por reduzir o número de nós.
 
-## 5.2 SACCICINCT TRIE
+## 5.2 Saccicinct Trie
 
-### DEFINIÇÃO:
+### 5.2.1 Definição
 
   Uma Succinct Trie é uma estrutura de dados que representa uma Trie tradicional de maneira compacta, buscando ocupar o menor espaço possível de memória, mantendo também a capacidade de realizar as demais operações, busca e navegação com eficiência. Assim, essa estrutura é ideal para armazenar grandes volumes de dados imutáveis com prefixos equivalentes, já que a inserção e remoção é custosa, como em dicionários, sistemas embarcados e etc.
   
@@ -134,15 +141,19 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 - **Label array** é um vetor paralelo que armazena os caracteres associados a cada, respectivo nó, mantendo a ordem BFS dos nós;
 - **Terminal bitmaps** são vetores que indicam se os nós de um determinado nível são fins de palavra ou não, também representados em bits (`1` para fim e `0` caso não seja fim).
 
-### MOTIVAÇÃO:
+### 5.2.2 Motivação
 
   Como já foi discutido, as Tries tradicionais utilizam a memória de maneira ineficiente quando a comparamos com suas otimizações. Quando vamos utilizar uma trie para armazenar um grande número de dados, em que a memória é crítica e os dados são majoritariamente utilizados para leitura, podemos encontrar um problema em relação ao espaço de memória que está sendo utilizado, por isso, nesse cenário, as Succinct Tries utilizam a memória de maneira mais eficiente, pois consegue armazenar elementos (prefixos) utilizando a estratégia de bit-levels compactadas, preservando e otimizando a capacidade de busca e navegação, reduzindo drasticamente o uso de memória. 
 - Vejamos um exemplo:
   Armazenar as palavras “carro” e “carroça” em uma Trie tradicional:
 
-
-<img src="assets/exemplo-trie.png" height="500">
-
+<br>
+<br>
+<div align="center">
+ <img src="assets/exemplo-trie.png" height="500">
+</div>
+<br>
+<br>
 
   Vejamos que, a trie tradicional armazena cada letra em apenas um nó fazendo com que sejam utilizados vários nós para representar a palavra “carro” e “carroça”, vejamos agora a representação dessas mesmas palavra em uma Succinct Trie:
 
@@ -154,7 +165,7 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 
   Assim, vemos que a Succinct Trie representa dados de maneira mais eficiente, de modo que todos os nós, seguindo a BFS são armazenados em um vetor (labels), bem como o bit_vector armazena a quantidade de filhos de cada “nó”, em formato de bits e is_terminal representa quais “nós” são finais ou não de palavras.
 
-### COMPLEXIDADE DAS OPERAÇÕES:
+### 5.2.3 Complexidade
 
 | Tipo      | Custo                          |
 |-----------|--------------------------------|
@@ -187,7 +198,53 @@ Agora que sabemos como funciona o Roteamento de pacotes IP vamos supor o determi
 >
 > Rota 3. 985.623.00/16.
 
-Quando o pacote com o destino 985.623.1.88 chegar, o roteador vai converter esse IP em binário e vai percorrer a trie bit a bit.durante essa busca,ele vai verificar se há alguma entrada de rota correspondente no caminho,sempre que ele encontra uma entrada válida ele armazena essa entrada como a “melhor rota até o momento”.ele faz isso até que não seja mais possível descer na árvore pela falta de nós filhos ou porque o endereço chegou ao fim. no final a entrada armazenada vai ser a entrada que tem o prefixo mais longo,ou seja a melhor rota para aquele destino..
+quando o pacote com o destino 985.623.1.88 chegar, o roteador vai converter esse IP em binário e vai percorrer a trie bit a bit.durante essa busca,ele vai verificar se há alguma entrada de rota correspondente no caminho,sempre que ele encontra uma entrada válida ele armazena essa entrada como a “melhor rota até o momento”.ele faz isso até que não seja mais possível descer na árvore pela falta de nós filhos ou porque o endereço chegou ao fim. no final a entrada armazenada vai ser a entrada que tem o prefixo mais longo,ou seja a melhor rota para aquele destino.
+
+## 6.2 Análise de Sequências de DNA
+### 6.2.1 Armazenamento e Busca em Grandes Volumes de Dados Genéticos
+Na bioinformática, pesquisadores lidam diariamente sequências de DNA, essas sequências são compostas por quatro letras (A, C, G, T), que representam os nucleotídeos.
+
+Essas sequências são frequentemente armazenadas, comparadas e analisadas para:
+
+- Identificar padrões genéticos
+- Encontrar regiões comuns entre espécies
+- Detectar mutações
+- Realizar buscas rápidas por subsequências
+  
+**Agora vamos pensar:**
+
+Como podemos usar a Trie para resolver problemas que envolvem sequências de DNA?
+
+Pense comigo, dada um grande conjunto de sequência de DNA, como podemos armazená-las de forma eficiente? Como podemos buscar rapidamente se uma determinada sequência está nesse conjunto, ou até mesmo encontrar todas as ocorrências de uma subsequência?
+
+Bom, como já vimos anteriormente, a Trie é ideal para representar grandes conjuntos de strings com prefixos comuns, como acontece nas sequências de DNA, onde muitas compartilham trechos semelhantes. Cada nó da Trie representa um nucleotídeo, (A, C, G ou T). Cada caminho da raiz até um nó terminal representa uma sequência ou subsequência de DNA.
+
+- Exemplo:
+ 
+Suponha que queremos armazenar as seguintes sequências na nossa Trie.
+
+> ATCGCCGT
+> 
+> ATCAGT
+> 
+> ATTGCG
+> 
+> GCTACA
+> 
+> GCTATT
+
+A Trie que será construída terá ramos em comum para os ramos que tem prefixos repetidos, como podemos observar na imagem.
+<br>
+<br>
+<div align="center">
+  <img src="assets/trie_visualization_final.gif" height="600">
+</div>
+<br>
+<br>
+Essas sequências genéticas podem ser muito mais longas e repetitivas que essas que utilizamos,é nesse momento que o uso da Trie se torna muito mais eficiente,pois ao ultilizar a Trie para armazenar essas sequências,o uso do Armazenamento vai ser otimizado, já que quando várias sequências de DNA compartilham os mesmos prefixos, a Trie armazena esse prefixo uma única vez.
+<br>
+<br>
+Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
 
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
