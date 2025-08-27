@@ -33,20 +33,138 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 # 4 Comparações
 # 5 Variações e otimizações
 ## 5.1 RADIX TREE
+
 ### DEFINIÇÃO:
+ 
   Uma Radix Tree (também chamada de Compact Trie ou Patricia Tree) é uma estrutura de dados, baseada em nós, que armazena, geralmente, strings ou números de forma eficiente, especialmente quando apresentam prefixos em comum.
 
   A Radix Tree e trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
 
 ### MOTIVAÇÃO:
+  
   A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muito grandes, principalmente quando existem palavras que utilizam prefixos semelhantes, fazendo com que a memória não seja utilizada de forma eficiente.
 
 Vejamos alguns exemplos:
 
 Armazenar carro e carroça em uma Trie : 
-<img src="assets/exemplo-trie.png" height="800">
 
 
+<img src="assets/exemplo-trie.png" height="500">
+
+
+Vejamos que, na trie cada letra é armazenada em apenas um nó e que foram utilizados diversos nós para armazenar palavras com um prefixo equivalente (carro), no entanto, nesse cenário a Trie utiliza a memória para guardar dados de maneira ineficiente, quando comparamos a uma Radix Tree, vejamos agora a inserção em uma Radix Tree:
+
+
+<img src="assets/exemplo-radix.png" height="500">
+
+
+Em vez de criar um nó para armazenar cada caractere, a estrutura armazena blocos de caracteres (prefixos) em nós: carro > ça.
+
+Assim, é perceptível que:
+
+- Prefixos comuns são compartilhados;
+- Nós com um único filho são combinados em substrings (prefixos);
+- Fins de palavras são marcados mesmo que o caminho ainda continue (ex: “carro” termina, mas ainda existe “carroça”);
+
+Isso reduz:
+
+- O número de nós;
+- A profundidade da árvore;
+- O número de comparações feitas durante busca e inserção.
+
+### OPERAÇÕES:
+
+### Inserção:
+
+- Começa da raiz;
+- A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
+- Existem 3 casos de inserção:
+  - **Sem prefixo em comum**: nesse caso a string é adicionada em um novo nó;
+  - **Prefixo completo do filho**: esse é o caso de “carro” e “carroça”, ao adicionar “carroça”, é adicionado um novo nó, filho de “carro” que contém o prefixo “ça”;
+  - **Prefixo parcial**: precisa dividir (split) o nó existente.
+
+**Vejamos um exemplo do caso iii. para adicionar “rápido” em uma árvore que contém “raiz”:**
+
+- Prefixo em comum: “ra”;
+- Resto de “raiz”: “iz”;
+- Resto de “rápido”: “pido”;
+- Criação de um novo nó “ra” que terá dois filhos:
+  - “iz” (marcado como fim de “raiz”);
+  - “pido” (marcado como fim de “rápido”);
+
+---
+
+### Busca:
+
+- Começa da raiz;
+- Busca um filho com prefixo equivalente;
+- Caso encontre:
+  - Desmarca aquele prefixo como fim de uma palavra;
+  - Continua a busca no filho;
+- Caso contrário:
+  - Retorna false, pois não está na árvore;
+- Verificamos se o nó atual é o fim de uma palavra:
+  - Se for, palavra encontrada → retorna `true`;
+
+---
+
+### Remoção:
+
+- Busca a palavra;
+- Se encontrar, desmarca ele como o fim de uma palavra;
+- Verificamos se os nós podem ser removidos ou unidos:
+  - Se o nó **não tem filhos** e **não é o fim de outra palavra**, pode ser **removido**;
+  - Se o nó **tem um filho** e **não é o fim de uma palavra**, pode ser **unido (concatenado)**.
+
+### COMPLEXIDADE: 
+
+A Radix Tree possui complexidade O(k), de modo que k significa o tamanho da palavra, para inserção, remoção e busca. É mais eficiente que a Trie por reduzir o número de nós.
+
+## 5.2 SACCICINCT TRIE
+
+### DEFINIÇÃO:
+
+  Uma Succinct Trie é uma estrutura de dados que representa uma Trie tradicional de maneira compacta, buscando ocupar o menor espaço possível de memória, mantendo também a capacidade de realizar as demais operações, busca e navegação com eficiência. Assim, essa estrutura é ideal para armazenar grandes volumes de dados imutáveis com prefixos equivalentes, já que a inserção e remoção é custosa, como em dicionários, sistemas embarcados e etc.
+  
+  A grande diferença entre a Succinct Trie e a Trie tradicional, se diz respeito à forma como os dados são armazenados na memória, pois ao invés de usar ponteiros para referenciar caracteres, são utilizadas estruturas bit-level compactadas. Bit-level compactadas são estruturas que utilizam bits individuais, para representar objetos na memória de forma mais eficiente em espaço e garantir a utilização da memória de maneira mais eficiente possível.
+
+Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Label Array e terminal bitmap. 
+
+- **Louds** nada mais é do que a codificação, em bits, da quantidade de filho de cada nó;
+- **Label array** é um vetor paralelo que armazena os caracteres associados a cada, respectivo nó, mantendo a ordem BFS dos nós;
+- **Terminal bitmaps** são vetores que indicam se os nós de um determinado nível são fins de palavra ou não, também representados em bits (`1` para fim e `0` caso não seja fim).
+
+### MOTIVAÇÃO:
+
+  Como já foi discutido, as Tries tradicionais utilizam a memória de maneira ineficiente quando a comparamos com suas otimizações. Quando vamos utilizar uma trie para armazenar um grande número de dados, em que a memória é crítica e os dados são majoritariamente utilizados para leitura, podemos encontrar um problema em relação ao espaço de memória que está sendo utilizado, por isso, nesse cenário, as Succinct Tries utilizam a memória de maneira mais eficiente, pois consegue armazenar elementos (prefixos) utilizando a estratégia de bit-levels compactadas, preservando e otimizando a capacidade de busca e navegação, reduzindo drasticamente o uso de memória. 
+- Vejamos um exemplo:
+  Armazenar as palavras “carro” e “carroça” em uma Trie tradicional:
+
+
+<img src="assets/exemplo-trie.png" height="500">
+
+
+  Vejamos que, a trie tradicional armazena cada letra em apenas um nó fazendo com que sejam utilizados vários nós para representar a palavra “carro” e “carroça”, vejamos agora a representação dessas mesmas palavra em uma Succinct Trie:
+
+| Estrutura     | Conteúdo                              |
+| ------------- | ------------------------------------- |
+| `labels`      | `['c', 'a', 'r', 'r', 'o', 'ç', 'a']` |
+| `bit_vector`  | `[1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 0]`   |
+| `is_terminal` | `[0, 0, 0, 0, 1, 0, 1]`               |
+
+  Assim, vemos que a Succinct Trie representa dados de maneira mais eficiente, de modo que todos os nós, seguindo a BFS são armazenados em um vetor (labels), bem como o bit_vector armazena a quantidade de filhos de cada “nó”, em formato de bits e is_terminal representa quais “nós” são finais ou não de palavras.
+
+### COMPLEXIDADE DAS OPERAÇÕES:
+
+| Tipo      | Custo                          |
+|-----------|--------------------------------|
+| Espaço    | `2n + n × log(σ) + o(n)` bits |
+| Busca     | `O(k)`                         |
+| Navegação | `O(1)` ou `O(log n)`           |
+| Inserção  | ❌ Muito alto                  |
+| Remoção   | ❌ Muito alto                  |
+
+  Dessa forma, a utilização das Succinct Tries se torna bem mais eficiente para armazenar muitos dados em que são imutáveis, sendo utilizados para buscas ou navegação, ex: dicionários.
 
 # 6 Aplicações no mundo real
 ## 6.1 Rede de Computadores
