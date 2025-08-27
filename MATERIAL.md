@@ -17,11 +17,9 @@ Este atributo é extremamente importante para o funcionamento da Trie por defini
 
 - **Exemplo:**
 > Digamos que adicionamos a palavra "Carrossel".
-
-<div align="center">
-	Nossa estrutura ficaria assim: ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> <b>L</b>
-</div>
-
+>
+>Nossa estrutura ficaria assim: ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> <b>L</b>
+>
 > Podemos pesquisá-la através do método search que veremos adiante, e o retorno será **true**, pois ela foi inserida. Agora caso pesquisarmos pela palavra "Carro", comumente se pensaria que ela está ao visualizar a estrutura que temos, porém ela nunca foi adicionada. Para isso que temos nosso atributo mágico "wordEnd", que define se certo nó que representa uma letra n também se refere ao fim de uma palavra. Nosso algoritmo olharia para o nó que representa a letra "o" da **nossa estrutura** e se perguntaria "Esta letra é o fim de uma palavra?". E no nosso caso, essa resposta seria **false**.
 
 - Veja a implementação da classe Node (Atributos e construtor):
@@ -312,6 +310,29 @@ private ArrayList<String> catchWords(Node currentNode, String currentPrefix, Arr
   }
 ```
 ## 3.3 Análise de complexidade de tempo e memória
+
+E finalmente chegamos ao motivo do por que a Trie é tão importante e tão famosa nas estruturas de dados de armazenamento. Sua extrema eficiência.
+
+Pode-se pensar que para guardar, utilizando nossa implementação de exemplo, palavras, poderíamos simplesmente colocar todas em uma lista, e caso queiramos alguma, basta fazer uma iteração sobre ela, algo bem básico e cotidiano na programação. Mas em termos de eficiência, em uma escala mais profissional, isso seria muito custoso, dado que teríamos milhões de dados cadastrados, sendo assim em seu pior caso, O(n) | n = tamanho da lista.
+
+A Trie vem pra contornar esse problema de uma forma bem curiosa... Reaproveitando elementos que já estão presentes na estrutura. A essa altura da leitura deste material você já deve ter se dado conta disso (e achado bem interessante). 
+
+- **Exemplo:**
+
+> Ao adicionarmos a palavra "Cama" na estrutura e logo após, "Camaleão" e "Camada", o prefixo "Cama" é reaproveitado, assim, fazendo parte de 3 palavras diferentes!
+
+<br>
+<div align="center">
+ <img src="assets/exemplo-cama.png" height="500">
+</div>
+<br>
+
+Este reaproveitamento é a chave para a economia de memória e a performance da Trie.
+
+Por conseguinte, os métodos de inserção, pesquisa de palavras, pesquisa por prefixos e remoção, são em seu pior caso, O(k) | k = tamanho da palavra passada como parâmetro, sendo extremamente eficiente.
+
+O único método que se diferencia dessa regra é o de listagem das palavras a partir de certo prefixo, sendo em seu pior caso O(p + n) | p = o tamanho do prefixo ∧ n = a soma de todos os nós existentes a partir do prefixo.
+
 # 4 Comparações
 # 5 Variações e otimizações
 ## 5.1 Radix Tree
