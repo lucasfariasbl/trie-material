@@ -163,7 +163,7 @@ Assim como no search(), o startsWith() percorrerá letra por letra da palavra ve
 
 Ao chegar na última letra, como estamos tratando de prefixos e não de palavras completas, é irrelevante a verificação isEndOfWord() do nó, portanto, se ao longo do loop o caminho não quebrar e chegar ao fim, apenas retornamos **true**.
 
-- Segue a implementação
+- Segue a implementação:
 
 ```java
 public boolean startsWith(String prefix) {
@@ -182,21 +182,147 @@ public boolean startsWith(String prefix) {
     return true;
   }
 ```
-## 3.2.4 Remoção 
+### 3.2.4 Remoção 
+
+O método da remoção de uma palavra da Trie segue uma sequência de fatos e conta com 2 partes em sua remoção: 
+
+-  **Remoção lógica:** Desliga o atributo endWord do nó referente a última letra da palavra
+-  **Remoção física:** Através de uma verificação consegue saber quando está autorizado a remover completamente a referência ao caractere.
+
+Veremos com mais detalhes os momentos onde as duas partes ocorrem a seguir, mas antes temos que nos inserir nos passos do método de remoção em ordem cronológica.
+
+**Parte 1: Descida**
+
+Inicialmente, temos que descer até o último caractere da palavra, mas, diferente da forma que iteramos por ela até agora, desta vez faremos esse passo recursivamente.
+
+Chamaremos nosso método privado recursivo com 3 parâmetros:
+
+- A palavra a ser removida
+- O nó atual
+- Índice atual
+
+Sendo os 2 útimos primeiramente:
+
+- this.root
+- 0
+
+Nosso algoritmo, enquanto descemos, se baseará em pegar o nó referente a letra atual que estamos tratando e chamar recursivamente. Apenas isso. Simples, não é? Só precisamos substituir nos parâmetros o nó anterior pelo atual e incrementar no index.
+
+**Parte 2: Remoção lógica**
+
+Ao chamarmos o método recursivamente suficiente até o index na qual estamos ser igual ao tamanho da nossa palavra - 1, o que significa que estamos no nó da última letra, aplicamos a remoção lógica, que pode ser traduzida para a desativação do atributo de finalização de palavra do nó e retornamos a função com um valor booleano, que nos informa se o mapa dos filhos do nó é vazio, o que nos levará à nossa outra remoção.
+
+**Parte 3: Subida e remoção física:**
+
+Para subir de volta na árvore utilizaremos a parte dos retornos da função de remoção. 
+
+Cada retorno da função é armazenado em um atributo booleano, que como dito antes, é baseado no fato do mapa de filhos do nó ser vazio ou não. Isso serve para nos indicar se o nó pai tem autorização de remover fisicamente o nó filho de seu mapa, o que não pode acontecer caso o filho tenha alguém referenciado no seu mapa de filhos para não quebrar a construção da árvore.
+
+Caso o retorno tenha sido **true**, o nó remove de seu mapa o valor da chave atual, e após essa verificação, já que a partir de agora não temos certeza se estamos em um nó que é considerado fim de uma palavra, temos que retornar o valor booleano baseado em 2 coisas:
+
+- O mapa do nó é vazio
+- Ele não é fim de uma palavra
+
+A partir desse retorno podemos com segurança avisar ao nó pai se ele pode remover fisicamente seu filho ou não.
+
+Com esses passos subimos a árvore até terminar nossa pilha de execução, finalizando a função do método.
+
+- Segue abaixo a implementação do método "remove":
+
+```java
+public void remove(String word) {
+    word = word.toLowerCase();
+
+    remove(word, this.root, 0);
+  }
+
+private boolean remove(String word, Node node, int index) {
+    Node son = node.getSons().get(word.charAt(index));
+
+    if (son == null) return false;
+
+    if (index == word.length() - 1) {
+      son.turnOffEndOfWord();
+      return son.getSons().isEmpty();
+
+    } else {
+      boolean canRemove = remove(word, son, index + 1);
+      if (canRemove) node.getSons().remove(word.charAt(index));
+      return node.getSons().isEmpty() && !node.isEndOfWord();
+    }
+  }
+```
 ## 3.2.5 Listagem de palavras por prefixos
+
+A função deste método é nos retornar uma lista com todas as palavras que iniciam com o prefixo passado como parâmetro.
+
+Assim como o método de remoção, trabalhamos com etapas para a realização do método:
+
+- Descida até o fim do prefixo
+- Adição de palavras através de DFS
+
+**Parte 1: Descida**
+
+Trivialmente, desceremos por iteração na árvore até o nó da última letra do prefixo, quebrando a execução e retornando uma lista vazia caso um nó não exista.
+
+Ao chegarmos no fim, chamaremos nossa função auxiliar que será responsável por montar todas as palavras e adicioná-las na lista que será retornada ao fim do processo através da técnica Depth-First Search (DFS), que percorre uma árvore por profundidade.
+
+**Parte 2: Depth-First Search**
+
+A partir do nó da última letra do prefixo, chamamos a função catchWords() que terá 3 parâmetros:
+
+- O nó atual
+- O prefixo atual
+- A lista de palavras
+
+A cada chamada do método recursivo, sua primeira verificação é se o nó de seu parâmetro é o fim de uma palavra, pois caso seja, o prefixo se trata de uma palavra completa e é adicionado à lista final.
+
+Após a verificação inicial, utilizamos o DFS para percorrer cada ramo da árvore em profundidade concatenando os caracteres e chamando a função recursivamente. No fim do processo, a lista é retornada e temos, por fim, o resultado esperado
+
+- Para melhor compreensão, segue a implementação do método:
+
+```java
+public ArrayList<String> findWordWithPrefix(String prefix) {
+    prefix = prefix.toLowerCase();
+
+    ArrayList<String> words = new ArrayList<>();
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < prefix.length(); i++) {
+      Node son = nodeAux.getSons().get(prefix.charAt(i));
+
+      if (son == null) return words;
+
+      nodeAux = son;
+    }
+
+    return catchWords(nodeAux, prefix, words);
+  }
+
+private ArrayList<String> catchWords(Node currentNode, String currentPrefix, ArrayList<String> currentWords) {
+    if (currentNode.isEndOfWord()) currentWords.add(currentPrefix);
+
+    for (Map.Entry<Character, Node> entry : currentNode.getSons().entrySet()) {
+      String nextPrefix = currentPrefix + entry.getKey();
+      Node nextNode = entry.getValue();
+      catchWords(nextNode, nextPrefix, currentWords);
+    }
+
+    return currentWords;
+  }
+```
 ## 3.3 Análise de complexidade de tempo e memória
 # 4 Comparações
 # 5 Variações e otimizações
 ## 5.1 Radix Tree
 ### 5.1.1 Definição
  
-  Uma Radix Tree (também chamada de Compact Trie ou Patricia Tree) é uma estrutura de dados, baseada em nós, que armazena, geralmente, strings ou números de forma eficiente, especialmente quando apresentam prefixos em comum.
+Uma Radix Tree (também chamada de Compact Trie ou Patrícia Tree) é uma estrutura de dados, baseada em nós, que armazena, geralmente, strings ou números de forma eficiente, especialmente quando apresentam prefixos em comum.
 
-  A Radix Tree se trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
-
+A Radix Tree se trata de uma versão otimizada da Trie, levando-se em consideração que, na Trie, cada nó armazena apenas uma letra de uma palavra. No entanto, a Radix Tree busca armazenar prefixos de palavras, pois, assim, a estrutura se torna mais eficiente para o uso de memória, além de diminuir a quantidade de ramos existentes na árvore.
 ### 5.1.2 Motivação
   
-  A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muito grandes, principalmente quando existem palavras que utilizam prefixos semelhantes, fazendo com que a memória não seja utilizada de forma eficiente.
+A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muito grandes, principalmente quando existem palavras que utilizam prefixos semelhantes, fazendo com que a memória não seja utilizada de forma eficiente.
 
 Vejamos alguns exemplos:
 
@@ -237,6 +363,7 @@ Isso reduz:
 ### 5.1.3 Operações
 
 ### 5.1.3.1 Inserção
+
 - Começa da raiz;
 - A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
 - Existem 3 casos de inserção:
