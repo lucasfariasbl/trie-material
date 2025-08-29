@@ -101,6 +101,38 @@ Essas sequências genéticas podem ser muito mais longas e repetitivas que essas
 <br>
 Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
 
+## 6.3  PLN - Processamento de Linguagem Natural
+### 6.3.1 Manipulação e Análise de Texto em Grande Escala
+No campo de PLN (Processamento de Linguagem Natural), sistemas precisam lidar com grandes volumes de texto para tarefas como:
+- Correção ortográfica
+- Sugestão de Palavras(autocompletar)
+- Busca por prefixos
+ 
+Todas essas tarefas envolvem buscas rápidas por palavras ou prefixos, principalmente em grandes conjuntos de palavras.
+
+**Agora pense comigo:**
+
+Imagine que temos um enorme dicionário de palavras com milhares de entradas.Precisamos armazenar essas palavras de forma eficiente e também permitir buscas rápidas, como:
+
+-	Verificar se uma palavra está correta
+- Sugerir palavras a partir de um prefixo digitado
+- Encontrar todas as palavras que começam com um determinado trecho
+
+**Onde a Trie poderia nos ajudar?**
+
+Bom,como já sabemos A Trie é uma estrutura de dados ideal para representar grandes conjuntos de strings com prefixos em comum, que é exatamente o que acontece em muitas palavras de um idioma.Cada nó da Trie representa uma letra do alfabeto, e cada caminho da raiz até um nó terminal representa uma palavra completa.
+Suponha que queremos armazenar as seguintes palavras:
+- casa
+- casamento  
+- casaco
+- caminho 
+- carro  
+- carta
+  
+A Trie que será construída terá ramos em comum para os prefixos repetidos (por exemplo, "ca", "cas", "cam"), como acontece frequentemente na linguagem natural.
+Assim como em sequências de DNA, as palavras podem compartilhar partes idênticas no início, e a Trie aproveita isso para otimizar o armazenamento.Em vez de repetir cada letra para cada palavra, a Trie armazena os prefixos compartilhados apenas uma vez.Tendo assim um melhor uso do armazenamento e muita Eficiência na busca por palavras.
+
+
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
 ### 7.1.1 Quando usar uma Trie?
