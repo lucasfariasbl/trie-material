@@ -472,8 +472,8 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 | Espaço    | `2n + n × log(σ) + o(n)` bits |
 | Busca     | `O(k)`                         |
 | Navegação | `O(1)` ou `O(log n)`           |
-| Inserção  | ❌ Muito alto                  |
-| Remoção   | ❌ Muito alto                  |
+| Inserção  |  Muito alto                  |
+| Remoção   |  Muito alto                  |
 
   Dessa forma, a utilização das Succinct Tries se torna bem mais eficiente para armazenar muitos dados em que são imutáveis, sendo utilizados para buscas ou navegação, ex: dicionários.
 
@@ -493,47 +493,47 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 ### 5.3.2 Motivação
 
   As Ctries possuem grande usabilidade na computação, principalmente em áreas de roteamento de IP, interpretação de linguagens, caches em tempo real, Servidores HTTP ou REST com alta concorrência e etc. Isso acontece, pois nas Ctries vários usuários podem fazer a mesma operação ao mesmo tempo que não vai haver a perca ou sobrescreção de dados, isso ocorre pois essa estrutura utiliza de técnicas avançadas para inserção, remoção e busca, vejamos:
-### 🔒 Lock-Based Tries
+###  Lock-Based Tries
 - Usa **locks finos** em cada nó para permitir múltiplas operações paralelas, ou seja, em vez de travar a estrutura toda para fazer uma operação, você trava apenas a menor parte necessária  
 - Conforme aumenta o número de threads, melhor a estrutura funciona  
 - Reduz a chance de threads ficarem esperando  
 
 ---
 
-### ⚙️ Lock-Free Tries
+### Lock-Free Tries
 - Usa **instruções atômicas**, como o **CAS**, pois evita deadlock, contenção e se torna mais seguro por ser feito em hardware  
 - Evita completamente locks, mas é mais difícil de implementar  
 - Melhor performance sob alta concorrência  
 
 ---
 
-### 🧊 Immutable Tries
+### Immutable Tries
 - Cada modificação cria uma **nova versão** da estrutura  
 - Threads podem acessar **versões antigas com segurança**, pois os nós são imutáveis  
 - Não destroem o estado anterior de um nó  
 
 ### 5.3.3 Operações 
 
-### 🟢 Inserção
+### Inserção
 - Percorre os nós até onde a chave diverge ou termina  
 - Cria novos nós se necessário  
 - Em Ctries (hash tries), percorre a árvore inspecionando blocos de bits do hash  
 
 ---
 
-### 🔍 Busca
+### Busca
 - Caminha até o final da chave  
 - Se a estrutura for bem balanceada e não houver colisões (no hash), a profundidade é limitada  
 
 ---
 
-### ❌ Remoção
+### Remoção
 - Encontra o nó da chave  
 - Marca como removido  
 
 ---
 
-### 📸 Snapshot
+### Snapshot
 - Apenas aponta para o nó raiz atual  
 - Como os nós são imutáveis, não há risco de inconsistência  
 - Leitores podem continuar acessando a versão antiga mesmo após novas inserções  
@@ -547,7 +547,93 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 | **Remoção**  | `O(k)`               | `O(k)`    | Pode envolver limpeza de nós intermediários |
 | **Snapshot** | `O(1)`               | `O(1)`    | Apenas copia a referência do nó raiz (imutável)      |
 
+## 5.4 BURST TRIES
 
+### 5.4.1 Definição
+
+ Burst Tries nada mais é do que uma estrutura de dados híbrida, pois utiliza uma organização hierárquica de uma Trie convencional (árvore), mas conta também com a utilização de buffers (arrays) nas folhas para o armazenamento de um conjunto de chaves com prefixos em comum. Se trata, assim como as anteriores, de uma versão otimizada de uma Trie, que garante melhor performance e otimização do uso da memória, pois armazena múltiplas chaves por folhas (buffers). Um problema da estrutura surge quando o buffer de uma ou mais folhas, ficam totalmente preenchidos, assim é feito o chamado “burst”, que consiste em criar novos nós internos e redistribuir as chaves armazenadas com base nos próximos caracteres. Desse modo a árvore cresce sob demanda.
+  Essa estrutura garante um grande ganho de desempenho no que se diz respeito a busca, inserção e armazenamento de grandes conjuntos de strings, pois reduz o overhead de ponteiros em tries tradicionais e melhora a localidade de cache. Vejamos cenários que apresentam boa usabilidade:
+
+- Compiladores;
+- Sistemas de indexação;
+- Dicionários dinâmicos.
+
+### 5.4.2 Motivação
+
+  Como já foi discutido anteriormente, as Tries tradicionais são excelentes estruturas para armazenarem dados com base em prefixos, no entanto essa estrutura possui algumas limitações ao armazenar um grande conjunto de dados, como: uso excessivo de memória, muitos ponteiros e crescimento excessivo da árvore.
+  Desse modo, surge as Burst Tries que consegue equilibrar eficiência e praticidade, porquanto armazenam várias chaves com um mesmo prefixo em um único buffer	 e quando esse buffer atinge sua capacidade máxima, novos nós intermediários são criados e as chaves são divididas com base no próximo caractere, assim evitando a criação prematura de nós e reduzindo o consumo de memória.
+
+### 5.4.3 Operações 
+
+### Inserção
+- Busca o buffer correspondente ao prefixo;
+- Insere a chave no buffer;
+- Se ultrapassar o limite do buffer, ocorre o burst;
+- Cria um novo buffer;
+- Redistribui as chaves em novos nós, com base nos novos prefixos;
+
+### Busca
+- Caminha pela trie até o buffer correspondente;
+- Procura a chave dentro do buffer (usando busca binária);
+
+### Remoção
+- Encontra o buffer da chave;
+- Remove a chave do buffer;
+- Opcionalmente remove subtries vazias;
+
+### 5.4.4 Complexidade
+
+| Operação     | Complexidade Média | Pior Caso  | Observações                                        |
+|--------------|--------------------|------------|----------------------------------------------------|
+| **Busca**    | `O(k + log m)`     | `O(k + m)` | `k` = tamanho da chave, `m` = tamanho do buffer    |
+| **Inserção** | `O(k + log m)`     | `O(k + m)` | Pode causar *burst* → redistribuição de `m` chaves |
+| **Remoção**  | `O(k + log m)`     | `O(k + m)` | Sem burst, só remove do buffer                     |
+| **Burst**    | —                  | `O(m)`     | Ocorre apenas quando buffer atinge o limite        |
+
+## 5.5 Ternary Search Tries
+
+### 5.5.1 Definição
+
+ Uma Ternary Search Tree é uma estrutura de dados que combina as propriedades de uma Trie convencional e árvores de busca binária (BST), adaptada para armazenar strings de forma eficiente, tanto em relação ao tempo, quanto em relação ao consumo de memória. Sua estrutura é composta por um nó, que armazena um único caractere e três filhos, um à esquerda (para armazenar caracteres menores que o pai), um ao centro (para o próximo caractere da string, se o caractere atual for igual) e um à direita (para caracteres maiores que o pai). As TST’s tem grande usabilidade no dia à dia, como: sistemas de busca de autocomplete, dicionários e corretores ortográficos, compiladores e interpretadore e entre outros.
+  Ademais, sua ideia principal é percorrer cada caractere de forma ordenada, de forma análoga à uma busca binária sobre a palavra, mas mantendo a estrutura sequencial das strings. A TST se torna mais eficiente, pois:
+
+- Nas tries, cada nó pode ter 256 filhos (seguindo a tabela ASCII), o que exige grandes hashes;
+- Em TST’s , cada nó possui apenas 3 ponteiros;
+- Em grandes conjuntos de palavras se torna muito eficiente.
+
+### 5.5.2 Operações
+
+### Inserção
+- Inicia pela raiz e compara cada caractere;
+- Se menor, vai pra subárvore à esquerda;
+- Se maior, vai pra subárvore à direita;
+- Se igual, avança para o filho do meio.
+
+### Busca
+- Percorre cada caractere e faz as mesmas comparações da inserção;
+- A palavra existe se o algoritmo chegar a um nó marcado como "fim de palavra".
+
+### Remoção
+- Faz uma busca da palavra a ser removida;
+- Caso a encontre, a marca como “removida”;
+- Caso contrário, não faz nada, pois a palavra a ser removida não está lá;
+- Opcionalmente, ramos vazios podem ser removidos.
+
+### Busca por prefixo
+- Percorre todo o prefixo;
+- Depois, faz travessia da subárvore do meio coletando palavras.
+
+### 5.5.3 Complexidade
+
+| Operação           | Complexidade (Tempo) | Observações                                           |
+|--------------------|----------------------|--------------------------------------------------------|
+| **Busca**          | O(k + h)             | `k` = tamanho da string, `h` = altura da árvore        |
+| **Inserção**       | O(k + h)             | Pode precisar criar até `k` novos nós                 |
+| **Remoção**        | O(k + h)             | Remove marca de fim de palavra; poda é opcional       |
+| **Busca por prefixo** | O(k + n)          | `n` = nº de palavras com o prefixo; percorre subárvore|
+| **Espaço (Memória)**| O(n·k)              | Menor que trie, pois só 3 ponteiros por nó            |
+
+  Em diversos cenários, a TST garante a praticidade e excelente performance, devido a sua compacidade dos dados e do acesso sequencial dos caracteres, bem como a comparação de prefixos ocorre ordenadamente, garantindo o melhor aproveitamento da memória. Além disso, se a árvore estiver balanceada, o custo de h = log n, assim como nas BST’s convencionais.
 
 # 6 Aplicações no mundo real
 ## 6.1 Rede de Computadores
