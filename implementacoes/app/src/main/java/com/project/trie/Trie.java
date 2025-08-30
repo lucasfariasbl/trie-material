@@ -8,7 +8,7 @@ import java.util.Map;
  * Implementação da estrutura de dados Trie (Árvore de prefixos) com a finalidade de obter eficiência 
  * na busca e armazenamento de palavras.
  *
- * Esta implementação considera a adição e pesquisa apenas de palavras com letras minúsculas.
+ * Esta implementação considera apenas a inserção de palavras com letras minúsculas.
  */
 public class Trie {
 
