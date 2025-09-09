@@ -7,7 +7,7 @@ Se tentassemos resolver esse problema com estruturas de dados comuns, como:
 
 É exatamente para isso que a Trie foi criada, ela é perfeita para problemas em dados sequênciais, para aqueles que envolvem operações com prefixos.
 
-A chave é invés de encarar as sequências como um bloco único, "computador" por exemplo, ele olha como um caminho `c -> o -> m -> p -> ...`. A busca por uma sequência especifica se torna uma caminhada. 
+Então, se as estruturas clássicas não nos ajuda nesse caso, qual é a mágica? A magia da trie é invés de encarar as sequências como um bloco único, "computador" por exemplo, ele olha como um caminho `c -> o -> m -> p -> ...`. A busca vira um passeio pela árvore. 
 # 2 Introdução
 ## 2.1 O que é uma Trie?
 Também conhecida como árvore de prefixos, é uma estrutura de dados usada para armazenar sequências de forma dinâmica, facilitando operações com prefixos. Algo interessante sobre a Trie, é que os nós não armazenam a chave, mas o caminho da raiz até um nó representa a chave(ou prefixo).
@@ -340,12 +340,9 @@ A Trie vem pra contornar esse problema de uma forma bem curiosa... Reaproveitand
 
 > Ao adicionarmos a palavra "Cama" na estrutura e logo após, "Camaleão" e "Camada", o prefixo "Cama" é reaproveitado, assim, fazendo parte de 3 palavras diferentes!
 
-<br>
 <div align="center">
- <img src="assets/exemplo-cama.png" height="500">
+ <img src="assets/operacoes_listagem_exemplo_cama.png" height="500">
 </div>
-<br>
-
 Este reaproveitamento é a chave para a economia de memória e a performance da Trie.
 
 Por conseguinte, os métodos de inserção, pesquisa de palavras, pesquisa por prefixos e remoção, são em seu pior caso, O(k) | k = tamanho da palavra passada como parâmetro, sendo extremamente eficiente.
@@ -366,36 +363,23 @@ A Trie armazena um apenas caractere por nó. Isso pode resultar em árvores muit
 
 Vejamos alguns exemplos:
 
-Armazenar carro e carroça em uma Trie: 
-
-<br>
-<br>
+Armazenar carro e carroça em uma Trie:
 <div align="center">
- <img src="assets/exemplo-trie.png" height="500">
+ <img src="assets/saccicinct_trie_motivation_example.png" height="400">
 </div>
-<br>
-<br>
 
 Vejamos que, na trie cada letra é armazenada em apenas um nó e que foram utilizados diversos nós para armazenar palavras com um prefixo equivalente (carro), no entanto, nesse cenário a Trie utiliza a memória para guardar dados de maneira ineficiente, quando comparamos a uma Radix Tree, vejamos agora a inserção em uma Radix Tree:
-
-<br>
-<br>
 <div align="center">
  <img src="assets/exemplo-radix.png" height="500">
 </div>
-<br>
-<br>
-
 Em vez de criar um nó para armazenar cada caractere, a estrutura armazena blocos de caracteres (prefixos) em nós: carro > ça.
 
 Assim, é perceptível que:
-
 - Prefixos comuns são compartilhados;
 - Nós com um único filho são combinados em substrings (prefixos);
 - Fins de palavras são marcados mesmo que o caminho ainda continue (ex: “carro” termina, mas ainda existe “carroça”);
 
 Isso reduz:
-
 - O número de nós;
 - A profundidade da árvore;
 - O número de comparações feitas durante busca e inserção.
@@ -463,18 +447,12 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 - **Terminal bitmaps** são vetores que indicam se os nós de um determinado nível são fins de palavra ou não, também representados em bits (`1` para fim e `0` caso não seja fim).
 
 ### 5.2.2 Motivação
-
   Como já foi discutido, as Tries tradicionais utilizam a memória de maneira ineficiente quando a comparamos com suas otimizações. Quando vamos utilizar uma trie para armazenar um grande número de dados, em que a memória é crítica e os dados são majoritariamente utilizados para leitura, podemos encontrar um problema em relação ao espaço de memória que está sendo utilizado, por isso, nesse cenário, as Succinct Tries utilizam a memória de maneira mais eficiente, pois consegue armazenar elementos (prefixos) utilizando a estratégia de bit-levels compactadas, preservando e otimizando a capacidade de busca e navegação, reduzindo drasticamente o uso de memória. 
 - Vejamos um exemplo:
   Armazenar as palavras “carro” e “carroça” em uma Trie tradicional:
-
-<br>
-<br>
 <div align="center">
- <img src="assets/exemplo-trie.png" height="500">
+ <img src="assets/saccicinct_trie_motivation_example.png" height="400">
 </div>
-<br>
-<br>
 
   Vejamos que, a trie tradicional armazena cada letra em apenas um nó fazendo com que sejam utilizados vários nós para representar a palavra “carro” e “carroça”, vejamos agora a representação dessas mesmas palavra em uma Succinct Trie:
 
@@ -485,22 +463,19 @@ Essa estrutura é formada por:  LOUDS — Level-Order Unary Degree Sequence, Lab
 | `is_terminal` | `[0, 0, 0, 0, 1, 0, 1]`               |
 
   Assim, vemos que a Succinct Trie representa dados de maneira mais eficiente, de modo que todos os nós, seguindo a BFS são armazenados em um vetor (labels), bem como o bit_vector armazena a quantidade de filhos de cada “nó”, em formato de bits e is_terminal representa quais “nós” são finais ou não de palavras.
-
 ### 5.2.3 Complexidade
 
-| Tipo      | Custo                          |
-|-----------|--------------------------------|
+| Tipo      | Custo                         |
+| --------- | ----------------------------- |
 | Espaço    | `2n + n × log(σ) + o(n)` bits |
-| Busca     | `O(k)`                         |
-| Navegação | `O(1)` ou `O(log n)`           |
-| Inserção  |  Muito alto                  |
-| Remoção   |  Muito alto                  |
+| Busca     | `O(k)`                        |
+| Navegação | `O(1)` ou `O(log n)`          |
+| Inserção  | Muito alto                    |
+| Remoção   | Muito alto                    |
 
   Dessa forma, a utilização das Succinct Tries se torna bem mais eficiente para armazenar muitos dados em que são imutáveis, sendo utilizados para buscas ou navegação, ex: dicionários.
-
 ## 5.3 Concurrent Tries
 ### 5.3.1 Definição
-
   Concurrent Tries é uma estrutura de dados que, como as outras, também é baseada em árvores e tende a ser uma versão otimizada de uma trie convencional, por utilizar técnicas de lock, além de utilizarem hash’s como estrutura auxiliar. No entanto, ela suporta acesso simultâneo seguro por múltiplas threads sem corromper a estrutura e sem retornar resultados inconsistentes, ou seja, permitem leitura e escrita concorrente, bem como evitam locks globais e minimizam contenção entre threads.
 
 Uma Ctrie é estruturada como uma árvore de prefixos, de modo que: 
@@ -510,7 +485,6 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
   - um **mapa de filhos**, que associa cada prefixo aos próximos nós  
   - e um **valor** (caso represente uma chave completa)  
 - Permite **snapshotting eficiente**, ou seja, tirar uma cópia consistente do trie **sem travar a estrutura**
-
 ### 5.3.2 Motivação
 
   As Ctries possuem grande usabilidade na computação, principalmente em áreas de roteamento de IP, interpretação de linguagens, caches em tempo real, Servidores HTTP ou REST com alta concorrência e etc. Isso acontece, pois nas Ctries vários usuários podem fazer a mesma operação ao mesmo tempo que não vai haver a perca ou sobrescreção de dados, isso ocorre pois essa estrutura utiliza de técnicas avançadas para inserção, remoção e busca, vejamos:
@@ -539,70 +513,57 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 - Percorre os nós até onde a chave diverge ou termina  
 - Cria novos nós se necessário  
 - Em Ctries (hash tries), percorre a árvore inspecionando blocos de bits do hash  
-
 ---
-
 ### 5.3.8 Busca
 - Caminha até o final da chave  
 - Se a estrutura for bem balanceada e não houver colisões (no hash), a profundidade é limitada  
-
 ---
-
 ### 5.3.9 Remoção
 - Encontra o nó da chave  
 - Marca como removido  
-
 ---
-
 ### 5.3.10 Snapshot
 - Apenas aponta para o nó raiz atual  
 - Como os nós são imutáveis, não há risco de inconsistência  
 - Leitores podem continuar acessando a versão antiga mesmo após novas inserções  
-
 ### 5.3.11 Complexidade
 
-| Operação     | Complexidade Média   | Pior caso | Observações                                           |
-| ------------ | -------------------- | --------- | ----------------------------------------------------- |
-| **Inserção** | `O(k)` ou `O(log n)` | `O(k)`    | Um nó por caractere/nível; pode haver colisões        |
-| **Busca**    | `O(k)` ou `O(log n)` | `O(k)`    | Caminha até a folha correspondente                    |
-| **Remoção**  | `O(k)`               | `O(k)`    | Pode envolver limpeza de nós intermediários |
-| **Snapshot** | `O(1)`               | `O(1)`    | Apenas copia a referência do nó raiz (imutável)      |
+| Operação     | Complexidade Média   | Pior caso | Observações                                     |
+| ------------ | -------------------- | --------- | ----------------------------------------------- |
+| **Inserção** | `O(k)` ou `O(log n)` | `O(k)`    | Um nó por caractere/nível; pode haver colisões  |
+| **Busca**    | `O(k)` ou `O(log n)` | `O(k)`    | Caminha até a folha correspondente              |
+| **Remoção**  | `O(k)`               | `O(k)`    | Pode envolver limpeza de nós intermediários     |
+| **Snapshot** | `O(1)`               | `O(1)`    | Apenas copia a referência do nó raiz (imutável) |
 
 ## 5.4 BURST TRIES
 
 ### 5.4.1 Definição
-
  Burst Tries nada mais é do que uma estrutura de dados híbrida, pois utiliza uma organização hierárquica de uma Trie convencional (árvore), mas conta também com a utilização de buffers (arrays) nas folhas para o armazenamento de um conjunto de chaves com prefixos em comum. Se trata, assim como as anteriores, de uma versão otimizada de uma Trie, que garante melhor performance e otimização do uso da memória, pois armazena múltiplas chaves por folhas (buffers). Um problema da estrutura surge quando o buffer de uma ou mais folhas, ficam totalmente preenchidos, assim é feito o chamado “burst”, que consiste em criar novos nós internos e redistribuir as chaves armazenadas com base nos próximos caracteres. Desse modo a árvore cresce sob demanda.
   Essa estrutura garante um grande ganho de desempenho no que se diz respeito a busca, inserção e armazenamento de grandes conjuntos de strings, pois reduz o overhead de ponteiros em tries tradicionais e melhora a localidade de cache. Vejamos cenários que apresentam boa usabilidade:
-
+  
 - Compiladores;
 - Sistemas de indexação;
 - Dicionários dinâmicos.
 
 ### 5.4.2 Motivação
-
   Como já foi discutido anteriormente, as Tries tradicionais são excelentes estruturas para armazenarem dados com base em prefixos, no entanto essa estrutura possui algumas limitações ao armazenar um grande conjunto de dados, como: uso excessivo de memória, muitos ponteiros e crescimento excessivo da árvore.
   Desse modo, surge as Burst Tries que consegue equilibrar eficiência e praticidade, porquanto armazenam várias chaves com um mesmo prefixo em um único buffer	 e quando esse buffer atinge sua capacidade máxima, novos nós intermediários são criados e as chaves são divididas com base no próximo caractere, assim evitando a criação prematura de nós e reduzindo o consumo de memória.
 
 ### 5.4.3 Operações 
-
-### 5.4.4 Inserção
+#### 5.4.3.1 Inserção
 - Busca o buffer correspondente ao prefixo;
 - Insere a chave no buffer;
 - Se ultrapassar o limite do buffer, ocorre o burst;
 - Cria um novo buffer;
 - Redistribui as chaves em novos nós, com base nos novos prefixos;
-
-### 5.4.5 Busca
+#### 5.4.3.2 Busca
 - Caminha pela trie até o buffer correspondente;
 - Procura a chave dentro do buffer (usando busca binária);
-
-### 5.4.6 Remoção
+#### 5.4.3.3 Remoção
 - Encontra o buffer da chave;
 - Remove a chave do buffer;
 - Opcionalmente remove subtries vazias;
-
-### 5.4.7 Complexidade
+### 5.4.4 Complexidade
 
 | Operação     | Complexidade Média | Pior Caso  | Observações                                        |
 |--------------|--------------------|------------|----------------------------------------------------|
@@ -614,48 +575,40 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 ## 5.5 Ternary Search Tries
 
 ### 5.5.1 Definição
-
   Uma Ternary Search Tree é uma estrutura de dados que combina as propriedades de uma Trie convencional e árvores de busca binária (BST), adaptada para armazenar strings de forma eficiente, tanto em relação ao tempo, quanto em relação ao consumo de memória. Sua estrutura é composta por um nó, que armazena um único caractere e três filhos, um à esquerda (para armazenar caracteres menores que o pai), um ao centro (para o próximo caractere da string, se o caractere atual for igual) e um à direita (para caracteres maiores que o pai). As TST’s tem grande usabilidade no dia à dia, como: sistemas de busca de autocomplete, dicionários e corretores ortográficos, compiladores e interpretadore e entre outros.
   Ademais, sua ideia principal é percorrer cada caractere de forma ordenada, de forma análoga à uma busca binária sobre a palavra, mas mantendo a estrutura sequencial das strings. A TST se torna mais eficiente, pois:
 
 - Nas tries, cada nó pode ter 256 filhos (seguindo a tabela ASCII), o que exige grandes hashes;
 - Em TST’s , cada nó possui apenas 3 ponteiros;
 - Em grandes conjuntos de palavras se torna muito eficiente.
-
 ### 5.5.2 Operações
-
-### 5.5.3 Inserção
+#### 5.5.2.1 Inserção
 - Inicia pela raiz e compara cada caractere;
 - Se menor, vai pra subárvore à esquerda;
 - Se maior, vai pra subárvore à direita;
 - Se igual, avança para o filho do meio.
-
-### 5.5.4 Busca
+#### 5.5.2.2 Busca
 - Percorre cada caractere e faz as mesmas comparações da inserção;
 - A palavra existe se o algoritmo chegar a um nó marcado como "fim de palavra".
-
-### 5.5.5 Remoção
+#### 5.5.2.3 Remoção
 - Faz uma busca da palavra a ser removida;
 - Caso a encontre, a marca como “removida”;
 - Caso contrário, não faz nada, pois a palavra a ser removida não está lá;
 - Opcionalmente, ramos vazios podem ser removidos.
-
-### 5.5.6 Busca por prefixo
+#### 5.5.2.4 Busca por prefixo
 - Percorre todo o prefixo;
 - Depois, faz travessia da subárvore do meio coletando palavras.
+### 5.5.3 Complexidade
 
-### 5.5.7 Complexidade
-
-| Operação           | Complexidade (Tempo) | Observações                                           |
-|--------------------|----------------------|--------------------------------------------------------|
-| **Busca**          | O(k + h)             | `k` = tamanho da string, `h` = altura da árvore        |
-| **Inserção**       | O(k + h)             | Pode precisar criar até `k` novos nós                 |
-| **Remoção**        | O(k + h)             | Remove marca de fim de palavra; poda é opcional       |
-| **Busca por prefixo** | O(k + n)          | `n` = nº de palavras com o prefixo; percorre subárvore|
-| **Espaço (Memória)**| O(n·k)              | Menor que trie, pois só 3 ponteiros por nó            |
+| Operação              | Complexidade (Tempo) | Observações                                            |
+| --------------------- | -------------------- | ------------------------------------------------------ |
+| **Busca**             | O(k + h)             | `k` = tamanho da string, `h` = altura da árvore        |
+| **Inserção**          | O(k + h)             | Pode precisar criar até `k` novos nós                  |
+| **Remoção**           | O(k + h)             | Remove marca de fim de palavra; poda é opcional        |
+| **Busca por prefixo** | O(k + n)             | `n` = nº de palavras com o prefixo; percorre subárvore |
+| **Espaço (Memória)**  | O(n·k)               | Menor que trie, pois só 3 ponteiros por nó             |
 
   Em diversos cenários, a TST garante a praticidade e excelente performance, devido a sua compacidade dos dados e do acesso sequencial dos caracteres, bem como a comparação de prefixos ocorre ordenadamente, garantindo o melhor aproveitamento da memória. Além disso, se a árvore estiver balanceada, o custo de h = log n, assim como nas BST’s convencionais.
-
 # 6 Aplicações no mundo real
 ## 6.1 Rede de Computadores
 ### 6.1.1 Roteamento de Pacotes IP
@@ -713,24 +666,20 @@ Suponha que queremos armazenar as seguintes sequências na nossa Trie.
 > GCTATT
 
 A Trie que será construída terá ramos em comum para os ramos que tem prefixos repetidos, como podemos observar na imagem.
-<br>
-<br>
 <div align="center">
-  <img src="assets/trie_visualization_final.gif" height="600">
+  <img src="assets/trie_dna.png" height="400">
 </div>
-<br>
-<br>
 Essas sequências genéticas podem ser muito mais longas e repetitivas que essas que utilizamos,é nesse momento que o uso da Trie se torna muito mais eficiente,pois ao ultilizar a Trie para armazenar essas sequências,o uso do Armazenamento vai ser otimizado, já que quando várias sequências de DNA compartilham os mesmos prefixos, a Trie armazena esse prefixo uma única vez.
-<br>
-<br>
-Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
 
+Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
 ### 7.1.1 Quando usar uma Trie?
 **Passo 1:**  Analisar problema
  A primeira pergunta que você deve se fazer é:
-**<p style="text-align:center;">"Que tipos de dados envolve o problema e qual a sua unidade mais básica? "</p>**
+ 
+> **Que tipos de dados envolve o problema e qual a sua unidade mais básica? "**
+
 Se a resposta para essa pergunta envolver uma sequência construida através de um alfabeto(conjunto **FINITO** de símbolos), preste bem atenção no finito, essa é uma das premissas chaves, veremos no passo 3 que o tamanho desse conjunto impactará diretamente no consumo de memória. Nesse caso, é um bom sinal de que o problema pode ser resolvido com Trie.
 
 Pois em sua essência, Trie é uma estrutura otimizada para armazenar e consultar sequências. As sequências mais comuns são as strings, nesse caso, o alfabeto são os caractêres. No entanto, o conceito é bem mais amplo, pode ser uma sequência de digitos, como números de telefones, ou até uma sequência de bits.
@@ -749,7 +698,9 @@ A Trie é muito boa em remover, inserir, e buscar uma sequência de comprimento 
 
 Qual o problema da Trie? Memória!
 Para cada nó, pode ter ponteiros para cada elemento no alfabeto, desse modo, se o alfabeto é muito grande, se torna inviavel para implementação de Trie padrão. Então é preciso se perguntar:
-**<p style="text-align:center"> "O afalbeto é pequeno ou é muito grande?"</p>**
+
+>**"O afalbeto é pequeno ou é muito grande?"**
+
 Bom, e no caso de ser inviável? Considere variações de Trie com otmizações de memória, como uma *TST*, ou algumas otimizações como guardar um mapa de hash em cada nó invés de uma array fixo, economiza mais memória em troca de um pouco de velocidade.
 ### 7.1.2 Problemas
 #### 7.1.2.1 [Monitoria de LP2](https://www.spoj.com/problems/ADAINDEX/en/)
