@@ -107,8 +107,8 @@ class Visualizer:
         # Determine canvas size from graphviz output to create a static frame.
         w_inch, h_inch = map(float, self.graph_size.split(','))
         dpi = 300  # Match DPI from _capture_frame
-        max_w = int(w_inch * dpi)
-        max_h = int(h_inch * dpi)
+        max_w = int(w_inch * dpi) + 100
+        max_h = int(h_inch * dpi) + 100
 
         # Ensure dimensions are even for the yuv420p codec.
         max_w = (max_w + 1) // 2 * 2
