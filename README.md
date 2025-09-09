@@ -370,7 +370,7 @@ Armazenar carro e carroça em uma Trie:
 
 Vejamos que, na trie cada letra é armazenada em apenas um nó e que foram utilizados diversos nós para armazenar palavras com um prefixo equivalente (carro), no entanto, nesse cenário a Trie utiliza a memória para guardar dados de maneira ineficiente, quando comparamos a uma Radix Tree, vejamos agora a inserção em uma Radix Tree:
 <div align="center">
- <img src="assets/exemplo-radix.png" height="500">
+ <img src="assets/radix_tree_exemplo.png" height="400">
 </div>
 Em vez de criar um nó para armazenar cada caractere, a estrutura armazena blocos de caracteres (prefixos) em nós: carro > ça.
 
