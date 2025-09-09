@@ -13,7 +13,7 @@ A chave é invés de encarar as sequências como um bloco único, "computador" p
 Também conhecida como árvore de prefixos, é uma estrutura de dados usada para armazenar sequências de forma dinâmica, facilitando operações com prefixos. Algo interessante sobre a Trie, é que os nós não armazenam a chave, mas o caminho da raiz até um nó representa a chave(ou prefixo).
 ## 2.2 Visualizando
 Vamos ver como as palavras "galo", "gato", e "gado" seriam armazenadas em uma Trie:
-<center><img src="introduction_visualization_trie.png" height="400"></center>
+<center><img src="assets/introduction_visualization_trie.png" height="400"></center>
 A anatomia de uma Trie é composta por:
 1. **Raiz:** ele não representa nenhum valor do alfabeto e serve como o ancestral comum de todas as palavras.
 2. **Arestas e nós:** cada nó pode ter vários filhos, e representa um possível caminho de palavra. Por exemplo, a letra _a_ pode levar para _l_, _t_, ou _d_.
