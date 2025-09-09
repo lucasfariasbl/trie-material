@@ -1,5 +1,15 @@
 # 1 Motivação
+Imagina o autocompletar do seu celular, ao digitar "comp", magicamente aparecem opções como "computação", "computador", "compilador". Mas como é possível fazer isso de forma tão rápida, mesmo com uma inmensidão de palavras?
+
+Se tentassemos resolver esse problema com estruturas de dados comuns, como:
+- **Listas ou array:** somos forçados a fazer uma busca exaustiva, olhar cada palavra, uma por uma, e perguntar "você começa com 'comp'?", o que é terrivelmente lento.
+- **Tabela hash:** ela transforma uma palavra inteira em um código numérico para uma busca instantanea. O problema é que esse processo destrói a informação do prefixo. O código de "computador" não tem relação nenhuma com o de "componente". Portanto, somos forçados a pegar cada chave da tabela e verificar cada uma individualmente.
+
+É exatamente para isso que a Trie foi criada, ela é perfeita para problemas em dados sequências, para aqueles que envolvem operações com prefixos.
+
+A chave é invés de encarar as sequências como um bloco único, "computador" por exemplo, ele olha como um caminho `c -> o -> m -> p -> ...`. A busca por uma sequência especifica se torna uma caminhada. 
 # 2 Introdução
+
 # 3 Implementação
 ## 3.1 Estruturas fundamentais
 ### 3.1.1 Node
@@ -248,7 +258,7 @@ private boolean remove(String word, Node node, int index) {
     }
   }
 ```
-## 3.2.5 Listagem de palavras por prefixos
+## 3.3 Listagem de palavras por prefixos
 
 A função deste método é nos retornar uma lista com todas as palavras que iniciam com o prefixo passado como parâmetro.
 
@@ -307,7 +317,7 @@ private ArrayList<String> catchWords(Node currentNode, String currentPrefix, Arr
     return currentWords;
   }
 ```
-## 3.3 Análise de complexidade de tempo e memória
+## 3.4 Análise de complexidade de tempo e memória
 
 E finalmente chegamos ao motivo do por que a Trie é tão importante e tão famosa nas estruturas de dados de armazenamento. Sua extrema eficiência.
 
@@ -381,7 +391,7 @@ Isso reduz:
 
 ### 5.1.3 Operações
 
-### 5.1.3.1 Inserção
+### 5.1.4 Inserção
 
 - Começa da raiz;
 - A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
@@ -401,7 +411,7 @@ Isso reduz:
 
 ---
 
-### 5.1.3.2 Busca
+### 5.1.5 Busca
 
 - Começa da raiz;
 - Busca um filho com prefixo equivalente;
@@ -415,7 +425,7 @@ Isso reduz:
 
 ---
 
-### 5.1.3.3 Remoção
+### 5.1.6 Remoção
 
 - Busca a palavra;
 - Se encontrar, desmarca ele como o fim de uma palavra;
@@ -423,7 +433,7 @@ Isso reduz:
   - Se o nó **não tem filhos** e **não é o fim de outra palavra**, pode ser **removido**;
   - Se o nó **tem um filho** e **não é o fim de uma palavra**, pode ser **unido (concatenado)**.
 
-### 5.1.4 Complexidade 
+### 5.1.7 Complexidade 
 
 A Radix Tree possui complexidade O(k), de modo que k significa o tamanho da palavra, para inserção, remoção e busca. É mais eficiente que a Trie por reduzir o número de nós.
 
@@ -493,52 +503,52 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 ### 5.3.2 Motivação
 
   As Ctries possuem grande usabilidade na computação, principalmente em áreas de roteamento de IP, interpretação de linguagens, caches em tempo real, Servidores HTTP ou REST com alta concorrência e etc. Isso acontece, pois nas Ctries vários usuários podem fazer a mesma operação ao mesmo tempo que não vai haver a perca ou sobrescreção de dados, isso ocorre pois essa estrutura utiliza de técnicas avançadas para inserção, remoção e busca, vejamos:
-###  Lock-Based Tries
+### 5.3.3 Lock-Based Tries
 - Usa **locks finos** em cada nó para permitir múltiplas operações paralelas, ou seja, em vez de travar a estrutura toda para fazer uma operação, você trava apenas a menor parte necessária  
 - Conforme aumenta o número de threads, melhor a estrutura funciona  
 - Reduz a chance de threads ficarem esperando  
 
 ---
 
-### Lock-Free Tries
+### 5.3.4 Lock-Free Tries
 - Usa **instruções atômicas**, como o **CAS**, pois evita deadlock, contenção e se torna mais seguro por ser feito em hardware  
 - Evita completamente locks, mas é mais difícil de implementar  
 - Melhor performance sob alta concorrência  
 
 ---
 
-### Immutable Tries
+### 5.3.5 Immutable Tries
 - Cada modificação cria uma **nova versão** da estrutura  
 - Threads podem acessar **versões antigas com segurança**, pois os nós são imutáveis  
 - Não destroem o estado anterior de um nó  
 
-### 5.3.3 Operações 
+### 5.3.6 Operações 
 
-### Inserção
+### 5.3.7 Inserção
 - Percorre os nós até onde a chave diverge ou termina  
 - Cria novos nós se necessário  
 - Em Ctries (hash tries), percorre a árvore inspecionando blocos de bits do hash  
 
 ---
 
-### Busca
+### 5.3.8 Busca
 - Caminha até o final da chave  
 - Se a estrutura for bem balanceada e não houver colisões (no hash), a profundidade é limitada  
 
 ---
 
-### Remoção
+### 5.3.9 Remoção
 - Encontra o nó da chave  
 - Marca como removido  
 
 ---
 
-### Snapshot
+### 5.3.10 Snapshot
 - Apenas aponta para o nó raiz atual  
 - Como os nós são imutáveis, não há risco de inconsistência  
 - Leitores podem continuar acessando a versão antiga mesmo após novas inserções  
 
-### 5.3.4 Complexidade
+### 5.3.11 Complexidade
 
 | Operação     | Complexidade Média   | Pior caso | Observações                                           |
 | ------------ | -------------------- | --------- | ----------------------------------------------------- |
@@ -565,23 +575,23 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 
 ### 5.4.3 Operações 
 
-### Inserção
+### 5.4.4 Inserção
 - Busca o buffer correspondente ao prefixo;
 - Insere a chave no buffer;
 - Se ultrapassar o limite do buffer, ocorre o burst;
 - Cria um novo buffer;
 - Redistribui as chaves em novos nós, com base nos novos prefixos;
 
-### Busca
+### 5.4.5 Busca
 - Caminha pela trie até o buffer correspondente;
 - Procura a chave dentro do buffer (usando busca binária);
 
-### Remoção
+### 5.4.6 Remoção
 - Encontra o buffer da chave;
 - Remove a chave do buffer;
 - Opcionalmente remove subtries vazias;
 
-### 5.4.4 Complexidade
+### 5.4.7 Complexidade
 
 | Operação     | Complexidade Média | Pior Caso  | Observações                                        |
 |--------------|--------------------|------------|----------------------------------------------------|
@@ -603,27 +613,27 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 
 ### 5.5.2 Operações
 
-### Inserção
+### 5.5.3 Inserção
 - Inicia pela raiz e compara cada caractere;
 - Se menor, vai pra subárvore à esquerda;
 - Se maior, vai pra subárvore à direita;
 - Se igual, avança para o filho do meio.
 
-### Busca
+### 5.5.4 Busca
 - Percorre cada caractere e faz as mesmas comparações da inserção;
 - A palavra existe se o algoritmo chegar a um nó marcado como "fim de palavra".
 
-### Remoção
+### 5.5.5 Remoção
 - Faz uma busca da palavra a ser removida;
 - Caso a encontre, a marca como “removida”;
 - Caso contrário, não faz nada, pois a palavra a ser removida não está lá;
 - Opcionalmente, ramos vazios podem ser removidos.
 
-### Busca por prefixo
+### 5.5.6 Busca por prefixo
 - Percorre todo o prefixo;
 - Depois, faz travessia da subárvore do meio coletando palavras.
 
-### 5.5.3 Complexidade
+### 5.5.7 Complexidade
 
 | Operação           | Complexidade (Tempo) | Observações                                           |
 |--------------------|----------------------|--------------------------------------------------------|
