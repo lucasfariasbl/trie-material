@@ -132,6 +132,73 @@ Suponha que queremos armazenar as seguintes palavras:
 A Trie que será construída terá ramos em comum para os prefixos repetidos (por exemplo, "ca", "cas", "cam"), como acontece frequentemente na linguagem natural.
 Assim como em sequências de DNA, as palavras podem compartilhar partes idênticas no início, e a Trie aproveita isso para otimizar o armazenamento.Em vez de repetir cada letra para cada palavra, a Trie armazena os prefixos compartilhados apenas uma vez.Tendo assim um melhor uso do armazenamento e muita Eficiência na busca por palavras.
 
+## 6.4 Algoritmos de Busca e Ordenação 
+### 6.4.1 Algortimo de Aho-Corasick
+O algoritmo aho-corasick é um algoritmo de busca de strings criado em 1975 por Alfred V. Aho e Margaret J. Corasick.Ele é um algoritmo que nos permite localizar ocorrências de múltiplas strings (0 dicionário") dentro de um texto de entrada.O algoritmo realiza a busca por todas as strings ao mesmo tempo, tornando-se eficiente para essa tarefa. Sua complexidade é linear em relação ao tamanho das strings do dicionário,mais o comprimento do texto pesquisado mais o número de ocorrências encontradas. No entanto, caso as substrings a serem buscadas se sobreponham, como no caso de um dicionário com "a", "aa", "aaa", "aaaa" e um texto "aaaa", o número de correspondências pode crescer de forma quadrática.
+
+**Como ele funciona**
+#### Contrução da Trie
+O Aho-Corasick começa construindo um Trie a partir do conjunto de padrões (palavras) que se dejeja buscar no texto.Cada caminho da raiz até um nó terminal da Trie representa uma correspondência de um padrão.Se tivermos os padrões "cat", "car", "bat" e "rat", a Trie seria construída da seguinte maneira:
+<img src="assets/trie Aho-corasick.jpg" height="600">
+
+#### Links de Falha 
+Depois de construir a Trie,o algoritmo adiciona links de falha aos nós da Trie. Esses links são utilizados para otimizar o processo de busca.
+
+Links de falha: Quando o algoritmo encontra uma correspondência parcial, mas não completa, ele segue o link de falha para tentar outra possibilidade, sem precisar retroceder. Isso é crucial para garantir que a busca ocorra de maneira eficiente mesmo quando há falhas em algumas correspondências.
+
+Por exemplo, se estivermos buscando a palavra "rat" no texto e chegarmos ao nó correspondente ao prefixo "ra", mas não houver uma correspondência direta com o próximo caractere "t", o link de falha ajudará o algoritmo a continuar a busca a partir de outro ponto da Trie que ainda seja válido para o caractere "t".
+
+#### Busca no Texto
+Uma vez que a Trie e os links de falha estão construídos, o algoritmo começa a percorrer o texto de entrada.
+
+**Primeiro passo:** Processamento do Texto
+O algoritmo começa lendo o texto caractere por caractere. Para cada caractere, ele o compara com os nós da Trie.
+
+O que acontece se o caractere do texto corresponder ao nó da Trie?
+
+Simplesmente, o algoritmo segue em frente, avançando para o próximo caractere do texto. Ele continua a busca dessa maneira, procurando o padrão em sequência.
+
+Agora, você pode estar se perguntando:
+"E se o caractere no texto não corresponder a nenhum nó na Trie? O que o algoritmo deve fazer?"
+
+**Segundo passo** Falha na Correspondência
+Quando o caractere do texto não encontra uma correspondência direta na Trie, o algoritmo não retrocede nem começa a busca de novo. Em vez disso, ele usa um mecanismo inteligente chamado link de falha.
+Mas como isso funciona?
+> O link de falha é uma espécie de "atalho" que conecta o nó atual da Trie a um nó anterior que pode ter um prefixo comum com o texto atual.
+>
+> O algoritmo então continua a busca a partir desse novo ponto, tentando corresponder o próximo caractere do texto.
+>
+
+Veja o Exemplo:
+Imagina que o algoritmo está buscando a palavra "rat" no texto "ratatouille". O algoritmo começa a procurar e encontra o prefixo "ra" no texto.
+> Mas o próximo caractere do texto é "t". O algoritmo encontra a letra "t" na Trie e avança para ela. Agora, se o próximo caractere do texto for "l", que não corresponde ao "t" da Trie, o algoritmo não volta ao início.
+>
+> Ao invés disso, o algoritmo segue o link de falha do nó "ra" até o nó correspondente ao prefixo "r". Ele então continua a busca para o próximo caractere "l", economizando tempo e evitando um retrocesso desnecessário.
+> 
+
+**Terceiro passo** Busca Simultânea de Múltiplos Padrões
+uma das principais vantagens do algoritmo Aho-Corasick é que ele não está apenas buscando uma palavra, mas sim vários padrões ao mesmo tempo.
+
+Mas como isso é possivel ?
+O algoritmo verifica todos os padrões presentes na Trie simultaneamente enquanto percorre o texto.
+
+Em vez de verificar um padrão de cada vez, ele pode verificar múltiplos padrões ao mesmo tempo, utilizando a estrutura da Trie para armazenar e organizar esses padrões de forma eficiente.
+
+Isso torna a busca muito mais rápida, já que ele não precisa repetir a busca para cada palavra. Ele pode verificar todos os padrões ao mesmo tempo, economizando tempo, especialmente quando há um grande número de palavras a serem verificadas em um único texto.
+
+### 6.4.2 Burst Sort
+O Burst Sort é um algoritmo de ordenação eficiente, especialmente para grandes conjuntos de strings ou palavras, onde há muitos prefixos em comum. Criado para lidar com grandes volumes de dados, o Burst Sort divide as strings em "pedaços" e organiza essas partes de maneira otimizada, aproveitando a estrutura de Trie para ordenar eficientemente.
+
+**Como ele Funciona**
+#### Divisão das Strings em Pedaços
+O Burst Sort começa dividindo as strings em "pedaços" menores. Cada "pedaço" é então armazenado em uma estrutura adequada para ordenação eficiente, como uma Trie.
+
+Porque dividir as Strings?
+Ao dividir as strings, o algoritmo consegue otimizar o uso de memória e tornar a ordenação mais rápida, especialmente quando muitas strings compartilham prefixos comuns.
+
+Após dividir as strings, o Burst Sort armazena cada "pedaço" em uma Trie. A Trie organiza as strings de forma eficiente, aproveitando os prefixos compartilhados para otimizar tanto a memória quanto o tempo de ordenação.
+
+
 
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
