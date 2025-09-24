@@ -137,7 +137,23 @@ Da mesma forma que o método da inserção de palavras, temos que analisar se no
 
 Caso o retorno da chave seja null, isto indica que não temos um nó referenciando a letra que estamos verificando na vez, portanto, ela nunca foi adicionada. Neste momento, podemos e devemos retornar o valor **false** para o método, indicando que a palavra não está na estrutura.
 
+```java
+public boolean search(String word) {
+    word = word.toLowerCase();
+
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < word.length(); i++) {
+      Node son = nodeAux.getSons().get(word.charAt(i));
+
+      if (son == null) return false;
+```
+
 Caso contrário, ou seja, o valor de retorno seja um nó, passamos a verificar seu HashMap à procura da próxima letra, e assim em diante.
+
+```java
+      nodeAux = son;
+```
 
 Daí pode-se pensar que é basicamente isso, dado que caso todas as letras estejam presentes na estrutura obviamente a palavra inteira está presente. Porém, vamos a um exemplo prático:
 
@@ -150,7 +166,11 @@ ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> <b>L</b>
 > É isso que a estrutura apresentada indica, mas nós nunca digitamos o comando add("Carro"), correto? Para isso, utilizamos o atributo que já foi mencionado no material anteriormente, que indica se certa letra representa o fim de uma palavra.
 > Isso seria, obviamente, testado na última letra da palavra pesquisada, no nosso caso, o "o", retornando o valor booleano **false**.
 
-- Para melhor compreensão, segue a implementação do método:
+```java
+    return nodeAux.isEndOfWord();
+```
+
+- Para melhor compreensão, segue a implementação completa do método:
 
 ```java
 public boolean search(String word) {
@@ -178,9 +198,25 @@ O método recebe como parâmetro um prefixo e retornará um valor booleano refer
 
 Assim como no search(), o startsWith() percorrerá letra por letra da palavra verificando se ela existe no mapa de seu nó parent, caso a letra não tenha valor referente, o retorno é **false**, caso contrário chegamos no ponto que o diferencia do search().
 
+```java
+public boolean startsWith(String prefix) {
+    prefix = prefix.toLowerCase();
+
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < prefix.length(); i++) {
+      Node son = nodeAux.getSons().get(prefix.charAt(i));
+
+      if (son == null) return false;
+```
+
 Ao chegar na última letra, como estamos tratando de prefixos e não de palavras completas, é irrelevante a verificação isEndOfWord() do nó, portanto, se ao longo do loop o caminho não quebrar e chegar ao fim, apenas retornamos **true**.
 
-- Segue a implementação:
+```java
+    return true;
+```
+
+- Segue a implementação completa:
 
 ```java
 public boolean startsWith(String prefix) {
@@ -223,6 +259,14 @@ Sendo os 2 útimos primeiramente:
 - this.root
 - 0
 
+```java
+public void remove(String word) {
+    word = word.toLowerCase();
+
+    remove(word, this.root, 0);
+  }
+```
+
 Nosso algoritmo, enquanto descemos, se baseará em pegar o nó referente a letra atual que estamos tratando e chamar recursivamente. Apenas isso. Simples, não é? Só precisamos substituir nos parâmetros o nó anterior pelo atual e incrementar no index.
 
 **Parte 2: Remoção lógica**
@@ -244,15 +288,7 @@ A partir desse retorno podemos com segurança avisar ao nó pai se ele pode remo
 
 Com esses passos subimos a árvore até terminar nossa pilha de execução, finalizando a função do método.
 
-- Segue abaixo a implementação do método "remove":
-
 ```java
-public void remove(String word) {
-    word = word.toLowerCase();
-
-    remove(word, this.root, 0);
-  }
-
 private boolean remove(String word, Node node, int index) {
     Node son = node.getSons().get(word.charAt(index));
 
@@ -284,20 +320,6 @@ Trivialmente, desceremos por iteração na árvore até o nó da última letra d
 
 Ao chegarmos no fim, chamaremos nossa função auxiliar que será responsável por montar todas as palavras e adicioná-las na lista que será retornada ao fim do processo através da técnica Depth-First Search (DFS), que percorre uma árvore por profundidade.
 
-**Parte 2: Depth-First Search**
-
-A partir do nó da última letra do prefixo, chamamos a função catchWords() que terá 3 parâmetros:
-
-- O nó atual
-- O prefixo atual
-- A lista de palavras
-
-A cada chamada do método recursivo, sua primeira verificação é se o nó de seu parâmetro é o fim de uma palavra, pois caso seja, o prefixo se trata de uma palavra completa e é adicionado à lista final.
-
-Após a verificação inicial, utilizamos o DFS para percorrer cada ramo da árvore em profundidade concatenando os caracteres e chamando a função recursivamente. No fim do processo, a lista é retornada e temos, por fim, o resultado esperado
-
-- Para melhor compreensão, segue a implementação do método:
-
 ```java
 public ArrayList<String> findWordWithPrefix(String prefix) {
     prefix = prefix.toLowerCase();
@@ -315,7 +337,23 @@ public ArrayList<String> findWordWithPrefix(String prefix) {
 
     return catchWords(nodeAux, prefix, words);
   }
+```
 
+**Parte 2: Depth-First Search**
+
+A partir do nó da última letra do prefixo, chamamos a função catchWords() que terá 3 parâmetros:
+
+- O nó atual
+- O prefixo atual
+- A lista de palavras
+
+A cada chamada do método recursivo, sua primeira verificação é se o nó de seu parâmetro é o fim de uma palavra, pois caso seja, o prefixo se trata de uma palavra completa e é adicionado à lista final.
+
+Após a verificação inicial, utilizamos o DFS para percorrer cada ramo da árvore em profundidade concatenando os caracteres e chamando a função recursivamente. No fim do processo, a lista é retornada e temos, por fim, o resultado esperado
+
+- Para melhor compreensão, segue a implementação do método privado:
+
+```java
 private ArrayList<String> catchWords(Node currentNode, String currentPrefix, ArrayList<String> currentWords) {
     if (currentNode.isEndOfWord()) currentWords.add(currentPrefix);
 
