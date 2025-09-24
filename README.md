@@ -305,7 +305,7 @@ private boolean remove(String word, Node node, int index) {
     }
   }
 ```
-## 3.3 Listagem de palavras por prefixos
+## 3.2.5 Listagem de palavras por prefixos
 
 A função deste método é nos retornar uma lista com todas as palavras que iniciam com o prefixo passado como parâmetro.
 
@@ -366,7 +366,7 @@ private ArrayList<String> catchWords(Node currentNode, String currentPrefix, Arr
     return currentWords;
   }
 ```
-## 3.4 Análise de complexidade de tempo e memória
+## 3.3 Análise de complexidade de tempo e memória
 
 E finalmente chegamos ao motivo do por que a Trie é tão importante e tão famosa nas estruturas de dados de armazenamento. Sua extrema eficiência.
 
