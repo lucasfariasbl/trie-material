@@ -836,7 +836,7 @@ Mas como isso funciona?
 >
 
 Veja o Exemplo:
-Imagina que o algoritmo está buscando a palavra "rat" no texto "ratatouille". O algoritmo começa a procurar e encontra o prefixo "ra" no texto.
+Imagine que o algoritmo está buscando a palavra "rat" no texto "ratatouille". O algoritmo começa a procurar e encontra o prefixo "ra" no texto.
 > Mas o próximo caractere do texto é "t". O algoritmo encontra a letra "t" na Trie e avança para ela. Agora, se o próximo caractere do texto for "l", que não corresponde ao "t" da Trie, o algoritmo não volta ao início.
 >
 > Ao invés disso, o algoritmo segue o link de falha do nó "ra" até o nó correspondente ao prefixo "r". Ele então continua a busca para o próximo caractere "l", economizando tempo e evitando um retrocesso desnecessário.
