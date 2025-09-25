@@ -696,6 +696,7 @@ Uma Ctrie é estruturada como uma árvore de prefixos, de modo que:
 | **Espaço (Memória)**  | O(n·k)               | Menor que trie, pois só 3 ponteiros por nó             |
 
   Em diversos cenários, a TST garante a praticidade e excelente performance, devido a sua compacidade dos dados e do acesso sequencial dos caracteres, bem como a comparação de prefixos ocorre ordenadamente, garantindo o melhor aproveitamento da memória. Além disso, se a árvore estiver balanceada, o custo de h = log n, assim como nas BST’s convencionais.
+  
 # 7 Aplicações no mundo real
 ## 7.1 Rede de Computadores
 ### 7.1.1 Roteamento de Pacotes IP
@@ -753,12 +754,141 @@ Suponha que queremos armazenar as seguintes sequências na nossa Trie.
 > GCTATT
 
 A Trie que será construída terá ramos em comum para os ramos que tem prefixos repetidos, como podemos observar na imagem.
+<br>
+<br>
 <div align="center">
-  <img src="assets/trie_dna.png" height="400">
+  <img src="assets/trie_dna.png" height="600">
 </div>
+<br>
+<br>
 Essas sequências genéticas podem ser muito mais longas e repetitivas que essas que utilizamos,é nesse momento que o uso da Trie se torna muito mais eficiente,pois ao ultilizar a Trie para armazenar essas sequências,o uso do Armazenamento vai ser otimizado, já que quando várias sequências de DNA compartilham os mesmos prefixos, a Trie armazena esse prefixo uma única vez.
-
+<br>
+<br>
 Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
+
+## 6.3  PLN - Processamento de Linguagem Natural
+### 6.3.1 Manipulação e Análise de Texto em Grande Escala
+No campo de PLN (Processamento de Linguagem Natural), sistemas precisam lidar com grandes volumes de texto para tarefas como:
+- Correção ortográfica
+- Sugestão de Palavras(autocompletar)
+- Busca por prefixos
+ 
+Todas essas tarefas envolvem buscas rápidas por palavras ou prefixos, principalmente em grandes conjuntos de palavras.
+
+**Agora pense comigo:**
+
+Imagine que temos um enorme dicionário de palavras com milhares de entradas.Precisamos armazenar essas palavras de forma eficiente e também permitir buscas rápidas, como:
+
+-	Verificar se uma palavra está correta
+- Sugerir palavras a partir de um prefixo digitado
+- Encontrar todas as palavras que começam com um determinado trecho
+
+**Onde a Trie poderia nos ajudar?**
+
+Bom,como já sabemos A Trie é uma estrutura de dados ideal para representar grandes conjuntos de strings com prefixos em comum, que é exatamente o que acontece em muitas palavras de um idioma.Cada nó da Trie representa uma letra do alfabeto, e cada caminho da raiz até um nó terminal representa uma palavra completa.
+Suponha que queremos armazenar as seguintes palavras:
+- casa
+- casamento  
+- casaco
+- caminho 
+- carro  
+- carta
+  
+A Trie que será construída terá ramos em comum para os prefixos repetidos (por exemplo, "ca", "cas", "cam"), como acontece frequentemente na linguagem natural.
+Assim como em sequências de DNA, as palavras podem compartilhar partes idênticas no início, e a Trie aproveita isso para otimizar o armazenamento.Em vez de repetir cada letra para cada palavra, a Trie armazena os prefixos compartilhados apenas uma vez.Tendo assim um melhor uso do armazenamento e muita Eficiência na busca por palavras.
+
+## 6.4 Algoritmos de Busca e Ordenação 
+### 6.4.1 Algortimo de Aho-Corasick
+O algoritmo aho-corasick é um algoritmo de busca de strings criado em 1975 por Alfred V. Aho e Margaret J. Corasick.Ele é um algoritmo que nos permite localizar ocorrências de múltiplas strings (0 dicionário") dentro de um texto de entrada.O algoritmo realiza a busca por todas as strings ao mesmo tempo, tornando-se eficiente para essa tarefa. Sua complexidade é linear em relação ao tamanho das strings do dicionário,mais o comprimento do texto pesquisado mais o número de ocorrências encontradas. No entanto, caso as substrings a serem buscadas se sobreponham, como no caso de um dicionário com "a", "aa", "aaa", "aaaa" e um texto "aaaa", o número de correspondências pode crescer de forma quadrática.
+
+**Como ele funciona**
+#### Contrução da Trie
+O Aho-Corasick começa construindo um Trie a partir do conjunto de padrões (palavras) que se dejeja buscar no texto.Cada caminho da raiz até um nó terminal da Trie representa uma correspondência de um padrão.Se tivermos os padrões "cat", "car", "bat" e "rat", a Trie seria construída da seguinte maneira:
+<div align="center">
+<img src="assets/trie Aho-corasick.jpg" height="400">
+</div>
+
+#### 6.4.2 Links de Falha 
+Depois de construir a Trie,o algoritmo adiciona links de falha aos nós da Trie. Esses links são utilizados para otimizar o processo de busca.
+
+Links de falha: Quando o algoritmo encontra uma correspondência parcial, mas não completa, ele segue o link de falha para tentar outra possibilidade, sem precisar retroceder. Isso é crucial para garantir que a busca ocorra de maneira eficiente mesmo quando há falhas em algumas correspondências.
+
+Por exemplo, se estivermos buscando a palavra "rat" no texto e chegarmos ao nó correspondente ao prefixo "ra", mas não houver uma correspondência direta com o próximo caractere "t", o link de falha ajudará o algoritmo a continuar a busca a partir de outro ponto da Trie que ainda seja válido para o caractere "t".
+
+#### 6.4.3 Busca no Texto
+Uma vez que a Trie e os links de falha estão construídos, o algoritmo começa a percorrer o texto de entrada.
+
+**Primeiro passo:** Processamento do Texto
+O algoritmo começa lendo o texto caractere por caractere. Para cada caractere, ele o compara com os nós da Trie.
+
+O que acontece se o caractere do texto corresponder ao nó da Trie?
+
+Simplesmente, o algoritmo segue em frente, avançando para o próximo caractere do texto. Ele continua a busca dessa maneira, procurando o padrão em sequência.
+
+Agora, você pode estar se perguntando:
+"E se o caractere no texto não corresponder a nenhum nó na Trie? O que o algoritmo deve fazer?"
+
+**Segundo passo** Falha na Correspondência
+Quando o caractere do texto não encontra uma correspondência direta na Trie, o algoritmo não retrocede nem começa a busca de novo. Em vez disso, ele usa um mecanismo inteligente chamado link de falha.
+Mas como isso funciona?
+> O link de falha é uma espécie de "atalho" que conecta o nó atual da Trie a um nó anterior que pode ter um prefixo comum com o texto atual.
+>
+> O algoritmo então continua a busca a partir desse novo ponto, tentando corresponder o próximo caractere do texto.
+>
+
+Veja o Exemplo:
+Imagine que o algoritmo está buscando a palavra "rat" no texto "ratatouille". O algoritmo começa a procurar e encontra o prefixo "ra" no texto.
+> Mas o próximo caractere do texto é "t". O algoritmo encontra a letra "t" na Trie e avança para ela. Agora, se o próximo caractere do texto for "l", que não corresponde ao "t" da Trie, o algoritmo não volta ao início.
+>
+> Ao invés disso, o algoritmo segue o link de falha do nó "ra" até o nó correspondente ao prefixo "r". Ele então continua a busca para o próximo caractere "l", economizando tempo e evitando um retrocesso desnecessário.
+> 
+
+**Terceiro passo** Busca Simultânea de Múltiplos Padrões
+uma das principais vantagens do algoritmo Aho-Corasick é que ele não está apenas buscando uma palavra, mas sim vários padrões ao mesmo tempo.
+
+Mas como isso é possivel ?
+O algoritmo verifica todos os padrões presentes na Trie simultaneamente enquanto percorre o texto.
+
+Em vez de verificar um padrão de cada vez, ele pode verificar múltiplos padrões ao mesmo tempo, utilizando a estrutura da Trie para armazenar e organizar esses padrões de forma eficiente.
+
+Isso torna a busca muito mais rápida, já que ele não precisa repetir a busca para cada palavra. Ele pode verificar todos os padrões ao mesmo tempo, economizando tempo, especialmente quando há um grande número de palavras a serem verificadas em um único texto.
+
+### 6.4.2 Burst Sort
+O Burst Sort é um algoritmo de ordenação eficiente, especialmente para grandes conjuntos de strings ou palavras, onde há muitos prefixos em comum. Criado para lidar com grandes volumes de dados, o Burst Sort divide as strings em "pedaços" e organiza essas partes de maneira otimizada, aproveitando a estrutura de Trie para ordenar eficientemente.
+
+**Como ele Funciona**
+#### Divisão das Strings em Pedaços
+O Burst Sort começa dividindo as strings em "pedaços" menores. Cada "pedaço" é então armazenado em uma estrutura adequada para ordenação eficiente, como uma Trie.
+
+Porque dividir as Strings?
+Ao dividir as strings, o algoritmo consegue otimizar o uso de memória e tornar a ordenação mais rápida, especialmente quando muitas strings compartilham prefixos comuns.
+
+Após dividir as strings, o Burst Sort armazena cada "pedaço" em uma Trie. A Trie organiza as strings de forma eficiente, aproveitando os prefixos compartilhados para otimizar tanto a memória quanto o tempo de ordenação.
+
+#### Uso de Baldes
+Cada nó da Trie pode conter um balde onde são armazenadas as strings que compartilham aquele prefixo. Assim, em vez de espalhar imediatamente todas as strings, elas ficam agrupadas até que o balde atinja um limite de capacidade.
+
+#### Estouro-Burst
+Quando um balde fica cheio, ocorre o Burst (“explosão”):  
+- O balde é esvaziado.  
+- As strings nele contidas são distribuídas em novos nós filhos da Trie, seguindo os próximos caracteres.  
+- Isso cria sub-bald es menores, permitindo que a estrutura se ajuste dinamicamente conforme os dados crescem.  
+
+---
+
+####  4. Ordenação Local
+Baldes pequenos, que não chegam a estourar, podem ser ordenados localmente usando algoritmos tradicionais como **quicksort** ou **insertion sort**.  
+Como esses baldes são pequenos, essa ordenação é feita de forma muito rápida.
+
+---
+
+####  5. Geração da Lista Ordenada
+No final, para recuperar as strings em **ordem lexicográfica**, basta **percorrer a Trie em ordem**, concatenando os prefixos armazenados.  
+
+- A Trie já organiza naturalmente os caracteres em ordem alfabética.  
+- Assim, a saída final é obtida de maneira direta e eficiente.  
+
+---
 # 8 Guia para resolução de problemas
 ## 8.1 Dicas
 ### 8.1.1 Quando usar uma Trie?
