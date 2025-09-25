@@ -412,6 +412,30 @@ Trie: percorre cada caractere da chave, com custo O(L) (L = tamanho da chave). C
 
 Hash Table: oferece buscas e inserções em O(1) em média, ideal para consultas exatas de chave -> valor. Tem implementação simples e uso de memória geralmente menor, mas depende fortemente de uma boa função hash e não lida bem com prefixos ou ordenação.
 
+## 4.2 Comparação: Trie vs Árvore Balanceada
+
+|  **Critério**                   |  **Trie**                                                                 |  **Árvore Balanceada (AVL, Red-Black, B-Tree etc.)**                         |
+|----------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| **Estrutura**                    | Árvore em que cada **nó representa um caractere**                           | Árvore binária (ou n-ária) com balanceamento baseado em **comparação de chaves** |
+| **Chave**                        | Armazenada **como caminho** entre raiz e folha                              | Armazenada **inteira** em cada nó                                              |
+| **Ordem das chaves**             | ordem lexicográfica natural                                         | ordem definida por comparações                                         |
+| **Busca por prefixo**            | Muito eficiente (O(P))                                                    |  Ineficiente – requer percorrer subárvore                                    |
+| **Busca por chave completa**     | O(L) – L = comprimento da chave                                             | O(log N) – N = número de chaves                                                |
+| **Inserção**                     | O(L)                                                                         | O(log N)                                                                        |
+| **Remoção**                      | O(L)                                                                         | O(log N)                                                                        |
+| **Eficiência com prefixos**      | Altíssima                                                                  |  Fraca                                                                        |
+| **Uso de memória**               |  Maior – muitos nós (especialmente com alfabetos grandes)                 |  Mais eficiente – armazena chaves completas                                   |
+| **Comparações entre chaves**     |  Não há comparações – só navegação por caracteres                          |  Baseada em comparação entre chaves inteiras                                  |
+| **Desempenho em grandes alfabetos**|  Pior – pode ter muitos filhos por nó                                     |  Melhor – não depende do tamanho do alfabeto                                  |
+| **Autocomplete e correção**      |  Suporte direto                                                             |  Precisa de lógica adicional                                                  |
+| **Complexidade de implementação**|  Alta – manipulação de muitos ponteiros                                    |  Moderada – depende do tipo de árvore (AVL, Red-Black, etc.)                 |
+| **Aplicações comuns**            | Dicionários, autocomplete, buscas por prefixo                               | Índices de bancos de dados, conjuntos ordenados, mapas ordenados               |
+
+---
+
+**Em resumo:** 
+A Trie busca cada caractere da chave em O(L)  (no qual L é o tamanho da chave), compartilhando prefixos e sendo ótima para autocompletar e buscas por prefixo.
+A BST armazena a chave inteira e busca em O(log n) (se balanceada), ideal para consultas ordenadas e intervalos, com menor consumo de memória quando não há muitos prefixos repetidos.
 # 5 Variações e otimizações
 ## 5.1 Radix Tree
 ### 5.1.1 Definição
