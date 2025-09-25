@@ -894,6 +894,7 @@ O truque aqui é dar uma turbinada na Trie padrão. Não basta ela só guardar a
 <div align="center">
   <img src="assets/exemplo_problema_monitoria.png" height="1200">
 </div>
+
 #### 7.4.1.3 Complexidade
 O mais legal dessa abordagem é o resultado final. A complexidade, $O(S_N​+S_Q​)$, ou seja, a soma de todas as palavras inseridas com a soma de todos os prefixos, é linear. Isso quer dizer que o tempo de execução cresce junto com o tamanho da entrada, e não de forma explosiva. É uma otimização gigantesca, tornando a solução não só viável, mas extremamente eficiênte😛.
 
@@ -937,6 +938,7 @@ A gente guarda o maior valor de XOR que encontrarmos no geral e as indexações 
 **Veredito:** Pode apostar todas as fichas: a Trie é a resposta.
 
 #### 7.4.4.1 Análise Passo a Passo
+
 - **Passo 1 (Analisar Problema):** Pense bem, o que são números de telefone? Em sua essência, são apenas **-> sequências de dígitos <-**. Nosso universo se resume ao alfabeto de `0` a `9`, um conjunto bem específico e limitado. Esse cenário, por si só, já deveria acender um letreiro em neon na sua cabeça: "Hmm, isso tem cheiro de Trie😏".
 - **Passo 2 (Analisar Operações):** A alma deste desafio pulsa em uma única palavra: **"prefixo"**. Precisamos saber se um número é o ponto de partida de outro. E qual estrutura de dados parece ter sido desenhada com a palavra "prefixo" em mente? Exato, a Trie. Ela não é apenas uma candidata; é a principal suspeita desde o início.
 - **Passo 3 (Analisar Restrições):** A Trie, neste caso, opera como um detetive particularmente astuto. Ela confere a consistência no exato momento da inserção, sem nenhum trabalho extra. Visualize o "911254" sendo adicionado depois do "911". A Trie, ao percorrer o caminho `9 -> 1 -> 1`, nota na hora: "Ei, este nó por onde estou passando já marca o fim de outra palavra!". Fim de jogo: a lista é inconsistente. O inverso também funciona: se inserirmos "911" e o nó do último `1` já tem uma continuação (o `2`), a Trie deduz: "Entendi, o número que acabei de registrar é o começo de outro já existente!". É simples, é elegante e de uma eficiência brutal🙂‍↔️.
