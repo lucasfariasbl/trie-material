@@ -13,6 +13,8 @@ Então, se as estruturas clássicas não nos ajuda nesse caso, qual é a mágica
  <video controls src="https://raw.githubusercontent.com/NotAdson/trie-material/main/assets/video%20trie.mp4" style="max-width: 100%;">
 </video> 
 </div>
+
+
 # 3 Introdução
 ## 3.1 O que é uma Trie?
 Também conhecida como árvore de prefixos, é uma estrutura de dados usada para armazenar sequências de forma dinâmica, facilitando operações com prefixos. Algo interessante sobre a Trie, é que os nós não armazenam a chave, mas o caminho da raiz até um nó representa a chave(ou prefixo).
