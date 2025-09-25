@@ -803,7 +803,9 @@ O algoritmo aho-corasick é um algoritmo de busca de strings criado em 1975 por 
 **Como ele funciona**
 #### Contrução da Trie
 O Aho-Corasick começa construindo um Trie a partir do conjunto de padrões (palavras) que se dejeja buscar no texto.Cada caminho da raiz até um nó terminal da Trie representa uma correspondência de um padrão.Se tivermos os padrões "cat", "car", "bat" e "rat", a Trie seria construída da seguinte maneira:
-<img src="assets/trie Aho-corasick.jpg" height="600">
+<div align="center">
+<img src="assets/trie Aho-corasick.jpg" height="400">
+</div>
 
 #### Links de Falha 
 Depois de construir a Trie,o algoritmo adiciona links de falha aos nós da Trie. Esses links são utilizados para otimizar o processo de busca.
