@@ -864,6 +864,30 @@ Ao dividir as strings, o algoritmo consegue otimizar o uso de memória e tornar 
 
 Após dividir as strings, o Burst Sort armazena cada "pedaço" em uma Trie. A Trie organiza as strings de forma eficiente, aproveitando os prefixos compartilhados para otimizar tanto a memória quanto o tempo de ordenação.
 
+#### Uso de Baldes
+Cada nó da Trie pode conter um balde onde são armazenadas as strings que compartilham aquele prefixo. Assim, em vez de espalhar imediatamente todas as strings, elas ficam agrupadas até que o balde atinja um limite de capacidade.
+
+#### Estouro-Burst
+Quando um balde fica cheio, ocorre o Burst (“explosão”):  
+- O balde é esvaziado.  
+- As strings nele contidas são distribuídas em novos nós filhos da Trie, seguindo os próximos caracteres.  
+- Isso cria sub-bald es menores, permitindo que a estrutura se ajuste dinamicamente conforme os dados crescem.  
+
+---
+
+###  4. Ordenação Local
+Baldes pequenos, que não chegam a estourar, podem ser ordenados localmente usando algoritmos tradicionais como **quicksort** ou **insertion sort**.  
+Como esses baldes são pequenos, essa ordenação é feita de forma muito rápida.
+
+---
+
+###  5. Geração da Lista Ordenada
+No final, para recuperar as strings em **ordem lexicográfica**, basta **percorrer a Trie em ordem**, concatenando os prefixos armazenados.  
+
+- A Trie já organiza naturalmente os caracteres em ordem alfabética.  
+- Assim, a saída final é obtida de maneira direta e eficiente.  
+
+---
 # 7 Guia para resolução de problemas
 ## 7.1 Dicas
 ### 7.1.1 Quando usar uma Trie?
