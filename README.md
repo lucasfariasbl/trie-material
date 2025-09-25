@@ -388,6 +388,30 @@ Por conseguinte, os métodos de inserção, pesquisa de palavras, pesquisa por p
 O único método que se diferencia dessa regra é o de listagem das palavras a partir de certo prefixo, sendo em seu pior caso O(p + n) | p = o tamanho do prefixo ∧ n = a soma de todos os nós existentes a partir do prefixo.
 
 # 4 Comparações
+## 4.1 Trie x Hashtable
+
+| Critério                         | **Trie**                                                                                                          | **Hash Table**                                                                                  |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Conceito**                     | Árvore de prefixos em que cada nó representa um caractere da chave, caminhos formam as palavras.                  | Estrutura baseada em *funções de hash* que mapeia chave -> valor em um array.                      |
+| **Complexidade de Busca**        | **O(L)**, onde *L* é o tamanho da chave. Independente do número de chaves (n).                                    | **O(1)** em média, **O(n)** no pior caso (muitas colisões).                                     |
+| **Complexidade de Inserção**     | **O(L)**                                                                                                          | **O(1)** em média, **O(n)** no pior caso.                                                       |
+| **Complexidade de Remoção**      | **O(L)** (precisa checar se nós podem ser apagados).                                                              | **O(1)** em média; **O(n)** no pior caso.                                                       |
+| **Uso de Memória**               | Geralmente **maior**, pois cada nó guarda ponteiros para o alfabeto. | Geralmente **menor**, já que cada chave é armazenada integralmente sem prefixos compartilhados. |
+| **Compartilhamento de Prefixos** | **Sim**, prefixos comuns são armazenados uma única vez.                                                           | **Não**, cada chave é guardada inteira.                                                         |
+| **Busca por Prefixo**            | **Excelente**, encontra rapidamente todas as chaves com determinado prefixo.                                      | **Ruim**, é necessário percorrer e filtrar todas as chaves.                                    |
+| **Ordenação de Chaves**          | **Natural**, basta percorrer a árvore em ordem alfabética.                                                     | **Não existe**, é preciso copiar e ordenar à parte.                                            |
+| **Flexibilidade de Chaves**      | Ideal para **strings** ou alfabetos finitos.                                         | Aceita **qualquer tipo de chave** com função hash bem definida.                                 |
+| **Dependência de Função Hash**   | **Nenhuma**, não usa hashing.                                                                                     | **Total**, a qualidade da função hash é crítica para evitar colisões.                           |
+| **Escalabilidade**               | Pode crescer muito em largura se o alfabeto for grande.                       | Escala bem, mas exige *rehash* quando a tabela é redimensionada.                                |
+| **Implementação**                | Mais **complexa**, com múltiplos nós e ponteiros.                                                                 | Mais **simples**, e amplamente disponível em bibliotecas padrão.                                |
+| **Melhor Cenário de Uso**        | Autocompletar, dicionários, busca ordenada, roteamento por prefixo.                                               | Consultas exatas e rápidas de chave→valor, cache, contadores, tabelas de símbolos.              |
+| **Desvantagens**         | Alto consumo de memória, custo proporcional ao tamanho da chave.                                                  | Dependência da função hash e não suporta buscas por prefixo nem ordenação natural.              |
+
+**Em resumo:**
+Trie: percorre cada caractere da chave, com custo O(L) (L = tamanho da chave). Compartilha prefixos, facilita busca por prefixo, autocompletar e ordenação natural das chaves. Em contrapartida, consome mais memória e é mais complexa de implementar.
+
+Hash Table: oferece buscas e inserções em O(1) em média, ideal para consultas exatas de chave -> valor. Tem implementação simples e uso de memória geralmente menor, mas depende fortemente de uma boa função hash e não lida bem com prefixos ou ordenação.
+
 # 5 Variações e otimizações
 ## 5.1 Radix Tree
 ### 5.1.1 Definição
