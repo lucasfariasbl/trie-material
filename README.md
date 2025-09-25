@@ -942,6 +942,7 @@ O truque aqui é dar uma turbinada na Trie padrão. Não basta ela só guardar a
 <div align="center">
   <img src="assets/exemplo_problema_monitoria.png" height="1200">
 </div>
+
 #### 7.4.1.3 Complexidade
 O mais legal dessa abordagem é o resultado final. A complexidade, $O(S_N​+S_Q​)$, ou seja, a soma de todas as palavras inseridas com a soma de todos os prefixos, é linear. Isso quer dizer que o tempo de execução cresce junto com o tamanho da entrada, e não de forma explosiva. É uma otimização gigantesca, tornando a solução não só viável, mas extremamente eficiênte😛.
 
@@ -974,48 +975,51 @@ A gente guarda o maior valor de XOR que encontrarmos no geral e as indexações 
 <div align="center">
   <img src="assets/exemplo_problema_sintonia.png" height="300">
 </div>
-#### 7.1.4.4 Complexidade
+
+#### 7.4.3.3 Complexidade
 - **Seja K o número de bits na representação dos números (ex: 31).**
 - **Tempo de Construção:** $O(N \cdot K)$.
 - **Tempo de Busca:** Para cada um dos $N$ números, fazemos uma busca de profundidade $K$. Logo, $O(N \cdot K)$.
 - **Tempo Total:** $O(N \cdot K)$, uma melhoria drástica em relação ao $O(N^2)$ da força bruta.
+
 ## 7.5 Gabarito dos Desafios
 
-### 7.4.4 Problema 1: Lista Telefônica
+### 7.5.1 Problema 1: Lista Telefônica
 **Veredito:** Pode apostar todas as fichas: a Trie é a resposta.
 
-#### 7.4.4.1 Análise Passo a Passo
+#### 7.5.1.1 Análise Passo a Passo
+
 - **Passo 1 (Analisar Problema):** Pense bem, o que são números de telefone? Em sua essência, são apenas **-> sequências de dígitos <-**. Nosso universo se resume ao alfabeto de `0` a `9`, um conjunto bem específico e limitado. Esse cenário, por si só, já deveria acender um letreiro em neon na sua cabeça: "Hmm, isso tem cheiro de Trie😏".
 - **Passo 2 (Analisar Operações):** A alma deste desafio pulsa em uma única palavra: **"prefixo"**. Precisamos saber se um número é o ponto de partida de outro. E qual estrutura de dados parece ter sido desenhada com a palavra "prefixo" em mente? Exato, a Trie. Ela não é apenas uma candidata; é a principal suspeita desde o início.
 - **Passo 3 (Analisar Restrições):** A Trie, neste caso, opera como um detetive particularmente astuto. Ela confere a consistência no exato momento da inserção, sem nenhum trabalho extra. Visualize o "911254" sendo adicionado depois do "911". A Trie, ao percorrer o caminho `9 -> 1 -> 1`, nota na hora: "Ei, este nó por onde estou passando já marca o fim de outra palavra!". Fim de jogo: a lista é inconsistente. O inverso também funciona: se inserirmos "911" e o nó do último `1` já tem uma continuação (o `2`), a Trie deduz: "Entendi, o número que acabei de registrar é o começo de outro já existente!". É simples, é elegante e de uma eficiência brutal🙂‍↔️.
 
-### 7.4.5 Problema 2: Verificador de Anagramas
+### 7.5.2 Problema 2: Verificador de Anagramas
 **Veredito:** De jeito nenhum. Tentar usar uma Trie aqui é uma cilada.😬
 
-#### 7.4.5.1 Análise Passo a Passo
+#### 7.5.2.1 Análise Passo a Passo
 - **Passo 1 (Analisar Problema):** A primeira impressão até que engana. Estamos lidando com strings, que são sequências dentro de um alfabeto finito. Parece o território perfeito, certo? A história é outra.🤐
 - **Passo 2 (Analisar Operações):** É neste ponto que o castelo de cartas da Trie desmorona. A tarefa é verificar anagramas. E qual é a regra de ouro, o DNA de um anagrama? A **ordem dos caracteres não significa nada**; o que importa é a contagem de cada um. Agora, qual é o pilar que sustenta uma Trie? A **-> ordem é sagrada <-**. Seus caminhos são construídos a partir da sequência exata dos caracteres. Querer resolver anagramas com uma Trie é como tentar montar um quebra-cabeça usando um mapa rodoviário. A ferramenta simplesmente não conversa com a lógica do problema.
 - **Passo 3 (Analisar Restrições):** Forçar o uso de uma Trie aqui seria um monumental desperdício de tempo e de linhas de código. A solução de verdade é ridiculamente mais simples. Que tal apenas contar a frequência de cada letra nas duas palavras? Se os totais baterem, são anagramas. Ou, mais direto ainda: coloque as letras de cada palavra em ordem alfabética. Se os resultados forem idênticos, temos um vencedor. Ambas as abordagens são muito mais rápidas e infinitamente mais lógicas.
 
-### 7.4.6 Problema 3: Autocompletar para Contatos
+### 7.5.3 Problema 3: Autocompletar para Contatos
 **Veredito:** Este é o palco perfeito para a Trie brilhar.
-#### 7.4.6.1 Análise Passo a Passo
+#### 7.5.3.1 Análise Passo a Passo
 - **Passo 1 (Analisar Problema):** Temos nomes de contatos. São, por natureza, sequências de caracteres de um alfabeto definido. Nenhum mistério por aqui.
 - **Passo 2 (Analisar Operações):** O que o enunciado pede, exatamente? "Sugerir todos os contatos que **começam com**...". Isso não é só uma pista; é a descrição funcional do superpoder de uma Trie. Já parou pra pensar como a busca do seu smartphone cospe sugestões de nomes antes mesmo de você piscar? Não tem feitiçaria, só a estrutura de dados correta fazendo seu trabalho.
 - **Passo 3 (Analisar Restrições):** A Trie é a escolha canônica para esta tarefa, ponto final. Buscar pelo prefixo `jo` é uma operação quase instantânea. Ao alcançarmos o nó que representa o final de `jo`, a Trie se comporta como um sistema de arquivos incrivelmente otimizado: a partir dali, basta listar todos os "arquivos" (os nomes completos) contidos naquela "pasta". Uma busca em profundidade (DFS) partindo daquele ponto resolve a questão de maneira limpa, rápida e eficiente. Para um sistema que exige respostas em frações de segundo, não existe competidor à altura.
 
-### 7.4.7 Problema 4: Substring Comum Mais Longa
+### 7.5.4 Problema 4: Substring Comum Mais Longa
 **Veredito:** Uma Trie comum não dá conta do recado. Precisamos de mais poder de fogo.
 
-#### 7.4.7.1 Análise Passo a Passo
+#### 7.5.4.1 Análise Passo a Passo
 - **Passo 1 (Analisar Problema):** De volta às strings. O ponto de partida parece familiar e seguro.
 - **Passo 2 (Analisar Operações):** Agora vem a virada na trama. A palavra que muda completamente o jogo é **"substring"**. Uma Trie lida maravilhosamente bem com prefixos, que são a porta da frente de uma palavra; ela só se importa com o começo. Uma substring, por outro lado, é um pedaço que pode ser extraído de qualquer lugar, do meio, do fim. A Trie padrão, com seu foco no ponto de partida, é míope para o que acontece no interior da palavra.
 - **Passo 3 (Analisar Restrições):** Usar uma Trie padrão aqui nos entregaria, no máximo, o prefixo comum mais longo, o que não resolve o problema. E se a gente turbinasse a Trie? Pense na palavra "banana" e imagine inserir na Trie não só ela, mas todos os seus sufixos: "anana", "nana", "ana", "na" e "a". Se replicarmos esse processo para todas as palavras, a resposta que buscamos emerge. Essa estrutura "anabolizada" tem nome e sobrenome: **Árvore de Sufixos (Suffix Tree)**, a prima mais velha e mais forte da Trie, projetada sob medida para este tipo de desafio.
 
-### 7.4.8 Problema 5: Banco de Senhas
+### 7.5.5 Problema 5: Banco de Senhas
 **Veredito:** Embora funcione, um Hash Set é a ferramenta certa para o trabalho.
 
-#### 7.4.8.1 Análise Passo a Passo
+#### 7.5.5.1 Análise Passo a Passo
 - **Passo 1 (Analisar Problema):** Senhas são strings. Sequências de caracteres de um alfabeto. Na teoria, o terreno é fértil para uma Trie.
 - **Passo 2 (Analisar Operações):** Qual é a missão aqui? Uma busca por **existência exata**. A pergunta é direta: "esta senha está no banco de dados?". Queremos um "sim" ou um "não", nada mais. Não há necessidade de prefixos, de sugestões, de nada além de uma consulta de pertencimento.
 - **Passo 3 (Analisar Restrições):** É aqui que a gente precisa pensar como um bom artesão: usar a ferramenta ideal para cada tarefa. Uma Trie é um canivete suíço, cheia de funções úteis. Um **Hash Set**, por outro lado, é uma chave de fenda: faz uma única coisa, mas com uma velocidade e precisão absurdas. Para a simples tarefa de checar se a senha existe, não precisamos do arsenal do canivete; a chave de fenda resolve. Um Hash Set entrega a resposta em tempo médio constante, O(1). É mais simples de implementar para este fim e, muitas vezes, mais eficiente em termos de memória. A Trie até daria conta, mas seria um exagero desnecessário.
