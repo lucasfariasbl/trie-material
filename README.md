@@ -137,7 +137,23 @@ Da mesma forma que o método da inserção de palavras, temos que analisar se no
 
 Caso o retorno da chave seja null, isto indica que não temos um nó referenciando a letra que estamos verificando na vez, portanto, ela nunca foi adicionada. Neste momento, podemos e devemos retornar o valor **false** para o método, indicando que a palavra não está na estrutura.
 
+```java
+public boolean search(String word) {
+    word = word.toLowerCase();
+
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < word.length(); i++) {
+      Node son = nodeAux.getSons().get(word.charAt(i));
+
+      if (son == null) return false;
+```
+
 Caso contrário, ou seja, o valor de retorno seja um nó, passamos a verificar seu HashMap à procura da próxima letra, e assim em diante.
+
+```java
+      nodeAux = son;
+```
 
 Daí pode-se pensar que é basicamente isso, dado que caso todas as letras estejam presentes na estrutura obviamente a palavra inteira está presente. Porém, vamos a um exemplo prático:
 
@@ -150,7 +166,11 @@ ROOT -> C -> A -> R -> R -> O -> S -> S -> E -> <b>L</b>
 > É isso que a estrutura apresentada indica, mas nós nunca digitamos o comando add("Carro"), correto? Para isso, utilizamos o atributo que já foi mencionado no material anteriormente, que indica se certa letra representa o fim de uma palavra.
 > Isso seria, obviamente, testado na última letra da palavra pesquisada, no nosso caso, o "o", retornando o valor booleano **false**.
 
-- Para melhor compreensão, segue a implementação do método:
+```java
+    return nodeAux.isEndOfWord();
+```
+
+- Para melhor compreensão, segue a implementação completa do método:
 
 ```java
 public boolean search(String word) {
@@ -178,9 +198,25 @@ O método recebe como parâmetro um prefixo e retornará um valor booleano refer
 
 Assim como no search(), o startsWith() percorrerá letra por letra da palavra verificando se ela existe no mapa de seu nó parent, caso a letra não tenha valor referente, o retorno é **false**, caso contrário chegamos no ponto que o diferencia do search().
 
+```java
+public boolean startsWith(String prefix) {
+    prefix = prefix.toLowerCase();
+
+    Node nodeAux = this.root;
+
+    for (int i = 0; i < prefix.length(); i++) {
+      Node son = nodeAux.getSons().get(prefix.charAt(i));
+
+      if (son == null) return false;
+```
+
 Ao chegar na última letra, como estamos tratando de prefixos e não de palavras completas, é irrelevante a verificação isEndOfWord() do nó, portanto, se ao longo do loop o caminho não quebrar e chegar ao fim, apenas retornamos **true**.
 
-- Segue a implementação:
+```java
+    return true;
+```
+
+- Segue a implementação completa:
 
 ```java
 public boolean startsWith(String prefix) {
@@ -223,6 +259,14 @@ Sendo os 2 útimos primeiramente:
 - this.root
 - 0
 
+```java
+public void remove(String word) {
+    word = word.toLowerCase();
+
+    remove(word, this.root, 0);
+  }
+```
+
 Nosso algoritmo, enquanto descemos, se baseará em pegar o nó referente a letra atual que estamos tratando e chamar recursivamente. Apenas isso. Simples, não é? Só precisamos substituir nos parâmetros o nó anterior pelo atual e incrementar no index.
 
 **Parte 2: Remoção lógica**
@@ -244,15 +288,7 @@ A partir desse retorno podemos com segurança avisar ao nó pai se ele pode remo
 
 Com esses passos subimos a árvore até terminar nossa pilha de execução, finalizando a função do método.
 
-- Segue abaixo a implementação do método "remove":
-
 ```java
-public void remove(String word) {
-    word = word.toLowerCase();
-
-    remove(word, this.root, 0);
-  }
-
 private boolean remove(String word, Node node, int index) {
     Node son = node.getSons().get(word.charAt(index));
 
@@ -269,7 +305,7 @@ private boolean remove(String word, Node node, int index) {
     }
   }
 ```
-## 3.3 Listagem de palavras por prefixos
+## 3.2.5 Listagem de palavras por prefixos
 
 A função deste método é nos retornar uma lista com todas as palavras que iniciam com o prefixo passado como parâmetro.
 
@@ -283,20 +319,6 @@ Assim como o método de remoção, trabalhamos com etapas para a realização do
 Trivialmente, desceremos por iteração na árvore até o nó da última letra do prefixo, quebrando a execução e retornando uma lista vazia caso um nó não exista.
 
 Ao chegarmos no fim, chamaremos nossa função auxiliar que será responsável por montar todas as palavras e adicioná-las na lista que será retornada ao fim do processo através da técnica Depth-First Search (DFS), que percorre uma árvore por profundidade.
-
-**Parte 2: Depth-First Search**
-
-A partir do nó da última letra do prefixo, chamamos a função catchWords() que terá 3 parâmetros:
-
-- O nó atual
-- O prefixo atual
-- A lista de palavras
-
-A cada chamada do método recursivo, sua primeira verificação é se o nó de seu parâmetro é o fim de uma palavra, pois caso seja, o prefixo se trata de uma palavra completa e é adicionado à lista final.
-
-Após a verificação inicial, utilizamos o DFS para percorrer cada ramo da árvore em profundidade concatenando os caracteres e chamando a função recursivamente. No fim do processo, a lista é retornada e temos, por fim, o resultado esperado
-
-- Para melhor compreensão, segue a implementação do método:
 
 ```java
 public ArrayList<String> findWordWithPrefix(String prefix) {
@@ -315,7 +337,23 @@ public ArrayList<String> findWordWithPrefix(String prefix) {
 
     return catchWords(nodeAux, prefix, words);
   }
+```
 
+**Parte 2: Depth-First Search**
+
+A partir do nó da última letra do prefixo, chamamos a função catchWords() que terá 3 parâmetros:
+
+- O nó atual
+- O prefixo atual
+- A lista de palavras
+
+A cada chamada do método recursivo, sua primeira verificação é se o nó de seu parâmetro é o fim de uma palavra, pois caso seja, o prefixo se trata de uma palavra completa e é adicionado à lista final.
+
+Após a verificação inicial, utilizamos o DFS para percorrer cada ramo da árvore em profundidade concatenando os caracteres e chamando a função recursivamente. No fim do processo, a lista é retornada e temos, por fim, o resultado esperado
+
+- Para melhor compreensão, segue a implementação do método privado:
+
+```java
 private ArrayList<String> catchWords(Node currentNode, String currentPrefix, ArrayList<String> currentWords) {
     if (currentNode.isEndOfWord()) currentWords.add(currentPrefix);
 
@@ -328,7 +366,7 @@ private ArrayList<String> catchWords(Node currentNode, String currentPrefix, Arr
     return currentWords;
   }
 ```
-## 3.4 Análise de complexidade de tempo e memória
+## 3.3 Análise de complexidade de tempo e memória
 
 E finalmente chegamos ao motivo do por que a Trie é tão importante e tão famosa nas estruturas de dados de armazenamento. Sua extrema eficiência.
 
@@ -350,6 +388,54 @@ Por conseguinte, os métodos de inserção, pesquisa de palavras, pesquisa por p
 O único método que se diferencia dessa regra é o de listagem das palavras a partir de certo prefixo, sendo em seu pior caso O(p + n) | p = o tamanho do prefixo ∧ n = a soma de todos os nós existentes a partir do prefixo.
 
 # 4 Comparações
+## 4.1 Trie x Hashtable
+
+| Critério                         | **Trie**                                                                                                          | **Hash Table**                                                                                  |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Conceito**                     | Árvore de prefixos em que cada nó representa um caractere da chave, caminhos formam as palavras.                  | Estrutura baseada em *funções de hash* que mapeia chave -> valor em um array.                      |
+| **Complexidade de Busca**        | **O(L)**, onde *L* é o tamanho da chave. Independente do número de chaves (n).                                    | **O(1)** em média, **O(n)** no pior caso (muitas colisões).                                     |
+| **Complexidade de Inserção**     | **O(L)**                                                                                                          | **O(1)** em média, **O(n)** no pior caso.                                                       |
+| **Complexidade de Remoção**      | **O(L)** (precisa checar se nós podem ser apagados).                                                              | **O(1)** em média; **O(n)** no pior caso.                                                       |
+| **Uso de Memória**               | Geralmente **maior**, pois cada nó guarda ponteiros para o alfabeto. | Geralmente **menor**, já que cada chave é armazenada integralmente sem prefixos compartilhados. |
+| **Compartilhamento de Prefixos** | **Sim**, prefixos comuns são armazenados uma única vez.                                                           | **Não**, cada chave é guardada inteira.                                                         |
+| **Busca por Prefixo**            | **Excelente**, encontra rapidamente todas as chaves com determinado prefixo.                                      | **Ruim**, é necessário percorrer e filtrar todas as chaves.                                    |
+| **Ordenação de Chaves**          | **Natural**, basta percorrer a árvore em ordem alfabética.                                                     | **Não existe**, é preciso copiar e ordenar à parte.                                            |
+| **Flexibilidade de Chaves**      | Ideal para **strings** ou alfabetos finitos.                                         | Aceita **qualquer tipo de chave** com função hash bem definida.                                 |
+| **Dependência de Função Hash**   | **Nenhuma**, não usa hashing.                                                                                     | **Total**, a qualidade da função hash é crítica para evitar colisões.                           |
+| **Escalabilidade**               | Pode crescer muito em largura se o alfabeto for grande.                       | Escala bem, mas exige *rehash* quando a tabela é redimensionada.                                |
+| **Implementação**                | Mais **complexa**, com múltiplos nós e ponteiros.                                                                 | Mais **simples**, e amplamente disponível em bibliotecas padrão.                                |
+| **Melhor Cenário de Uso**        | Autocompletar, dicionários, busca ordenada, roteamento por prefixo.                                               | Consultas exatas e rápidas de chave→valor, cache, contadores, tabelas de símbolos.              |
+| **Desvantagens**         | Alto consumo de memória, custo proporcional ao tamanho da chave.                                                  | Dependência da função hash e não suporta buscas por prefixo nem ordenação natural.              |
+
+**Em resumo:**
+Trie: percorre cada caractere da chave, com custo O(L) (L = tamanho da chave). Compartilha prefixos, facilita busca por prefixo, autocompletar e ordenação natural das chaves. Em contrapartida, consome mais memória e é mais complexa de implementar.
+
+Hash Table: oferece buscas e inserções em O(1) em média, ideal para consultas exatas de chave -> valor. Tem implementação simples e uso de memória geralmente menor, mas depende fortemente de uma boa função hash e não lida bem com prefixos ou ordenação.
+
+## 4.2 Comparação: Trie vs Árvore Balanceada
+
+|  **Critério**                   |  **Trie**                                                                 |  **Árvore Balanceada (AVL, Red-Black, B-Tree etc.)**                         |
+|----------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| **Estrutura**                    | Árvore em que cada **nó representa um caractere**                           | Árvore binária (ou n-ária) com balanceamento baseado em **comparação de chaves** |
+| **Chave**                        | Armazenada **como caminho** entre raiz e folha                              | Armazenada **inteira** em cada nó                                              |
+| **Ordem das chaves**             | ordem lexicográfica natural                                         | ordem definida por comparações                                         |
+| **Busca por prefixo**            | Muito eficiente (O(P))                                                    |  Ineficiente – requer percorrer subárvore                                    |
+| **Busca por chave completa**     | O(L) – L = comprimento da chave                                             | O(log N) – N = número de chaves                                                |
+| **Inserção**                     | O(L)                                                                         | O(log N)                                                                        |
+| **Remoção**                      | O(L)                                                                         | O(log N)                                                                        |
+| **Eficiência com prefixos**      | Altíssima                                                                  |  Fraca                                                                        |
+| **Uso de memória**               |  Maior – muitos nós (especialmente com alfabetos grandes)                 |  Mais eficiente – armazena chaves completas                                   |
+| **Comparações entre chaves**     |  Não há comparações – só navegação por caracteres                          |  Baseada em comparação entre chaves inteiras                                  |
+| **Desempenho em grandes alfabetos**|  Pior – pode ter muitos filhos por nó                                     |  Melhor – não depende do tamanho do alfabeto                                  |
+| **Autocomplete e correção**      |  Suporte direto                                                             |  Precisa de lógica adicional                                                  |
+| **Complexidade de implementação**|  Alta – manipulação de muitos ponteiros                                    |  Moderada – depende do tipo de árvore (AVL, Red-Black, etc.)                 |
+| **Aplicações comuns**            | Dicionários, autocomplete, buscas por prefixo                               | Índices de bancos de dados, conjuntos ordenados, mapas ordenados               |
+
+---
+
+**Em resumo:** 
+A Trie busca cada caractere da chave em O(L)  (no qual L é o tamanho da chave), compartilhando prefixos e sendo ótima para autocompletar e buscas por prefixo.
+A BST armazena a chave inteira e busca em O(log n) (se balanceada), ideal para consultas ordenadas e intervalos, com menor consumo de memória quando não há muitos prefixos repetidos.
 # 5 Variações e otimizações
 ## 5.1 Radix Tree
 ### 5.1.1 Definição
@@ -686,7 +772,7 @@ Pois em sua essência, Trie é uma estrutura otimizada para armazenar e consulta
 
 **Passo 2:** Analisar quais as operações chave para resolver o problema.
 
-Próxima pergunta que você deve fazer, é quais as operações chaves que preciso para resolver o problema, se as operações são baseadas em prefixos, Trie é disparada uma das estruturas de dados que você deve levar em consideração. Ela materializa a ideia de prefixo em sua estrutura, a sua eficiência para suas operações são geralmente *O(L)*, onde *L* é o comprimento do prefixo. Por exemplo:
+Próxima pergunta que você deve fazer, é quais as operações chaves que preciso para resolver o problema, se as operações são baseadas em prefixos, Trie é disparada uma das estruturas de dados que você deve levar em consideração. Ela materializa a ideia de prefixo em sua estrutura, a sua eficiência para suas operações são geralmente $O(L)$, onde $L$ é o comprimento do prefixo. Por exemplo:
 - "Liste todas as palavras que começam com ..."(autocompletar)
 - "Verifique se tem alguma palavra com prefixo ..."
 
@@ -702,8 +788,8 @@ Para cada nó, pode ter ponteiros para cada elemento no alfabeto, desse modo, se
 >**"O afalbeto é pequeno ou é muito grande?"**
 
 Bom, e no caso de ser inviável? Considere variações de Trie com otmizações de memória, como uma *TST*, ou algumas otimizações como guardar um mapa de hash em cada nó invés de uma array fixo, economiza mais memória em troca de um pouco de velocidade.
-### 7.1.2 Problemas
-#### 7.1.2.1 [Monitoria de LP2](https://www.spoj.com/problems/ADAINDEX/en/)
+## 7.2 Problemas Práticos
+### 7.2.1 [Monitoria de LP2](https://www.spoj.com/problems/ADAINDEX/en/)
 Ana, para otimizar seu tempo ao corrigir os inúmeros projetos da disciplina de Laboratório de Programação 2, está desenvolvendo um script de análise de código.
 
 O primeiro passo de seu script é extrair todos os identificadores (nomes de variáveis, funções, classes, etc.) dos códigos dos alunos e compilá-los em uma grande lista. Agora, para analisar rapidamente os padrões de nomenclatura e a aderência dos alunos às boas práticas, ela precisa de uma forma eficiente de fazer consultas nessa lista.
@@ -751,7 +837,7 @@ z
 1
 0
 ```
-#### 7.1.2.2 [Nicks semelhantes](https://codeforces.com/problemset/problem/514/C)
+### 7.2.2 [Nicks semelhantes](https://codeforces.com/problemset/problem/514/C)
 Gabriel, um ávido jogador de Valorant, está desenvolvendo uma ferramenta para analisar nicks de jogadores. A ideia é encontrar jogadores com nicks parecidos, que possam ser amigos ou contas alternativas (*smurfs*).
 
 Inicialmente, a memória de sua ferramenta é preenchida com uma lista de **n** nicks. Em seguida, a ferramenta deve ser capaz de processar consultas do seguinte tipo: "Dado um nick **s**, determine se a memória contém um nick **t** que tenha o mesmo número de caracteres que **s** e que difira de **s** em exatamente uma posição".
@@ -794,7 +880,7 @@ NO
 NO
 YES
 ```
-#### 7.1.2.3 [Sintonia computacional](https://www.spoj.com/problems/QN01/en/)
+### 7.2.3 [Sintonia computacional](https://www.spoj.com/problems/QN01/en/)
 Lucas e Yan, figuras conhecidas nos corredores da UFCG, compartilham uma tradição sagrada: comer pastel em seu Hélio. Dizem as lendas que a quantidade de ketchup que Lucas coloca no pastel é diretamente proporcional à complexidade do último problema que resolveram.
 
 Uma coisa que sempre intrigou seus colegas é como eles consistentemente tiram notas muito parecidas em todas as disciplinas. O segredo, segundo eles, está em sua "sintonia computacional". Para provar isso, eles criaram um desafio.
@@ -818,3 +904,122 @@ Na primeira linha, um único inteiro, com a mairo soma da operação XOR entre a
 3
 1 2
 ```
+
+## 7.3 Trie ou não Trie? Eis a questão
+### 7.3.1 Problema 1: Lista Telefônica
+**Descrição:** Você recebe uma lista de números de telefone. Sua tarefa é determinar se a lista é consistente, ou seja, se nenhum número é prefixo de outro. Por exemplo, se a lista contém "911" e "911254", ela é inconsistente. 
+
+**Pergunta:** A Trie é uma boa estrutura para resolver este problema? Por quê?
+
+### 7.3.2 Problema 2: Verificador de Anagramas
+**Descrição:** Dadas duas palavras, determine se uma é um anagrama da outra (contém exatamente as mesmas letras, na mesma quantidade, mas em ordem diferente). Por exemplo, "amor" e "roma" são anagramas. 
+
+**Pergunta:** A Trie ajudaria a resolver este problema de forma eficiente? Qual seria a abordagem principal?
+
+### 7.3.3 Problema 3: Autocompletar para Contatos
+**Descrição:** Você está implementando a busca em uma lista de contatos. Ao digitar as primeiras letras de um nome, o sistema deve sugerir todos os contatos que começam com essas letras. 
+
+**Pergunta:** Qual estrutura de dados você usaria para implementar essa funcionalidade de forma que as sugestões apareçam quase instantaneamente?
+
+### 7.3.4 Problema 4: Substring Comum Mais Longa
+**Descrição:** Dadas duas strings, encontre a substring mais longa que aparece em ambas. Por exemplo, para "banana" e "cabana", a resposta é "bana". 
+
+**Pergunta:** Seria possível usar uma Trie padrão para encontrar a substring comum mais longa? Qual é a dificuldade?
+
+### 7.3.5 Problema 5: Banco de Senhas
+**Descrição:** Um sistema precisa verificar se uma nova senha escolhida por um usuário já existe em um banco de dados com milhões de senhas conhecidas para evitar senhas duplicadas. A verificação precisa ser extremamente rápida. 
+
+**Pergunta:** Entre uma Trie e um Hash Set (Conjunto de Hash), qual seria mais apropriado para esta tarefa e por quê?
+## 7.4 Gabarito dos Problemas Práticos
+### 7.4.1 [Monitoria de LP2](https://www.spoj.com/problems/ADAINDEX/en/ "null")
+#### 7.4.1.1 Análise do Problema
+À primeira vista, o problema parece ser só uma contagem simples. Mas qual é a pegadinha? A escala. Com milhões de palavras e consultas, uma abordagem de força bruta, checando palavra por palavra, seria um desastre. Simplesmente não passaria no tempo limite. A questão principal, então, não é _o quê_ fazer, mas _como_ fazer isso de forma inteligente e rápida. O enunciado praticamente grita a resposta ao pedir para contar palavras que "começam com" um prefixo. Esse é o território da Trie. Ela nasceu para isso. Então, como a gente usa essa ferramenta da melhor forma possível?
+#### 7.4.1.2 Estratégia de Solução
+O truque aqui é dar uma turbinada na Trie padrão. Não basta ela só guardar as palavras; ela precisa nos ajudar a contar. A gente quer que a própria estrutura já tenha a resposta pronta. Mas como? O pensamento é o seguinte: se, ao inserir uma palavra, a gente deixasse um "rastro" nos nós por onde ela passou?
+1. **Estrutura do Nó Aprimorada:** A chave para a velocidade é modificar o tijolo básico da Trie: o nó. Além dos ponteiros para os filhos, cada nó vai ter um contador, que podemos chamar de `prefix_count`. É uma ideia simples, mas poderosa. Pense nesse contador como um pedágio numa estrada: toda vez que uma palavra "passa" por um nó ao ser inserida, o contador aumenta. Curto e grosso.
+2. **Construção e Agregação:** Na hora de construir a Trie, a mágica acontece. A gente insere cada uma das `N` palavras, caractere por caractere. O pulo do gato é que cada nó que a gente visita nesse caminho tem seu `prefix_count` incrementado. O que isso significa na prática? Que um nó passa a saber não só que ele faz parte de um caminho, mas _quantas_ palavras compartilham aquele exato prefixo. No final, a Trie deixa de ser só um dicionário e vira um mapa que mostra o quão popular é cada começo de palavra.
+3. **Consulta Super Rápida:** Com a Trie montada desse jeito, a consulta vira uma piada de tão fácil. Para um prefixo qualquer, a gente só precisa passear pela Trie. Se o caminho existir até o final do prefixo, o número guardado no `prefix_count` daquele último nó já é a nossa resposta. Sem precisar olhar o resto do banco de dados. E se o caminho quebrar no meio? Mais fácil ainda. Quer dizer que nenhuma palavra começa com aquele prefixo, e a resposta é zero.
+<div align="center">
+  <img src="assets/exemplo_problema_monitoria.png" height="1200">
+</div>
+
+#### 7.4.1.3 Complexidade
+O mais legal dessa abordagem é o resultado final. A complexidade, $O(S_N​+S_Q​)$, ou seja, a soma de todas as palavras inseridas com a soma de todos os prefixos, é linear. Isso quer dizer que o tempo de execução cresce junto com o tamanho da entrada, e não de forma explosiva. É uma otimização gigantesca, tornando a solução não só viável, mas extremamente eficiênte😛.
+
+### 7.4.2 [Nicks semelhantes](https://codeforces.com/problemset/problem/514/C "null")
+#### 7.4.2.1 Análise do Problema
+Este problema já é um pouco mais sutil. A busca não é por uma correspondência exata, nem por um prefixo. O desafio é encontrar uma "semelhança" com uma regra bem específica: mesmo tamanho e diferença em apenas uma posição. Força bruta? Sem chance, seria lento demais. A pista crucial aqui é o alfabeto minúsculo ('a', 'b', 'c'). Um alfabeto tão pequeno limita drasticamente o espaço de busca para variações. Isso é um convite para usar uma estrutura que se organiza por caracteres, como a Trie. A grande questão é: como podemos vasculhar a Trie em busca de uma correspondência que permite exatamente uma falha?🧐
+#### 7.4.2.2 Estratégia de Solução
+A estratégia se baseia numa ideia bem legal: uma busca em profundidade (DFS) que funciona como uma "busca com orçamento para erros". A Trie nos dá a estrutura para não repetir trabalho, e a recursão vai controlar esse nosso orçamento.
+1. **Construção da Trie:** Primeiro, o básico. Inserimos todos os `N` nicks na Trie, marcando os nós terminais com uma flag `isEndOfWord` para sabermos onde uma palavra de fato termina.
+2. **Consulta Recursiva com Orçamento de Erros:** Para cada consulta `s`, a gente dispara uma função recursiva que navega pela Trie. O brilhantismo está nos parâmetros que ela carrega: o nó atual, a posição `index` na string `s`, e um contador `mismatches`. Esse contador é o nosso orçamento.
+    - **Como a busca funciona?** Em cada nó, a gente olha para os possíveis caminhos ('a', 'b', 'c'). Se o caractere do caminho bate com o da nossa string `s`, ótimo, seguimos em frente sem gastar o orçamento. Mas e se for diferente? Aí a gente gasta uma unidade do orçamento (`mismatches` aumenta) e continua mesmo assim. É a nossa chance de encontrar a palavra "semelhante".
+    - **Quando a gente para?** A busca por um caminho é abortada na hora se o orçamento estourar (`mismatches > 1`). Isso poda a árvore de busca e economiza um tempo absurdo. Por outro lado, se chegarmos ao final da string, uma solução válida só é encontrada se duas condições forem perfeitas: o orçamento foi gasto em exatamente uma unidade (`mismatches == 1`) e o nó atual representa o fim de uma palavra de verdade (`node.isEndOfWord == true`).
+Essa abordagem sistemática explora todas as variações de uma letra de forma inerentemente eficiente, pois os prefixos comuns a múltiplos nicks são percorridos apenas uma vez.
+#### 7.4.2.3 Complexidade
+A construção é linear em relação à soma dos comprimentos dos nicks, $O(\sum{|nick_i|})$. A consulta para uma string de comprimento $L$ tem uma complexidade de aproximadamente $O(L\cdot ∣\text{alfabeto}∣)$, pois em cada nível, no pior caso, exploramos um pequeno número de ramos. O tempo total é, portanto, ordens de magnitude mais rápido que a abordagem ingênua, sendo independente do número total de nicks na base de dados durante a fase de consulta. 
+### 7.4.3 [Sintonia computacional](https://www.spoj.com/problems/QN01/en/)
+#### 7.4.3.1 Análise do Problema
+Aqui a Trie vai além do mundo das palavras e mergulha nas operações de bits. O desafio de achar o maior XOR possível entre dois números de uma lista enorme mostra na hora que a força bruta ($O(N^2)$) não é uma opção. A solução exige uma virada de chave no nosso pensamento. E se a gente parasse de ver os números como$\dots$ bem, números, e passasse a vê-los como sequências de bits? Essa abstração é a porta de entrada para a **Trie Binária**. A gente vai organizar os números pelos seus prefixos binários, e essa é a chave para uma busca muito mais rápida.
+
+#### 7.4.3.2 Estratégia de Solução
+A solução se apoia numa estratégia gulosa (ou "esganada"), que a Trie Binária torna possível. Pense bem, qual é o segredo para maximizar um número em binário? É fazer seus bits mais à esquerda, os que valem mais, serem iguais a `1`.
+1. **Estrutura e Construção:** A gente monta uma Trie onde cada nó tem no máximo dois filhos: `0` e `1`. Simples assim. Cada número da lista é inserido como um caminho de `K` bits (por exemplo, cerca de 31 para um `int`), do mais importante (MSB) para o menos importante (LSB).
+2. **Busca Gulosa:** Para cada número `x` da lista, a gente vai caçar na Trie o seu par perfeito `y`. Como essa caçada funciona? Para cada bit de `x`, do mais valioso para o menos, a gente aplica uma lógica gulosa.
+    - A gente sabe que `a XOR b` dá `1` se `a` e `b` forem diferentes. Certo? Então, para fazer o resultado ser o maior possível, se o bit atual de `x` é `0`, a gente quer muito achar um caminho na Trie que comece com `1`. Por isso, tentamos descer pelo filho `1`. Se o bit de `x` é `1`, a gente faz o contrário, buscando o caminho `0`.
+    - É como se estivéssemos construindo o par ideal para o XOR, bit a bit. Em cada nível da Trie, a gente faz a escolha que "liga" o bit mais valioso que der no resultado. E se o caminho ideal (o bit oposto) não existir? Aí não tem jeito, somos forçados a seguir pelo que tem, e aceitamos um `0` naquela posição do resultado.
+    - Ao final dessa viagem de `K` passos, teremos encontrado o número que dá o maior XOR possível com `x`.
+
+A gente guarda o maior valor de XOR que encontrarmos no geral e as indexações para dar a resposta final.
+
+<div align="center">
+  <img src="assets/exemplo_problema_sintonia.png" height="300">
+</div>
+
+#### 7.4.3.3 Complexidade
+- **Seja K o número de bits na representação dos números (ex: 31).**
+- **Tempo de Construção:** $O(N \cdot K)$.
+- **Tempo de Busca:** Para cada um dos $N$ números, fazemos uma busca de profundidade $K$. Logo, $O(N \cdot K)$.
+- **Tempo Total:** $O(N \cdot K)$, uma melhoria drástica em relação ao $O(N^2)$ da força bruta.
+
+## 7.5 Gabarito dos Desafios
+
+### 7.5.1 Problema 1: Lista Telefônica
+**Veredito:** Pode apostar todas as fichas: a Trie é a resposta.
+
+#### 7.5.1.1 Análise Passo a Passo
+
+- **Passo 1 (Analisar Problema):** Pense bem, o que são números de telefone? Em sua essência, são apenas **-> sequências de dígitos <-**. Nosso universo se resume ao alfabeto de `0` a `9`, um conjunto bem específico e limitado. Esse cenário, por si só, já deveria acender um letreiro em neon na sua cabeça: "Hmm, isso tem cheiro de Trie😏".
+- **Passo 2 (Analisar Operações):** A alma deste desafio pulsa em uma única palavra: **"prefixo"**. Precisamos saber se um número é o ponto de partida de outro. E qual estrutura de dados parece ter sido desenhada com a palavra "prefixo" em mente? Exato, a Trie. Ela não é apenas uma candidata; é a principal suspeita desde o início.
+- **Passo 3 (Analisar Restrições):** A Trie, neste caso, opera como um detetive particularmente astuto. Ela confere a consistência no exato momento da inserção, sem nenhum trabalho extra. Visualize o "911254" sendo adicionado depois do "911". A Trie, ao percorrer o caminho `9 -> 1 -> 1`, nota na hora: "Ei, este nó por onde estou passando já marca o fim de outra palavra!". Fim de jogo: a lista é inconsistente. O inverso também funciona: se inserirmos "911" e o nó do último `1` já tem uma continuação (o `2`), a Trie deduz: "Entendi, o número que acabei de registrar é o começo de outro já existente!". É simples, é elegante e de uma eficiência brutal🙂‍↔️.
+
+### 7.5.2 Problema 2: Verificador de Anagramas
+**Veredito:** De jeito nenhum. Tentar usar uma Trie aqui é uma cilada.😬
+
+#### 7.5.2.1 Análise Passo a Passo
+- **Passo 1 (Analisar Problema):** A primeira impressão até que engana. Estamos lidando com strings, que são sequências dentro de um alfabeto finito. Parece o território perfeito, certo? A história é outra.🤐
+- **Passo 2 (Analisar Operações):** É neste ponto que o castelo de cartas da Trie desmorona. A tarefa é verificar anagramas. E qual é a regra de ouro, o DNA de um anagrama? A **ordem dos caracteres não significa nada**; o que importa é a contagem de cada um. Agora, qual é o pilar que sustenta uma Trie? A **-> ordem é sagrada <-**. Seus caminhos são construídos a partir da sequência exata dos caracteres. Querer resolver anagramas com uma Trie é como tentar montar um quebra-cabeça usando um mapa rodoviário. A ferramenta simplesmente não conversa com a lógica do problema.
+- **Passo 3 (Analisar Restrições):** Forçar o uso de uma Trie aqui seria um monumental desperdício de tempo e de linhas de código. A solução de verdade é ridiculamente mais simples. Que tal apenas contar a frequência de cada letra nas duas palavras? Se os totais baterem, são anagramas. Ou, mais direto ainda: coloque as letras de cada palavra em ordem alfabética. Se os resultados forem idênticos, temos um vencedor. Ambas as abordagens são muito mais rápidas e infinitamente mais lógicas.
+
+### 7.5.3 Problema 3: Autocompletar para Contatos
+**Veredito:** Este é o palco perfeito para a Trie brilhar.
+#### 7.5.3.1 Análise Passo a Passo
+- **Passo 1 (Analisar Problema):** Temos nomes de contatos. São, por natureza, sequências de caracteres de um alfabeto definido. Nenhum mistério por aqui.
+- **Passo 2 (Analisar Operações):** O que o enunciado pede, exatamente? "Sugerir todos os contatos que **começam com**...". Isso não é só uma pista; é a descrição funcional do superpoder de uma Trie. Já parou pra pensar como a busca do seu smartphone cospe sugestões de nomes antes mesmo de você piscar? Não tem feitiçaria, só a estrutura de dados correta fazendo seu trabalho.
+- **Passo 3 (Analisar Restrições):** A Trie é a escolha canônica para esta tarefa, ponto final. Buscar pelo prefixo `jo` é uma operação quase instantânea. Ao alcançarmos o nó que representa o final de `jo`, a Trie se comporta como um sistema de arquivos incrivelmente otimizado: a partir dali, basta listar todos os "arquivos" (os nomes completos) contidos naquela "pasta". Uma busca em profundidade (DFS) partindo daquele ponto resolve a questão de maneira limpa, rápida e eficiente. Para um sistema que exige respostas em frações de segundo, não existe competidor à altura.
+
+### 7.5.4 Problema 4: Substring Comum Mais Longa
+**Veredito:** Uma Trie comum não dá conta do recado. Precisamos de mais poder de fogo.
+
+#### 7.5.4.1 Análise Passo a Passo
+- **Passo 1 (Analisar Problema):** De volta às strings. O ponto de partida parece familiar e seguro.
+- **Passo 2 (Analisar Operações):** Agora vem a virada na trama. A palavra que muda completamente o jogo é **"substring"**. Uma Trie lida maravilhosamente bem com prefixos, que são a porta da frente de uma palavra; ela só se importa com o começo. Uma substring, por outro lado, é um pedaço que pode ser extraído de qualquer lugar, do meio, do fim. A Trie padrão, com seu foco no ponto de partida, é míope para o que acontece no interior da palavra.
+- **Passo 3 (Analisar Restrições):** Usar uma Trie padrão aqui nos entregaria, no máximo, o prefixo comum mais longo, o que não resolve o problema. E se a gente turbinasse a Trie? Pense na palavra "banana" e imagine inserir na Trie não só ela, mas todos os seus sufixos: "anana", "nana", "ana", "na" e "a". Se replicarmos esse processo para todas as palavras, a resposta que buscamos emerge. Essa estrutura "anabolizada" tem nome e sobrenome: **Árvore de Sufixos (Suffix Tree)**, a prima mais velha e mais forte da Trie, projetada sob medida para este tipo de desafio.
+
+### 7.5.5 Problema 5: Banco de Senhas
+**Veredito:** Embora funcione, um Hash Set é a ferramenta certa para o trabalho.
+
+#### 7.5.5.1 Análise Passo a Passo
+- **Passo 1 (Analisar Problema):** Senhas são strings. Sequências de caracteres de um alfabeto. Na teoria, o terreno é fértil para uma Trie.
+- **Passo 2 (Analisar Operações):** Qual é a missão aqui? Uma busca por **existência exata**. A pergunta é direta: "esta senha está no banco de dados?". Queremos um "sim" ou um "não", nada mais. Não há necessidade de prefixos, de sugestões, de nada além de uma consulta de pertencimento.
+- **Passo 3 (Analisar Restrições):** É aqui que a gente precisa pensar como um bom artesão: usar a ferramenta ideal para cada tarefa. Uma Trie é um canivete suíço, cheia de funções úteis. Um **Hash Set**, por outro lado, é uma chave de fenda: faz uma única coisa, mas com uma velocidade e precisão absurdas. Para a simples tarefa de checar se a senha existe, não precisamos do arsenal do canivete; a chave de fenda resolve. Um Hash Set entrega a resposta em tempo médio constante, O(1). É mais simples de implementar para este fim e, muitas vezes, mais eficiente em termos de memória. A Trie até daria conta, mas seria um exagero desnecessário.
