@@ -766,8 +766,8 @@ Essas sequências genéticas podem ser muito mais longas e repetitivas que essas
 <br>
 Além disso, o uso da Trie vai otimizar o tempo de busca dessas sequências, porque muitas delas compartilham prefixos, ou seja, começam com as mesmas sequências. A Trie aproveita isso,tornando assim a busca mais rápida, já que não precisa repetir o mesmo caminho várias vezes. Isso é ideal quando temos muitas sequências parecidas, como é comum no DNA, tornando assim a Trie muito utilizada para buscar sequências de DNA principalmente em áreas da bioinformática, onde é essencial lidar com grandes volumes de dados genéticos de forma rápida e eficiente.
 
-## 6.3  PLN - Processamento de Linguagem Natural
-### 6.3.1 Manipulação e Análise de Texto em Grande Escala
+## 7.3 PLN - Processamento de Linguagem Natural
+### 7.3.1 Manipulação e Análise de Texto em Grande Escala
 No campo de PLN (Processamento de Linguagem Natural), sistemas precisam lidar com grandes volumes de texto para tarefas como:
 - Correção ortográfica
 - Sugestão de Palavras(autocompletar)
@@ -797,25 +797,25 @@ Suponha que queremos armazenar as seguintes palavras:
 A Trie que será construída terá ramos em comum para os prefixos repetidos (por exemplo, "ca", "cas", "cam"), como acontece frequentemente na linguagem natural.
 Assim como em sequências de DNA, as palavras podem compartilhar partes idênticas no início, e a Trie aproveita isso para otimizar o armazenamento.Em vez de repetir cada letra para cada palavra, a Trie armazena os prefixos compartilhados apenas uma vez.Tendo assim um melhor uso do armazenamento e muita Eficiência na busca por palavras.
 
-## 6.4 Algoritmos de Busca e Ordenação 
-### 6.4.1 Algortimo de Aho-Corasick
+## 7.4 Algoritmos de Busca e Ordenação 
+### 7.4.1 Algortimo de Aho-Corasick
 O algoritmo aho-corasick é um algoritmo de busca de strings criado em 1975 por Alfred V. Aho e Margaret J. Corasick.Ele é um algoritmo que nos permite localizar ocorrências de múltiplas strings (0 dicionário") dentro de um texto de entrada.O algoritmo realiza a busca por todas as strings ao mesmo tempo, tornando-se eficiente para essa tarefa. Sua complexidade é linear em relação ao tamanho das strings do dicionário,mais o comprimento do texto pesquisado mais o número de ocorrências encontradas. No entanto, caso as substrings a serem buscadas se sobreponham, como no caso de um dicionário com "a", "aa", "aaa", "aaaa" e um texto "aaaa", o número de correspondências pode crescer de forma quadrática.
 
 **Como ele funciona**
-#### Contrução da Trie
+#### 7.4.1.1 Contrução da Trie
 O Aho-Corasick começa construindo um Trie a partir do conjunto de padrões (palavras) que se dejeja buscar no texto.Cada caminho da raiz até um nó terminal da Trie representa uma correspondência de um padrão.Se tivermos os padrões "cat", "car", "bat" e "rat", a Trie seria construída da seguinte maneira:
 <div align="center">
 <img src="assets/trie Aho-corasick.jpg" height="400">
 </div>
 
-#### 6.4.2 Links de Falha 
+#### 7.4.1.2 Links de Falha 
 Depois de construir a Trie,o algoritmo adiciona links de falha aos nós da Trie. Esses links são utilizados para otimizar o processo de busca.
 
 Links de falha: Quando o algoritmo encontra uma correspondência parcial, mas não completa, ele segue o link de falha para tentar outra possibilidade, sem precisar retroceder. Isso é crucial para garantir que a busca ocorra de maneira eficiente mesmo quando há falhas em algumas correspondências.
 
 Por exemplo, se estivermos buscando a palavra "rat" no texto e chegarmos ao nó correspondente ao prefixo "ra", mas não houver uma correspondência direta com o próximo caractere "t", o link de falha ajudará o algoritmo a continuar a busca a partir de outro ponto da Trie que ainda seja válido para o caractere "t".
 
-#### 6.4.3 Busca no Texto
+#### 7.4.1.3 Busca no Texto
 Uma vez que a Trie e os links de falha estão construídos, o algoritmo começa a percorrer o texto de entrada.
 
 **Primeiro passo:** Processamento do Texto
@@ -853,11 +853,11 @@ Em vez de verificar um padrão de cada vez, ele pode verificar múltiplos padrõ
 
 Isso torna a busca muito mais rápida, já que ele não precisa repetir a busca para cada palavra. Ele pode verificar todos os padrões ao mesmo tempo, economizando tempo, especialmente quando há um grande número de palavras a serem verificadas em um único texto.
 
-### 6.4.2 Burst Sort
+### 7.4.2 Burst Sort
 O Burst Sort é um algoritmo de ordenação eficiente, especialmente para grandes conjuntos de strings ou palavras, onde há muitos prefixos em comum. Criado para lidar com grandes volumes de dados, o Burst Sort divide as strings em "pedaços" e organiza essas partes de maneira otimizada, aproveitando a estrutura de Trie para ordenar eficientemente.
 
 **Como ele Funciona**
-#### Divisão das Strings em Pedaços
+#### 7.4.2.1 Divisão das Strings em Pedaços
 O Burst Sort começa dividindo as strings em "pedaços" menores. Cada "pedaço" é então armazenado em uma estrutura adequada para ordenação eficiente, como uma Trie.
 
 Porque dividir as Strings?
@@ -865,10 +865,10 @@ Ao dividir as strings, o algoritmo consegue otimizar o uso de memória e tornar 
 
 Após dividir as strings, o Burst Sort armazena cada "pedaço" em uma Trie. A Trie organiza as strings de forma eficiente, aproveitando os prefixos compartilhados para otimizar tanto a memória quanto o tempo de ordenação.
 
-#### Uso de Baldes
+#### 7.4.2.2 Uso de Baldes
 Cada nó da Trie pode conter um balde onde são armazenadas as strings que compartilham aquele prefixo. Assim, em vez de espalhar imediatamente todas as strings, elas ficam agrupadas até que o balde atinja um limite de capacidade.
 
-#### Estouro-Burst
+#### 7.4.2.3 Estouro-Burst
 Quando um balde fica cheio, ocorre o Burst (“explosão”):  
 - O balde é esvaziado.  
 - As strings nele contidas são distribuídas em novos nós filhos da Trie, seguindo os próximos caracteres.  
@@ -876,13 +876,13 @@ Quando um balde fica cheio, ocorre o Burst (“explosão”):
 
 ---
 
-####  4. Ordenação Local
+#### 7.4.2.4 4. Ordenação Local
 Baldes pequenos, que não chegam a estourar, podem ser ordenados localmente usando algoritmos tradicionais como **quicksort** ou **insertion sort**.  
 Como esses baldes são pequenos, essa ordenação é feita de forma muito rápida.
 
 ---
 
-####  5. Geração da Lista Ordenada
+#### 7.4.2.5 5. Geração da Lista Ordenada
 No final, para recuperar as strings em **ordem lexicográfica**, basta **percorrer a Trie em ordem**, concatenando os prefixos armazenados.  
 
 - A Trie já organiza naturalmente os caracteres em ordem alfabética.  
@@ -1153,4 +1153,4 @@ A gente guarda o maior valor de XOR que encontrarmos no geral e as indexações 
 #### 8.5.5.1 Análise Passo a Passo
 - **Passo 1 (Analisar Problema):** Senhas são strings. Sequências de caracteres de um alfabeto. Na teoria, o terreno é fértil para uma Trie.
 - **Passo 2 (Analisar Operações):** Qual é a missão aqui? Uma busca por **existência exata**. A pergunta é direta: "esta senha está no banco de dados?". Queremos um "sim" ou um "não", nada mais. Não há necessidade de prefixos, de sugestões, de nada além de uma consulta de pertencimento.
-- **Passo 3 (Analisar Restrições):** É aqui que a gente precisa pensar como um bom artesão: usar a ferramenta ideal para cada tarefa. Uma Trie é um canivete suíço, cheia de funções úteis. Um **Hash Set**, por outro lado, é uma chave de fenda: faz uma única coisa, mas com uma velocidade e precisão absurdas. Para a simples tarefa de checar se a senha existe, não precisamos do arsenal do canivete; a chave de fenda resolve. Um Hash Set entrega a resposta em tempo médio constante, O(1). É mais simples de implementar para este fim e, muitas vezes, mais eficiente em termos de memória. A Trie até daria conta, mas seria um exagero desnecessário.
+- **Passo 3 (Analisar Restrições):** É aqui que a gente precisa pensar como um bom artesão: usar a ferramenta ideal para cada tarefa. Uma Trie é um canivete suíço, cheia de funções úteis. Um **Hash Set**, por outro lado, é uma chave de fenda: faz uma única coisa, mas com uma velocidade e precisão absurdas. Para a simples tarefa de checar se a senha existe, não precisamos do arsenal do canivete; a chave de fenda resolve. Um Hash Set entrega a resposta em tempo médio constante, $O(1)$. É mais simples de implementar para este fim e, muitas vezes, mais eficiente em termos de memória. A Trie até daria conta, mas seria um exagero desnecessário.
