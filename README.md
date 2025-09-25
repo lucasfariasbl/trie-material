@@ -807,14 +807,14 @@ O Aho-Corasick começa construindo um Trie a partir do conjunto de padrões (pal
 <img src="assets/trie Aho-corasick.jpg" height="400">
 </div>
 
-#### Links de Falha 
+#### 6.4.2 Links de Falha 
 Depois de construir a Trie,o algoritmo adiciona links de falha aos nós da Trie. Esses links são utilizados para otimizar o processo de busca.
 
 Links de falha: Quando o algoritmo encontra uma correspondência parcial, mas não completa, ele segue o link de falha para tentar outra possibilidade, sem precisar retroceder. Isso é crucial para garantir que a busca ocorra de maneira eficiente mesmo quando há falhas em algumas correspondências.
 
 Por exemplo, se estivermos buscando a palavra "rat" no texto e chegarmos ao nó correspondente ao prefixo "ra", mas não houver uma correspondência direta com o próximo caractere "t", o link de falha ajudará o algoritmo a continuar a busca a partir de outro ponto da Trie que ainda seja válido para o caractere "t".
 
-#### Busca no Texto
+#### 6.4.3 Busca no Texto
 Uma vez que a Trie e os links de falha estão construídos, o algoritmo começa a percorrer o texto de entrada.
 
 **Primeiro passo:** Processamento do Texto
@@ -875,13 +875,13 @@ Quando um balde fica cheio, ocorre o Burst (“explosão”):
 
 ---
 
-###  4. Ordenação Local
+####  4. Ordenação Local
 Baldes pequenos, que não chegam a estourar, podem ser ordenados localmente usando algoritmos tradicionais como **quicksort** ou **insertion sort**.  
 Como esses baldes são pequenos, essa ordenação é feita de forma muito rápida.
 
 ---
 
-###  5. Geração da Lista Ordenada
+####  5. Geração da Lista Ordenada
 No final, para recuperar as strings em **ordem lexicográfica**, basta **percorrer a Trie em ordem**, concatenando os prefixos armazenados.  
 
 - A Trie já organiza naturalmente os caracteres em ordem alfabética.  
