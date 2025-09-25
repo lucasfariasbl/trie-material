@@ -7,11 +7,16 @@ Se tentassemos resolver esse problema com estruturas de dados comuns, como:
 
 É exatamente para isso que a Trie foi criada, ela é perfeita para problemas em dados sequênciais, para aqueles que envolvem operações com prefixos.
 
-Então, se as estruturas clássicas não nos ajuda nesse caso, qual é a mágica? A magia da trie é invés de encarar as sequências como um bloco único, "computador" por exemplo, ele olha como um caminho `c -> o -> m -> p -> ...`. A busca vira um passeio pela árvore. 
-# 2 Introdução
-## 2.1 O que é uma Trie?
+Então, se as estruturas clássicas não nos ajuda nesse caso, qual é a mágica? A magia da trie é invés de encarar as sequências como um bloco único, "computador" por exemplo, ele olha como um caminho `c -> o -> m -> p -> ...`. A busca vira um passeio pela árvore.
+# 2 Visão Geral em Vídeo: Trie em 3 Minutos 
+<div align="center">
+ <video controls src="https://raw.githubusercontent.com/NotAdson/trie-material/main/assets/video%20trie.mp4" style="max-width: 100%;">
+</video> 
+</div>
+# 3 Introdução
+## 3.1 O que é uma Trie?
 Também conhecida como árvore de prefixos, é uma estrutura de dados usada para armazenar sequências de forma dinâmica, facilitando operações com prefixos. Algo interessante sobre a Trie, é que os nós não armazenam a chave, mas o caminho da raiz até um nó representa a chave(ou prefixo).
-## 2.2 Visualizando
+## 3.2 Visualizando
 Vamos ver como as palavras "galo", "gato", e "gado" seriam armazenadas em uma Trie:
 
 <p align="center"><img src="assets/introduction_visualization_trie.png" height="400"></p>
@@ -128,7 +133,6 @@ Nossa última etapa ocorre após a verificação e adição da última letra, po
 ```
 
 ### 3.2.2 Pesquisa
-
 O método de pesquisa tem como parâmetro a palavra a ser pesquisada na árvore e retorna um valor booleano baseado na pergunta "A palavra está na árvore?"
 
 Assim como em todos os métodos, partimos do nó root, só que diferente da adição, nossas ações baseadas nas verificações são mais simples.
@@ -305,7 +309,7 @@ private boolean remove(String word, Node node, int index) {
     }
   }
 ```
-## 3.2.5 Listagem de palavras por prefixos
+## 3.3 Listagem de palavras por prefixos
 
 A função deste método é nos retornar uma lista com todas as palavras que iniciam com o prefixo passado como parâmetro.
 
@@ -366,7 +370,7 @@ private ArrayList<String> catchWords(Node currentNode, String currentPrefix, Arr
     return currentWords;
   }
 ```
-## 3.3 Análise de complexidade de tempo e memória
+## 3.4 Análise de complexidade de tempo e memória
 
 E finalmente chegamos ao motivo do por que a Trie é tão importante e tão famosa nas estruturas de dados de armazenamento. Sua extrema eficiência.
 
