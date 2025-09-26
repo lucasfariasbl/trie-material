@@ -481,7 +481,7 @@ Isso reduz:
 - A cada passo procura um filho que compartilha um prefixo equivalente à string a ser inserida, ou parte dela;
 - Existem 3 casos de inserção:
   - **Sem prefixo em comum**: Nesse caso a string é adicionada em um novo nó;
-  - **Prefixo completo do filho**: Csse é o caso de “carro” e “carroça”, ao adicionar “carroça”, é adicionado um novo nó, filho de “carro” que contém o prefixo “ça”;
+  - **Prefixo completo do filho**: Esse é o caso de “carro” e “carroça”, ao adicionar “carroça”, é adicionado um novo nó, filho de “carro” que contém o prefixo “ça”;
   - **Prefixo parcial**: Precisa dividir (split) o nó existente.
 
 **Vejamos um exemplo do caso 3. para adicionar “rápido” em uma árvore que contém “raiz”:**
