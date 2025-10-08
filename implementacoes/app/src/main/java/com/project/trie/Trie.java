@@ -156,7 +156,7 @@ public class Trie {
   }
 
   /**
-   * Método auxiliar privado que utiliza da estratégia DFS (Depth-First Search) para percorrer 
+   * Método auxiliar privado que utiliza da estratégia DFS (Depth-First Search), ou Busca por profundidade em português, para percorrer 
    * todas as palavras a partir da ultima letra do prefixo.
    *
    * @param currentNode o nó da letra atual.
